@@ -2,8 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import OpenAI from 'openai';  // Correct import for OpenAI v4.82.0+
+import OpenAI from 'openai';
 
+// Reads env file and sets variables 
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGO_URI, {
   console.error('MongoDB connection error:', err);
   process.exit(1);
 });
+
 
 // Initialize OpenAI API (v4.82.0+)
 const openai = new OpenAI({
@@ -40,11 +42,6 @@ app.post('/api/generate', async (req, res) => {
     console.error('OpenAI API error:', error);
     res.status(500).json({ error: 'Failed to generate a response' });
   }
-});
-
-// Test route
-app.get('/', (req, res) => {
-  res.send('DishList Backend API');
 });
 
 const PORT = process.env.PORT || 5000;
