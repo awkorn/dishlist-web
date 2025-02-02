@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ChatGPTComponents from './components/ChatGPTComponents';
+import "./App.css";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignInPage from "./pages/SignInPage";
+import NotFound from "./components/NotFound";
 
 function App() {
-  const [backendMessage, setBackendMessage] = useState('');
-
-  useEffect(() => {
-    axios.get('http://localhost:5000')
-      .then(response => setBackendMessage(response.data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
-
   return (
-    <div>
-      <h1>DishList App</h1>
-      <p>{backendMessage}</p>
-      <ChatGPTComponents></ChatGPTComponents>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="*" element={<NotFound></NotFound>}></Route>
+      </Routes>
+    </Router>
   );
 }
 
