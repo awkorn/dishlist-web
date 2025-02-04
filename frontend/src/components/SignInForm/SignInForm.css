@@ -1,0 +1,51 @@
+.sign-in-form {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    margin: 0 auto;
+    gap: 30px;
+    padding: 20px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 12px 16px; 
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box; 
+    font-family: "Franklin Gothic Medium", "Arial", sans-serif;
+  }
+
+  input::placeholder {
+    font-family: "Franklin Gothic Medium", "Arial", sans-serif;
+    color: #999; 
+  }
+  
+  input:focus {
+    border-color: #013328;
+  }
+  
+  input:hover {
+    background-color: #f1f1f1;
+  }
+  
+  button {
+    width: 70%; 
+    padding: 12px 16px;
+    background-color: #013328;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    align-self: center; 
+    box-sizing: border-box;
+    font-family: "Franklin Gothic Medium", "Arial", sans-serif;
+  }
+  
+  button:hover {
+    background-color: #01654a;
+  }

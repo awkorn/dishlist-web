@@ -1,4 +1,5 @@
 body {
+  background-color: #F4F2EE;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -11,3 +12,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.page-header {
+  font-size: 30px;
+  color: #1E1E1E;
+  font-family: 'Poppins', sans-serif;
+  margin: 20px 0;
+  font-weight: bolder;
+  text-align: center;
+  align-self: center; 
+}
+

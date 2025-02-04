@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./SignInForm.css";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -11,25 +12,25 @@ const SignInForm = () => {
       const response = await axios.post("/api/login", { email, password });
       console.log("Logged in:", response.data);
     } catch (error) {
-      console.error("Error logging ing:", error);
+      console.error("Error logging in:", error);
     }
   };
 
   return (
     <form className="sign-in-form" onSubmit={handleSubmit}>
-      <label htmlFor="email">Email</label>
       <input
         type="email"
         id="email"
+        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
       ></input>
 
-      <label htmlFor="password">Password</label>
       <input
         type="password"
         id="password"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
