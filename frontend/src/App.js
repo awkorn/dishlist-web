@@ -10,9 +10,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<SignInPage />} />
-        <Route path="*" element={<NotFound></NotFound>}></Route>
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="*" element={<NotFound></NotFound>}></Route>
       </Routes>
     </Router>
   );

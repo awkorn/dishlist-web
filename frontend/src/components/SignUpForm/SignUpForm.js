@@ -4,7 +4,7 @@ import { auth } from "../../services/authService";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-export default function SignInForm() {
+const SignUpForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -137,4 +137,6 @@ export default function SignInForm() {
       <ToastContainer />
     </form>
   );
-}
+};
+
+export default SignUpForm;
