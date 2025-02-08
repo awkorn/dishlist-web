@@ -48,6 +48,8 @@ const SignInForm = () => {
       <div className="google-button-container">
         <GoogleSignInButton />
       </div>
+
+      <a href="/signup" className="signup-link">New User? Sign up</a>
     </form>
   );
 };

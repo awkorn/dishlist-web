@@ -3,32 +3,34 @@
   font-size: clamp(24px, 5vw, 32px); 
   color: #1E1E1E;
   font-family: 'Poppins', sans-serif;
-  margin: 20px 0;
+  margin-top: clamp(20px, 8vw, 80px); 
+  margin-bottom: 20px;
   font-weight: bolder;
   text-align: center;
 }
-  .logo-banner {
-    background-color: #013328;  
-    width: 100%;
-    min-height: 100px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  @media (max-width: 768px) {
-    .logo-banner {
-      min-height: 80px; 
-    }
+.logo-banner {
+  background-color: #013328;  
+  width: 100%;
+  min-height: 100px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .logo-banner {
+    min-height: 80px; 
   }
-  
+}
+
+.logo {
+  max-height: 100px; 
+  width: auto;
+}
+
+@media (max-width: 768px) {
   .logo {
-    max-height: 100px; 
-    width: auto;
+    max-height: 60px; 
   }
-  
-  @media (max-width: 768px) {
-    .logo {
-      max-height: 60px; 
-    }
-  }
+}

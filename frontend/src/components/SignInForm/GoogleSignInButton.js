@@ -4,7 +4,7 @@ import { auth } from "../../services/authService";
 
 const GoogleSignInButton = () => {
   useEffect(() => {
-    // Initialize Google Identity Services button
+    //Initialize Google Identity Services button
     window.google.accounts.id.initialize({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
       callback: handleCredentialResponse,
@@ -16,7 +16,7 @@ const GoogleSignInButton = () => {
     );
   }, []);
 
-  // Handles the credential response from Google and signs in with Firebase
+  //Handles the credential response from Google and signs in with Firebase
   const handleCredentialResponse = async (response) => {
     try {
       const credential = GoogleAuthProvider.credential(response.credential);
