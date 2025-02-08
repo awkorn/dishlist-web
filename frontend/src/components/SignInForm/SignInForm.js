@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GoogleSignInButton from "../SignInButtons/GoogleSignInButton";
+import GoogleSignInButton from "./GoogleSignInButton";
 import axios from "axios";
 import "./SignInForm.css";
 
