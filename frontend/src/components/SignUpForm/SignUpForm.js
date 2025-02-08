@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../services/authService";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import "./SignUpForm.css";
 
 const SignUpForm = () => {
   const [name, setName] = useState("");
@@ -10,12 +11,13 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (e) => {
     e.preventDefault(); //prevents page reload
 
-    //password verification 
+    //password verification
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
@@ -67,9 +69,9 @@ const SignUpForm = () => {
   };
 
   return (
-    <form onSubmit={handleSignUp}>
-      <label htmlFor="name">Name</label>
+    <form className="sign-up-form" onSubmit={handleSignUp}>
       <input
+        className="sign-up-input"
         id="name"
         type="text"
         value={name}
@@ -79,8 +81,8 @@ const SignUpForm = () => {
         required
       />
 
-      <label htmlFor="email">Email</label>
       <input
+        className="sign-up-input"
         id="email"
         type="email"
         value={email}
@@ -90,47 +92,65 @@ const SignUpForm = () => {
         required
       />
 
-      <label htmlFor="password">Password</label>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ position: "relative", width: "100%" }}>
         <input
+          className="sign-up-input"
           id="password"
           type={showPassword ? "text" : "password"}
           value={password}
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={{ marginRight: "10px" }}
+          style={{
+            width: "100%",
+            paddingRight: "40px",
+          }}
         />
-        <button
-          type="button"
+        <span
+          className="password-icon"
           onClick={() => setShowPassword(!showPassword)}
-          style={{ cursor: "pointer", border: "none", background: "none" }}
+          style={{
+            position: "absolute",
+            right: "10px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            cursor: "pointer",
+          }}
         >
           {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-        </button>
+        </span>
       </div>
 
-      <label htmlFor="confirmPassword">Confirm Password</label>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ position: "relative", width: "100%" }}>
         <input
+          className="sign-up-input"
           id="confirmPassword"
-          type={showPassword ? "text" : "password"}
+          type={showConfirmPassword ? "text" : "password"}
           value={confirmPassword}
           placeholder="Confirm Password"
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
-          style={{ marginRight: "10px" }}
+          style={{
+            width: "100%",
+            paddingRight: "40px",
+          }}
         />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          style={{ cursor: "pointer", border: "none", background: "none" }}
+        <span
+          className="password-icon"
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          style={{
+            position: "absolute",
+            right: "10px",
+            top: "50%",
+            transform: "translateY(-50%)",
+            cursor: "pointer",
+          }}
         >
-          {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-        </button>
+          {showConfirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+        </span>
       </div>
 
-      <button type="submit" disabled={loading}>
+      <button type="submit" disabled={loading} className="sign-up-button">
         {loading ? "Signing up..." : "Sign Up"}
       </button>
 

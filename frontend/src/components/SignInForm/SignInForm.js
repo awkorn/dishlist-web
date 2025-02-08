@@ -20,6 +20,7 @@ const SignInForm = () => {
   return (
     <form className="sign-in-form" onSubmit={handleSubmit}>
       <input
+        className="sign-in-input"
         type="email"
         id="email"
         placeholder="Email"
@@ -29,6 +30,7 @@ const SignInForm = () => {
       ></input>
 
       <input
+        className="sign-in-input"
         type="password"
         id="password"
         placeholder="Password"
@@ -37,7 +39,9 @@ const SignInForm = () => {
         required
       />
 
-      <button type="submit">Login</button>
+      <button type="submit" className="login-button">
+        Login
+      </button>
 
       <div className="divider">
         <hr className="line" />
@@ -49,7 +53,9 @@ const SignInForm = () => {
         <GoogleSignInButton />
       </div>
 
-      <a href="/signup" className="signup-link">New User? Sign up</a>
+      <a href="/signup" className="signup-link">
+        New User? Sign up
+      </a>
     </form>
   );
 };
