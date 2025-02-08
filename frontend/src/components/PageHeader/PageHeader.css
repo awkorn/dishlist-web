@@ -1,6 +1,6 @@
 
 .page-header {
-  font-size: clamp(24px, 5vw, 32px); 
+  font-size: clamp(24px, 5vw, 28px); 
   color: #1E1E1E;
   font-family: 'Poppins', sans-serif;
   margin-top: clamp(20px, 8vw, 80px); 
