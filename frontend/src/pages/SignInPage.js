@@ -1,5 +1,5 @@
 import React from "react";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../components/PageHeader/PageHeader";
 import SignInForm from "../components/SignInForm/SignInForm";
 
 const SignInPage = () => {

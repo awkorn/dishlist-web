@@ -3,7 +3,7 @@
     flex-direction: column;
     width: 500px;
     margin: 0 auto;
-    gap: 30px;
+    gap: 20px;
     padding: 20px;
   }
   
@@ -32,7 +32,7 @@
   }
   
   button {
-    width: 70%; 
+    width: 50%; 
     padding: 12px 16px;
     background-color: #013328;
     color: white;
@@ -48,4 +48,23 @@
   
   button:hover {
     background-color: #01654a;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ccc;
+    border: none;
+  }
+  
+  .divider span {
+    font-size: 14px;
+    color: #666;
   }

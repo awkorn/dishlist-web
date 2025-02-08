@@ -37,6 +37,13 @@ const SignInForm = () => {
       />
 
       <button type="submit">Login</button>
+
+      <div className="divider">
+        <hr className="line"/>
+        <span>or continue with</span>
+        <hr className="line"/>
+      </div>
+
     </form>
   );
 };
