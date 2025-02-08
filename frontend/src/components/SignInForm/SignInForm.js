@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import GoogleSignInButton from "../SignInButtons/GoogleSignInButton";
 import axios from "axios";
 import "./SignInForm.css";
 
@@ -39,11 +40,14 @@ const SignInForm = () => {
       <button type="submit">Login</button>
 
       <div className="divider">
-        <hr className="line"/>
+        <hr className="line" />
         <span>or continue with</span>
-        <hr className="line"/>
+        <hr className="line" />
       </div>
 
+      <div className="google-button-container">
+        <GoogleSignInButton />
+      </div>
     </form>
   );
 };
