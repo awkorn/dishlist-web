@@ -6,7 +6,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./SignUpForm.css";
 
 const SignUpForm = () => {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -22,13 +23,13 @@ const SignUpForm = () => {
       /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
       toast.error(
-        "Password must be at least 8 characters, with uppercase, numbers, and symbols."
+        "Password must be at least 8 characters, with uppercase, numbers, and special characters."
       );
       return;
     }
 
     //check for empty fields
-    if (!name || !email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       toast.error("Please fill out all fields.");
       return;
     }
@@ -49,9 +50,10 @@ const SignUpForm = () => {
         password
       );
       const user = userCredentials.user;
-      await updateProfile(user, { displayName: name });
-      toast.success("Sign-up successful! Welcome, " + name);
-      setName("");
+      await updateProfile(user, { displayName: firstName });
+      toast.success("Sign-up successful! Welcome, " + firstName);
+      setFirstName("");
+      setLastName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
@@ -74,9 +76,20 @@ const SignUpForm = () => {
         className="sign-up-input"
         id="name"
         type="text"
-        value={name}
-        placeholder="Name"
-        onChange={(e) => setName(e.target.value)}
+        value={firstName}
+        placeholder="First Name"
+        onChange={(e) => setFirstName(e.target.value)}
+        autoComplete="name"
+        required
+      />
+
+      <input
+        className="sign-up-input"
+        id="name"
+        type="text"
+        value={lastName}
+        placeholder="Last Name"
+        onChange={(e) => setLastName(e.target.value)}
         autoComplete="name"
         required
       />
