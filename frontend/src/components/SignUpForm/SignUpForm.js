@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../services/authService";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthProvider";
 import "./SignUpForm.css";
 
 const SignUpForm = () => {
@@ -16,6 +17,14 @@ const SignUpForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+
+  //redirect to dishlists page
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/dishlists");
+    }
+  }, [currentUser, navigate]);
 
   const handleSignUp = async (e) => {
     e.preventDefault(); //prevents page reload
@@ -96,7 +105,7 @@ const SignUpForm = () => {
     <form className="sign-up-form" onSubmit={handleSignUp}>
       <input
         className="sign-up-input"
-        id="name"
+        id="firstName"
         type="text"
         value={firstName}
         placeholder="First Name"
@@ -107,7 +116,7 @@ const SignUpForm = () => {
 
       <input
         className="sign-up-input"
-        id="name"
+        id="lastName"
         type="text"
         value={lastName}
         placeholder="Last Name"
@@ -127,7 +136,7 @@ const SignUpForm = () => {
         required
       />
 
-      <div style={{ position: "relative", width: "100%" }}>
+      <div className="password-container">
         <input
           className="sign-up-input"
           id="password"
@@ -156,7 +165,7 @@ const SignUpForm = () => {
         </span>
       </div>
 
-      <div style={{ position: "relative", width: "100%" }}>
+      <div className="password-container">
         <input
           className="sign-up-input"
           id="confirmPassword"

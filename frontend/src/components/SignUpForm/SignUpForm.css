@@ -1,57 +1,62 @@
 .sign-up-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 500px;
-    margin: 0 auto;
-    gap: 20px;
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 20px;
+  padding: 20px;
+}
 
-  .sign-up-input{
-    width: 100%;
-    padding: 12px 16px; 
-    border: .1px solid #e4e2e2;
-    border-radius: 16px;
-    font-size: 16px;
-    outline: none;
-    box-sizing: border-box; 
-    font-family: "Franklin Gothic Light", "Arial", sans-serif;
-  }
+.sign-up-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 0.1px solid #e4e2e2;
+  border-radius: 16px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+  font-family: "Franklin Gothic Light", "Arial", sans-serif;
+}
 
-  .sign-up-input::placeholder{
-    font-family: "Franklin Gothic Light", "Arial", sans-serif;
-    color: #a19f9f;
-  }
+.sign-up-input::placeholder {
+  font-family: "Franklin Gothic Light", "Arial", sans-serif;
+  color: #a19f9f;
+}
 
-  .sign-up-input:focus {
-    border-color: #013328;
-  }
+.sign-up-input:focus {
+  border-color: #013328;
+}
 
-  .sign-up-button {
-    margin-top: 15%;
-    width: 40%; 
-    padding: 12px 16px;
-    background-color: black;
-    color: white;
-    border: none;
-    border-radius: 16px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    align-self: center; 
-    box-sizing: border-box;
-    font-family: "Franklin Gothic Medium", "Arial", sans-serif;
-  }
+.sign-up-button {
+  margin-top: 15%;
+  width: 40%;
+  padding: 12px 16px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  align-self: center;
+  box-sizing: border-box;
+  font-family: "Franklin Gothic Medium", "Arial", sans-serif;
+}
 
-  .sign-up-button:hover{
-    background-color: #013328;
-  }
+.sign-up-button:hover {
+  background-color: #013328;
+}
 
-  .password-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #666;
-  }
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
