@@ -3,6 +3,7 @@ import GoogleSignInButton from "./GoogleSignInButton";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import { auth } from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
 import "./SignInForm.css";
 
@@ -10,6 +11,7 @@ const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -22,7 +24,10 @@ const SignInForm = () => {
       );
       const user = userCredentials.user;
       console.log("Successfully signed in:", user.email);
-      //TODO: Redirect to home page
+      
+      //redirect to dishlists page
+      navigate("/dishlists");
+
     } catch (error) {
       if (error.code === "auth/user-not-found") {
         toast.error("No account found with this email.");

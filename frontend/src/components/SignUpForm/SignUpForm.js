@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../services/authService";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import "./SignUpForm.css";
 
 const SignUpForm = () => {
@@ -14,6 +15,7 @@ const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault(); //prevents page reload
@@ -50,13 +52,33 @@ const SignUpForm = () => {
         password
       );
       const user = userCredentials.user;
-      await updateProfile(user, { displayName: firstName });
+
+      try {
+        await updateProfile(user, { displayName: firstName });
+      } catch (error) {
+        if (error.code === "auth/requires-recent-login") {
+          toast.error("Please log in again to update your profile.");
+        } else if (error.code === "network-request-failed") {
+          toast.error(
+            "Network error. Please check your connection and try again."
+          );
+        } else {
+          toast.error("Failed to update profile. Please try again.");
+          console.error("Profile update error:", error);
+        }
+      }
+
       toast.success("Sign-up successful! Welcome, " + firstName);
+
+      //reset form fields
       setFirstName("");
       setLastName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+
+      //redirect user to dishlists page on success
+      navigate("/dishlists");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         toast.error("This email is already registered.");
