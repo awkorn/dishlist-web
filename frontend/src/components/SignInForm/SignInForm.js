@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleSignInButton from "./GoogleSignInButton";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import { auth } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../contexts/AuthProvider";
 import "./SignInForm.css";
 
 const SignInForm = () => {
@@ -12,6 +12,14 @@ const SignInForm = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+
+  //redirect to dishlists page
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/dishlists");
+    }
+  }, [currentUser, navigate]);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -24,9 +32,9 @@ const SignInForm = () => {
       );
       const user = userCredentials.user;
       console.log("Successfully signed in:", user.email);
-      
-      //redirect to dishlists page
-      navigate("/dishlists");
+
+      setEmail("");
+      setPassword("");
 
     } catch (error) {
       if (error.code === "auth/user-not-found") {
