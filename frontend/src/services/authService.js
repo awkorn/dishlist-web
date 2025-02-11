@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -12,4 +16,15 @@ const firebaseConfig = {
 
 //initialize firebase app
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const auth = getAuth(app);
+
+//set local persistence
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    console.log("Local session persistence set.");
+  })
+  .catch((error) => {
+    console.error("Error setting local persistence:", error);
+  });
+
+  export {auth};
