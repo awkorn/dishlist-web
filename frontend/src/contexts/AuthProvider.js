@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ currentUser }}>
       {!loading && children}{" "}
-      {/* Prevent rendering until auth status is known */}
     </AuthContext.Provider>
   );
 };
