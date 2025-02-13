@@ -1,11 +1,12 @@
 import React from "react";
+import TopNav from "../components/TopNav/TopNav";
 
 const DishListsPage = () => {
-    return (
-        <>
-        <h1>DishLists</h1>
-        </>
-    )
-}
+  return (
+    <>
+      <TopNav pageType="dishlists"></TopNav>
+    </>
+  );
+};
 
 export default DishListsPage;
