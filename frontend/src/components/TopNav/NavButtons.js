@@ -1,18 +1,32 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NavButtons = () => {
+  const location = useLocation();
   const navigate = useNavigate();
 
   return (
     <div className="nav-buttons">
-      <button className="nav-btn" onClick={() => navigate("/dishlists")}>
+      <button
+        className={`nav-btn ${
+          location.pathname === "/dishlists" ? "active" : ""
+        }`}
+        onClick={() => navigate("/dishlists")}
+      >
         DishLists
       </button>
-      <button className="nav-btn" onClick={() => navigate("/recipe-builder")}>
+      <button
+        className={`nav-btn ${
+          location.pathname === "/recipe-builder" ? "active" : ""
+        }`}
+        onClick={() => navigate("/recipe-builder")}
+      >
         Recipe Builder
       </button>
-      <button className="nav-btn" onClick={() => navigate("/about")}>
+      <button
+        className={`nav-btn ${location.pathname === "/about" ? "active" : ""}`}
+        onClick={() => navigate("/about")}
+      >
         About
       </button>
     </div>

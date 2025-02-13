@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
 .top-nav {
     display: flex;
     justify-content: space-between;
@@ -31,22 +29,30 @@
   
   .nav-buttons {
     display: flex;
-    gap: 10px;
+    gap: 15px;
   }
-  
+
   .nav-btn {
     background: none;
     border: none;
     padding: 8px 12px;
     font-size: 16px;
     cursor: pointer;
-    font-family: 'Poppins', sans-serif; 
-    font-weight: 525;
-  }
-  
-  .nav-btn:hover {
-    color: #013328;
-  }
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    border-radius: 50px; 
+}
+
+  .nav-btn.active {
+    color: #F4F2EE;
+    font-weight: 600;
+    padding: 8px 16px; 
+    background: #013328;
+}
+
+.nav-btn:hover{
+  color: #328058;
+}
   
   .user-menu {
     display: flex;
@@ -55,7 +61,7 @@
   }
   
   .user-initials {
-    background-color: rgb(31, 189, 44);
+    background-color: #013328;
     color: white;
     border-radius: 50%;
     padding: 10px;
