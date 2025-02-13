@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px;
+    background-color: #F4F2EE;
+  }
+  
+  .navbar-logo {
+    height: 40px;
+  }
+  
+  .search-container {
+    flex-grow: 1;
+    margin: 0 20px;
+  }
+  
+  .search-input {
+    width: 30%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+  }
+
+  .search-input::placeholder {
+    font-family: "Franklin Gothic Light", "Arial", sans-serif;
+    color: #999; 
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .nav-btn {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif; 
+    font-weight: 525;
+  }
+  
+  .nav-btn:hover {
+    color: #013328;
+  }
+  
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .user-initials {
+    background-color: rgb(31, 189, 44);
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
