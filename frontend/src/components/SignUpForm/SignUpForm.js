@@ -19,9 +19,15 @@ const SignUpForm = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
-  //redirect to dishlists page
   useEffect(() => {
     if (currentUser) {
+      //check if this is the first time signing in 
+      const isNewUser = currentUser.metadata.creationTime === currentUser.metadata.lastSignInTime;
+      
+      if (isNewUser) {
+        toast.success("Sign-up successful! Welcome, " + currentUser.displayName);
+      }
+  
       navigate("/dishlists");
     }
   }, [currentUser, navigate]);
@@ -76,8 +82,6 @@ const SignUpForm = () => {
           console.error("Profile update error:", error);
         }
       }
-
-      toast.success("Sign-up successful! Welcome, " + firstName);
 
       //reset form fields
       setFirstName("");
