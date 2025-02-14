@@ -1,70 +1,96 @@
-# Getting Started with Create React App
+# DishList Web App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+DishList is a private web application that allows users to create, manage, and organize their DishLists. Users can add, remove, and pin DishLists, as well as search for recipes using AI-powered suggestions.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **User Authentication:** Sign in and sign up using Firebase Authentication.
+- **DishList Management:** Users can create, edit, remove, and pin their DishLists.
+- **Global Menu Actions:** Single menu icon for managing DishLists.
+- **Persistent Storage:** DishLists are stored in MongoDB for each authenticated user.
+- **AI-Powered Features:** OpenAI API integration for smart recipe suggestions.
+- **Responsive UI:** Built with React and CSS Modules for a seamless experience.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technology Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Front End:
 
-### `npm test`
+- React
+- CSS Modules
+- JavaScript
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Back End:
 
-### `npm run build`
+- Node.js with Express.js
+- REST API
+- MongoDB (NoSQL Database)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Other Tools:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Firebase Authentication (User Management)
+- Version Control with Git
+- Continuous Integration (CI) and Deployment (CD) with GitHub Actions
+- OpenAI API (for AI-powered features)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Installation & Setup
 
-### `npm run eject`
+### Prerequisites:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Node.js installed
+- MongoDB cluster setup (or use a local MongoDB instance)
+- Firebase project configured
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Clone the repository:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+git clone https://github.com/awkorn/dishlist-web
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Install dependencies:
 
-## Learn More
+```bash
+# Install backend dependencies
+cd backend
+npm install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Install frontend dependencies
+cd frontend
+npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Environment Variables:
 
-### Code Splitting
+Create a `.env` file in the `backend` directory with the following:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+MONGO_URI=your-mongodb-connection-string
+FIREBASE_API_KEY=your-firebase-api-key
+OPENAI_API_KEY=your-openai-api-key
+```
 
-### Analyzing the Bundle Size
+### Running the Application:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+# Start the backend server
+cd backend
+npm start
 
-### Making a Progressive Web App
+# Start the frontend server
+cd ../frontend
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## API Endpoints
 
-### Advanced Configuration
+### DishLists API:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **GET `/api/dishlists`** - Fetch all DishLists for the authenticated user.
+- **POST `/api/dishlists`** - Create a new DishList.
+- **PUT `/api/dishlists/:id`** - Edit an existing DishList title.
+- **DELETE `/api/dishlists/:id`** - Remove a DishList.
 
-### Deployment
+## Privacy Notice
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This application is **private** and not intended for public distribution or use. All data is restricted to authenticated users, and unauthorized access is prohibited.
