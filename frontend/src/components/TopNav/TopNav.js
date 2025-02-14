@@ -2,7 +2,7 @@ import React from "react";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 import NavButtons from "./NavButtons";
-import UserMenu from "./UserMenu";
+import AuthButtons from "./AuthButtons";
 import "./TopNav.css";
 
 const TopNav = ({ pageType }) => {
@@ -12,7 +12,7 @@ const TopNav = ({ pageType }) => {
         <Logo />
         <SearchBar pageType={pageType} />
         <NavButtons />
-        <UserMenu />
+        <AuthButtons />
       </div>
     </div>
   );

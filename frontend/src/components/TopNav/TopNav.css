@@ -49,7 +49,7 @@
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     border-radius: 50px; 
-}
+  }
 
   .nav-btn.active {
     color: #F4F2EE;
@@ -58,23 +58,25 @@
     background: #013328;
 }
 
-.nav-btn:hover{
-  color: #328058;
-}
-  
-  .user-menu {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .nav-btn:hover{
+    color: #328058;
   }
-  
-  .user-initials {
+
+  /* Sign In / Sign Out button */
+  .auth-btn {
+    background: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    border-radius: 50px;
+  }
+
+  .auth-btn:hover {
     background-color: #013328;
     color: white;
-    border-radius: 50%;
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
   }
 
   @media (max-width: 768px) {
