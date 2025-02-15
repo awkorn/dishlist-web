@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios"; 
 import "./DishListTile.css";
 
 const DishListTile = ({userId}) => {
@@ -8,8 +7,6 @@ const DishListTile = ({userId}) => {
     const [showMenu, setShowMenu] = useState(false);
     const [selectedDishList, setSelectedDishList] = useState(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
-
-
 
     return(
         <>
