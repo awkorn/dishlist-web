@@ -13,7 +13,7 @@ const resolvers = {
       return await newDishList.save();
     },
     editDishList: async (_, { id, title }) => {
-      return await editDishList.findByIdAndUpdate(id, { title }, { new: true });
+      return await DishList.findByIdAndUpdate(id, { title }, { new: true });
     },
     removeDishList: async (_, { id }) => {
       await DishList.findByIdAndDelete(id);
