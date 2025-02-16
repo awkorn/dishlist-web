@@ -16,7 +16,7 @@ const typeDefs = gql`
     addDishList(userId: String!, title: String!): DishList
     editDishList(id: ID!, title: String!): DishList
     removeDishList(id: ID!): String
-    pinPishList(id: ID!): DishList
+    pinDishList(id: ID!): DishList
   }
 `;
 
