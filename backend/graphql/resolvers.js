@@ -20,7 +20,6 @@ const resolvers = {
       return "DishList deleted successfully";
     },
     pinDishList: async (_, { id }) => {
-      await DishList.updateMany({}, { isPinned: false }); //unpin all
       return await DishList.findByIdAndUpdate(
         id,
         { isPinned: true },
