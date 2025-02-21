@@ -15,7 +15,7 @@ const typeDefs = gql`
   type Mutation {
     addDishList(userId: String!, title: String!): DishList
     editDishList(id: ID!, title: String!): DishList
-    removeDishList(id: ID!): String
+    removeDishList(id: ID!): DishList
     pinDishList(id: ID!): DishList
   }
 `;
