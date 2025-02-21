@@ -8,7 +8,7 @@
   }
   
   .navbar-logo {
-    height: 50px;
+    height: 60px;
   }
   
   .search-container {
@@ -21,18 +21,19 @@
     padding: 8px;
     border: .5px solid #ddd;
     border-radius: 16px;
-    height: 20px;
+    height: 25px;
   }
 
   .search-input:focus {
-    border-color: #013328; 
+    border-color: #2a354b; 
     outline: none; 
     box-shadow: 0 0 2px rgba(1, 51, 40, 0.5); 
   }
 
   .search-input::placeholder {
-    font-family: "Franklin Gothic Light", "Arial", sans-serif;
+    font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
     color: #999; 
+    font-size: medium;
   }
   
   .nav-buttons {
@@ -55,11 +56,11 @@
     color: #F4F2EE;
     font-weight: 600;
     padding: 8px 16px; 
-    background: #013328;
+    background: #2a354b;
 }
 
   .nav-btn:not(.active):hover {
-    color: #328058;
+    color: #495b80;
   }
 
   /* Sign In / Sign Out button */
@@ -75,7 +76,7 @@
   }
 
   .auth-btn:hover {
-    color: #328058;
+    color: #495b80;
   }
 
   @media (max-width: 768px) {

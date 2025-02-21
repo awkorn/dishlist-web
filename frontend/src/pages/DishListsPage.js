@@ -5,6 +5,7 @@ import PageTitle from "../components/PageTitle/PageTitle";
 import DishListTile from "../components/DishListTile/DishListTile";
 import DishListsMenu from "../components/DishListsMenu/DishListsMenu";
 import { useAuth } from "../contexts/AuthProvider";
+import DishListFooter from "../components/DishListsFooter/DishListFooter";
 
 // GraphQL Query
 const FETCH_DISHLISTS = gql`
@@ -39,6 +40,7 @@ const DishListsPage = () => {
       </div>
 
       <DishListTile dishLists={data?.getDishLists || []} />
+      <DishListFooter></DishListFooter>
     </>
   );
 };
