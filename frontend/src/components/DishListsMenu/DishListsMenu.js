@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import React, { useState } from "react";
+import { useMutation, useApolloClient, gql } from "@apollo/client";
 import { useAuth } from "../../contexts/AuthProvider";
 import menuIcon from "../../assets/icons/icon-menu.png";
 import "./DishListsMenu.css";
+
+const FETCH_DISHLISTS = gql`
+  query GetDishLists($userId: String!) {
+    getDishLists(userId: $userId) {
+      id
+      title
+      isPinned
+    }
+  }
+`;
 
 //GraphQL Mutations
 const ADD_DISHLIST = gql`
@@ -43,6 +53,7 @@ const DishListsMenu = ({ dishLists }) => {
   const { currentUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedDishList, setSelectedDishList] = useState(null);
+  const client = useApolloClient();
 
   //GraphQL Mutations
   const [addDishList] = useMutation(ADD_DISHLIST, {
@@ -50,7 +61,7 @@ const DishListsMenu = ({ dishLists }) => {
   });
 
   const [deleteDishList] = useMutation(DELETE_DISHLIST, {
-    refetchQueries: ["GetDishLists"],
+    refetchQueries: [{ query: FETCH_DISHLISTS }],
   });
 
   const [editDishList] = useMutation(EDIT_DISHLIST, {
@@ -78,10 +89,12 @@ const DishListsMenu = ({ dishLists }) => {
     setMenuOpen(false);
   };
 
-  const handleDeleteDishList = () => {
+  const handleDeleteDishList = async () => {
     if (!selectedDishList) return;
     if (window.confirm("Are you sure you want to delete DishList?")) {
-      deleteDishList({ variables: { id: selectedDishList } });
+      await deleteDishList({ variables: { id: selectedDishList } });
+      //force refetch to update ui
+      client.refetchQueries({ include: [FETCH_DISHLISTS] });
     }
     setMenuOpen(false);
   };

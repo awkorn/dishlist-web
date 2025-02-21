@@ -2,7 +2,7 @@ import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
   type DishList {
-    id: ID!
+    id: ID
     userId: String!
     title: String!
     isPinned: Boolean!
