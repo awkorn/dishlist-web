@@ -58,7 +58,7 @@
     background: #013328;
 }
 
-  .nav-btn:hover{
+  .nav-btn:not(.active):hover {
     color: #328058;
   }
 
@@ -75,8 +75,7 @@
   }
 
   .auth-btn:hover {
-    background-color: #013328;
-    color: white;
+    color: #328058;
   }
 
   @media (max-width: 768px) {

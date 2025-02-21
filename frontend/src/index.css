@@ -32,7 +32,7 @@ code {
 .page-title {
   font-size: clamp(24px, 5vw, 56px);
   color: #1E1E1E;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
   font-weight: bolder;
   margin: 0;
   position: absolute;
@@ -42,7 +42,7 @@ code {
 
 .menu-container {
   position: absolute;
-  right: 10%; 
+  right: 12%; 
   display: flex;
   align-items: center;
   z-index: 20;

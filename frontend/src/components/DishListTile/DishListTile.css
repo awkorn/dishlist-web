@@ -4,13 +4,13 @@
     gap: 30px; 
     justify-content: center;
     margin-top: 4%;
-    max-width: 85%;
+    max-width: 80%;
     margin-left: auto; /* Centers the container horizontally */
     margin-right: auto; /* Centers the container horizontally */
   }
 
   .dish-tile {
-    background-color: #013328;
+    background-color: #274b75;
     border-radius: 12px;
     padding: 16px;
     height: 150px;
@@ -27,7 +27,7 @@
   
   .list-title {
     font-size: 32px;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
     font-weight: 600;
     margin: 0;
     color: white;
