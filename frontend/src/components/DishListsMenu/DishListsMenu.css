@@ -16,8 +16,8 @@
     flex-direction: column;
     gap: 10px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-
-    min-width: 150px;  /* Adjust width as needed */
+    z-index: 20;
+    min-width: 150px; 
     padding: 12px 16px;
 
   }

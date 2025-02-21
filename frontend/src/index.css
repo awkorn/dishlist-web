@@ -45,4 +45,5 @@ code {
   right: 10%; 
   display: flex;
   align-items: center;
+  z-index: 20;
 }

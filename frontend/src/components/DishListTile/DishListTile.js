@@ -55,7 +55,7 @@ const DishListTile = () => {
       {data.getDishLists.map((dishlist) => (
         <div key={dishlist.id} className="dish-tile">
           <h3 className="list-title">{dishlist.title}</h3>
-          {dishlist.isPinned && <span>📌 Pinned</span>}
+          {dishlist.isPinned && <span className="pin">📌</span>}
         </div>
       ))}
     </div>

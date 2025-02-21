@@ -1,10 +1,10 @@
 .dish-tiles {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Keeps 3 equal-width columns */
-    gap: 30px; /* Space between tiles */
-    justify-content: center; /* Centers the grid if it’s narrower than the container */
+    gap: 30px; 
+    justify-content: center;
     margin-top: 4%;
-    max-width: 85%; /* Limits the overall width of the container */
+    max-width: 85%;
     margin-left: auto; /* Centers the container horizontally */
     margin-right: auto; /* Centers the container horizontally */
   }
@@ -18,9 +18,11 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     display: flex;
+    position: relative; /* Needed for absolute positioning of the pin */
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 10;
   }
   
   .list-title {
@@ -29,6 +31,14 @@
     font-weight: 600;
     margin: 0;
     color: white;
+  }
+
+  .pin {
+    position: absolute; /* Positions the pin relative to .dish-tile */
+    top: 10px; 
+    left: 15px; 
+    font-size: 24px;
+    color: #FFFFFF;
   }
 
   @media (max-width: 768px) {
