@@ -14,8 +14,8 @@ const FETCH_DISHLISTS = gql`
 `;
 
 const ADD_DEFAULT_DISHLIST = gql`
-  mutation AddDishList($userId: String!, $title: String!) {
-    addDishList(userId: $userId, title: $title) {
+  mutation AddDishList($userId: String!, $title: String!, $isPinned: Boolean!) {
+    addDishList(userId: $userId, title: $title, isPinned: $isPinned) {
       id
       title
       isPinned
@@ -41,7 +41,11 @@ const DishListTile = () => {
     if (currentUser && data?.getDishLists?.length === 0) {
       //if user has no DishLists, create "User Recipes" as default
       addDishList({
-        variables: { userId: currentUser.uid, title: "User Recipes", isPinned: true },
+        variables: {
+          userId: currentUser.uid,
+          title: "User Recipes",
+          isPinned: true,
+        },
       });
     }
   }, [currentUser, data, addDishList]);

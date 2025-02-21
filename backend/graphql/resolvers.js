@@ -8,8 +8,8 @@ const resolvers = {
   },
 
   Mutation: {
-    addDishList: async (_, { userId, title }) => {
-      const newDishList = new DishList({ userId, title, isPinned: false });
+    addDishList: async (_, { userId, title, isPinned }) => {
+      const newDishList = new DishList({ userId, title, isPinned });
       return await newDishList.save();
     },
     editDishList: async (_, { id, title }) => {
