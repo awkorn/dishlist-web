@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useAuth } from "../../contexts/AuthProvider";
+import menuIcon from "../../assets/icons/icon-menu.png";
 import "./DishListsMenu.css";
 
 //GraphQL Mutations
@@ -91,7 +92,48 @@ const DishListsMenu = ({ dishLists }) => {
     setMenuOpen(false);
   };
 
-  return <></>;
+  return (
+    <div className="menu-container">
+      {/* Menu Icon */}
+      <img
+        src={menuIcon}
+        alt="menu"
+        className="menu-icon"
+        onClick={() => setMenuOpen(!menuOpen)}
+      />
+
+      {/* Dropdown Menu */}
+      {menuOpen && (
+        <div className="menu-options">
+          <button onClick={handleAddDishList}>➕ Add DishList</button>
+
+          <select
+            onChange={(e) => setSelectedDishList(e.target.value)}
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Select DishList
+            </option>
+            {dishLists.map((dish) => (
+              <option key={dish.id} value={dish.id}>
+                {dish.title}
+              </option>
+            ))}
+          </select>
+
+          <button onClick={handleEditDishList} disabled={!selectedDishList}>
+            ✏️ Edit DishList
+          </button>
+          <button onClick={handleDeleteDishList} disabled={!selectedDishList}>
+            🗑 Delete DishList
+          </button>
+          <button onClick={handlePinDishList} disabled={!selectedDishList}>
+            📌 Pin DishList
+          </button>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default DishListsMenu;
