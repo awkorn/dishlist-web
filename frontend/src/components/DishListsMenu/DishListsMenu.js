@@ -16,8 +16,8 @@ const FETCH_DISHLISTS = gql`
 
 //GraphQL Mutations
 const ADD_DISHLIST = gql`
-  mutation AddDishList($userId: String!, $title: String!) {
-    addDishList(userId: $userId, title: $title) {
+  mutation AddDishList($userId: String!, $title: String!, $isPinned: Boolean!) {
+    addDishList(userId: $userId, title: $title, isPinned: $isPinned) {
       id
       userId
       title
@@ -75,7 +75,7 @@ const DishListsMenu = ({ dishLists }) => {
   const handleAddDishList = () => {
     const title = prompt("Enter DishList title: ");
     if (title) {
-      addDishList({ variables: { userId: currentUser.uid, title } });
+      addDishList({ variables: { userId: currentUser.uid, title, isPinned: false } });
     }
     setMenuOpen(false);
   };
