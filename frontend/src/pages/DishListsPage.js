@@ -6,7 +6,6 @@ import DishListTile from "../components/DishListTile/DishListTile";
 import DishListsMenu from "../components/DishListsMenu/DishListsMenu";
 import { useAuth } from "../contexts/AuthProvider";
 
-
 // GraphQL Query
 const FETCH_DISHLISTS = gql`
   query GetDishLists($userId: String!) {
@@ -23,8 +22,7 @@ const DishListsPage = () => {
 
   //fetch DishLists from GraphQL
   const { loading, error, data } = useQuery(FETCH_DISHLISTS, {
-    skip: !currentUser,
-    variables: currentUser ? { userId: currentUser.uid } : {},
+    variables: { userId: currentUser?.uid },
   });
 
   if (!currentUser) return <p>Please log in to view your DishLists.</p>;
