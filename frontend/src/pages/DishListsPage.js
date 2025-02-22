@@ -31,17 +31,18 @@ const DishListsPage = () => {
   if (error) return <p>Error loading DishLists!</p>;
 
   return (
-    <>
+    <div className="page-container">
       <TopNav pageType="dishlists" />
-
+  
       <div className="title-menu-container">
         <PageTitle title="DishLists" />
         <DishListsMenu dishLists={data?.getDishLists || []} />
       </div>
-
+  
       <DishListTile dishLists={data?.getDishLists || []} />
-      <DishListFooter></DishListFooter>
-    </>
+  
+      <DishListFooter />
+    </div>
   );
 };
 
