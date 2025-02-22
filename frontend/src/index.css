@@ -47,6 +47,6 @@ body {
   left: 2%; 
   display: flex;
   height: 150px;
-  transform: rotate(-15deg); 
+  transform: rotate(-10deg); 
   transform-origin: bottom left; 
 }
