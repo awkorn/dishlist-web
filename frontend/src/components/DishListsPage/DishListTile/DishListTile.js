@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
-import { useAuth } from "../../contexts/AuthProvider";
+import { useAuth } from "../../../contexts/AuthProvider";
 import "./DishListTile.css";
-import pinIcon from "../../assets/icons/pin-drawing.png";
+import pinIcon from "../../../assets/icons/pin-drawing.png";
 
 
 const FETCH_DISHLISTS = gql`

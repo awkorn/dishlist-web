@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMutation, useApolloClient, gql } from "@apollo/client";
-import { useAuth } from "../../contexts/AuthProvider";
-import menuIcon from "../../assets/icons/icon-menu.png";
+import { useAuth } from "../../../contexts/AuthProvider";
+import menuIcon from "../../../assets/icons/icon-menu.png";
 import "./DishListsMenu.css";
 
 const FETCH_DISHLISTS = gql`

@@ -1,11 +1,11 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
+import { useAuth } from "../contexts/AuthProvider";
 import TopNav from "../components/TopNav/TopNav";
 import PageTitle from "../components/PageTitle/PageTitle";
-import DishListTile from "../components/DishListTile/DishListTile";
-import DishListsMenu from "../components/DishListsMenu/DishListsMenu";
-import { useAuth } from "../contexts/AuthProvider";
-import DishListFooter from "../components/DishListsFooter/DishListFooter";
+import DishListTile from "../components/DishListsPage/DishListTile/DishListTile";
+import DishListsMenu from "../components/DishListsPage/DishListsMenu/DishListsMenu";
+import DishListFooter from "../components/DishListsPage/DishListsFooter/DishListFooter";
 import utensilDrawing from "../assets/images/utensils.svg";
 
 // GraphQL Query

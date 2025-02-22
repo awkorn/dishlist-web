@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../../assets/images/logo-color.png";
 import "./PageHeader.css";
 
+/* Page header used on sign in and sing up page */ 
 const PageHeader = ({ title }) => {
   return (
     <>
