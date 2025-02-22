@@ -26,6 +26,13 @@ const resolvers = {
         { new: true }
       );
     },
+    unpinDishList: async (_, { id }) => {
+      return await DishList.findByIdAndUpdate(
+        id,
+        { isPinned: false },
+        { new: true }
+      );
+    },
   },
 };
 

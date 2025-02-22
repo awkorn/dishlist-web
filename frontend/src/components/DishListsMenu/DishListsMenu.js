@@ -48,6 +48,14 @@ const PIN_DISHLIST = gql`
     }
   }
 `;
+const UNPIN_DISHLIST = gql`
+  mutation UnpinDishList($id: ID!) {
+    unpinDishList(id: $id) {
+      id
+      isPinned
+    }
+  }
+`;
 
 const DishListsMenu = ({ dishLists }) => {
   const { currentUser } = useAuth();
@@ -72,10 +80,16 @@ const DishListsMenu = ({ dishLists }) => {
     refetchQueries: ["GetDishLists"],
   });
 
+  const [unpinDishList] = useMutation(UNPIN_DISHLIST, {
+    refetchQueries: ["GetDishLists"],
+  });
+
   const handleAddDishList = () => {
     const title = prompt("Enter DishList title: ");
     if (title) {
-      addDishList({ variables: { userId: currentUser.uid, title, isPinned: false } });
+      addDishList({
+        variables: { userId: currentUser.uid, title, isPinned: false },
+      });
     }
     setMenuOpen(false);
   };
@@ -99,11 +113,19 @@ const DishListsMenu = ({ dishLists }) => {
     setMenuOpen(false);
   };
 
-  const handlePinDishList = () => {
-    if (!selectedDishList) return;
-    pinDishList({ variables: { id: selectedDishList } });
+  const handleTogglePinDishList = () => {
+    if(!selectedDishList) return;
+
+    const dishList = dishLists.find(dish => dish.id === selectedDishList)
+
+    if (dishList?.isPinned) {
+      unpinDishList({ variables: { id: selectedDishList } });
+    } else {
+      pinDishList({ variables: { id: selectedDishList } });
+    }
+
     setMenuOpen(false);
-  };
+  }
 
   return (
     <div className="menu-container">
@@ -140,8 +162,8 @@ const DishListsMenu = ({ dishLists }) => {
           <button onClick={handleDeleteDishList} disabled={!selectedDishList}>
             🗑 Delete DishList
           </button>
-          <button onClick={handlePinDishList} disabled={!selectedDishList}>
-            📌 Pin DishList
+          <button onClick={handleTogglePinDishList} disabled={!selectedDishList}>
+            📌 {dishLists.find(dish => dish.id === selectedDishList)?.isPinned ? "Unpin" : "Pin"} DishList
           </button>
         </div>
       )}

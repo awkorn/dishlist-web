@@ -42,10 +42,11 @@
 
   .pin {
     position: absolute; /* Positions the pin relative to .dish-tile */
+    height: 45px;
+    width: 45px;
     top: 10px; 
-    left: 15px; 
-    font-size: 24px;
-    color: #FFFFFF;
+    left: 10px; 
+    filter: brightness(10);
   }
 
   @media (max-width: 768px) {

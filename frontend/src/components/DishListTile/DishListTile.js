@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
-import "./DishListTile.css";
 import { useAuth } from "../../contexts/AuthProvider";
+import "./DishListTile.css";
+import pinIcon from "../../assets/icons/pin-drawing.png";
+
 
 const FETCH_DISHLISTS = gql`
   query GetDishLists($userId: String!) {
@@ -59,7 +61,7 @@ const DishListTile = () => {
       {data.getDishLists.map((dishlist) => (
         <div key={dishlist.id} className="dish-tile">
           <h3 className="list-title">{dishlist.title}</h3>
-          {dishlist.isPinned && <span className="pin">📌</span>}
+          {dishlist.isPinned && <img src={pinIcon} alt="pin" className="pin"/>}
         </div>
       ))}
     </div>
