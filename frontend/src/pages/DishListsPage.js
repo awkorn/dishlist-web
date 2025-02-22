@@ -6,6 +6,7 @@ import DishListTile from "../components/DishListTile/DishListTile";
 import DishListsMenu from "../components/DishListsMenu/DishListsMenu";
 import { useAuth } from "../contexts/AuthProvider";
 import DishListFooter from "../components/DishListsFooter/DishListFooter";
+import utensilDrawing from "../assets/images/utensils.svg";
 
 // GraphQL Query
 const FETCH_DISHLISTS = gql`
@@ -33,14 +34,19 @@ const DishListsPage = () => {
   return (
     <div className="page-container">
       <TopNav pageType="dishlists" />
-  
+
       <div className="title-menu-container">
+        <img
+          src={utensilDrawing}
+          alt="utensil-heading"
+          className="utensil-drawing"
+        />
         <PageTitle title="DishLists" />
         <DishListsMenu dishLists={data?.getDishLists || []} />
       </div>
-  
+
       <DishListTile dishLists={data?.getDishLists || []} />
-  
+
       <DishListFooter />
     </div>
   );
