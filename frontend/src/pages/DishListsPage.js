@@ -6,7 +6,7 @@ import PageTitle from "../components/PageTitle/PageTitle";
 import DishListTile from "../components/DishListsPage/DishListTile/DishListTile";
 import DishListsMenu from "../components/DishListsPage/DishListsMenu/DishListsMenu";
 import DishListFooter from "../components/DishListsPage/DishListsFooter/DishListFooter";
-import utensilDrawing from "../assets/images/utensils.svg";
+import branchDrawing from "../assets/images/one-line-branch.svg"
 
 // GraphQL Queries & Mutations
 const FETCH_DISHLISTS = gql`
@@ -76,7 +76,7 @@ const DishListsPage = () => {
 
       <div className="title-menu-container">
         <img
-          src={utensilDrawing}
+          src={branchDrawing}
           alt="utensil-heading"
           className="utensil-drawing"
         />

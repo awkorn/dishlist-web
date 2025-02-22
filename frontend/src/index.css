@@ -42,11 +42,18 @@ body {
   z-index: 20;
 }
 
+  .list-message{
+    display: flex;
+    align-items: center;
+    font-size: 48px;
+    font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
+  }
+
 .utensil-drawing {
   position: absolute;
   left: 2%; 
   display: flex;
-  height: 150px;
-  transform: rotate(-10deg); 
+  height: 200px;
+  transform: rotate(15deg); 
   transform-origin: bottom left; 
 }

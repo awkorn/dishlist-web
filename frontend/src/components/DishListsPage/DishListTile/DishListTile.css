@@ -49,6 +49,19 @@
     filter: brightness(10);
   }
 
+  .no-dishlists-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; 
+    text-align: center;
+  }
+  
+  .no-dishlists-message {
+    font-size: 2rem;
+    color: #555; 
+  }
+
   @media (max-width: 768px) {
     .dish-tiles {
       grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */

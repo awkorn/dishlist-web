@@ -2,9 +2,13 @@ import React from "react";
 import "./DishListTile.css";
 import pinIcon from "../../../assets/icons/pin-drawing.png";
 
-const DishListTile = ({ dishLists }) => { 
-
-  if (!dishLists || dishLists.length === 0) return <p>No DishLists found.</p>;
+const DishListTile = ({ dishLists }) => {
+  if (!dishLists || dishLists.length === 0)
+    return (
+      <div className="no-dishlists-container">
+        <p className="no-dishlists-message">No DishLists found.</p>
+      </div>
+    );
 
   return (
     <div className="dish-tiles">
