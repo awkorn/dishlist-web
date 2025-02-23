@@ -33,7 +33,7 @@
   }
   
   .list-title {
-    font-size: 32px;
+    font-size: clamp(18px, 4vw, 32px);
     font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
     font-weight: 600;
     margin: 0;

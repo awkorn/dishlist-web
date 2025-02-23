@@ -13,6 +13,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* DishList page header container */
 .title-menu-container {
   display: flex;
   justify-content: center; 
@@ -20,27 +21,29 @@ body {
   width: 100%;
   padding: 0 20px;
   position: relative;
-  margin-top: 4%;
+  margin-top: 5%;
 }
 
-.page-title {
-  font-size: clamp(24px, 5vw, 56px);
-  color: #1E1E1E;
-  font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
-  font-weight: bolder;
-  margin: 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%); 
-}
+  /* Shared page title */
+  .page-title {
+    font-size: clamp(24px, 5vw, 56px);
+    color: #1E1E1E;
+    font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: bolder;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); 
+  }
 
-.menu-container {
-  position: absolute;
-  right: 12%; 
-  display: flex;
-  align-items: center;
-  z-index: 20;
-}
+  /* DishList page menu container */
+  .menu-container {
+    position: absolute;
+    right: 12%; 
+    display: flex;
+    align-items: center;
+    z-index: 20;
+  }
 
   .list-message{
     display: flex;
@@ -49,11 +52,12 @@ body {
     font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
   }
 
-.utensil-drawing {
-  position: absolute;
-  left: 2%; 
-  display: flex;
-  height: 200px;
-  transform: rotate(15deg); 
-  transform-origin: bottom left; 
-}
+  .utensil-drawing {
+    position: absolute;
+    left: 2%; 
+    display: flex;
+    height: 200px;
+    transform: rotate(15deg); 
+    transform-origin: bottom left; 
+    z-index: 0;
+  }
