@@ -90,6 +90,16 @@
   padding: 10px;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent; 
+  z-index: 500;
+}
+
 /* Tablet screens */
 @media (max-width: 768px) {
   .search-input {
@@ -98,26 +108,16 @@
     border-radius: 12px;
   }
 
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent; 
-    z-index: 500;
-  }
-
   /* Hide the nav container by default and style it as a dropdown */
   .nav-container {
     display: none;
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 60px; /* Adjust as needed */
+    top: 60px; 
     right: 0;
     background-color: lightgray;
-    width: 200px;
+    width: 100px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 10px;
     border-radius: 8px;
@@ -136,15 +136,27 @@
 
 /* Phone screens */
 @media (max-width: 480px) {
+
   .top-nav {
+    display: flex;
+    flex-direction: row; /* Ensure all elements are on the same line */
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
     padding: 10px;
-    flex-direction: column;
-    align-items: flex-start;
+    margin-bottom: 5%;
   }
-  
+
+  .navbar-logo {
+    height: 40px;
+    flex-shrink: 0;
+  }
+
   .search-container {
-    width: 100%;
-    margin: 10px 0;
+    flex-grow: 1;
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
   }
 
   .search-input {
@@ -153,11 +165,22 @@
     padding: 6px;
   }
 
+  .mobile-menu {
+    font-size: 24px;
+    padding: 8px;
+    flex-shrink: 0;
+  }
+
   .nav-container {
-    width: 100%;
-    top: 50px; /* Adjust as needed */
+    width: 50%;
+    position: absolute;
+    top: 50px;
     right: 0;
-    padding: 5px;
+    background-color: #F4F2EE;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 30;
   }
 
   .nav-btn,
@@ -166,10 +189,5 @@
     text-align: left;
     padding: 8px 12px;
     font-size: 14px;
-  }
-
-  .mobile-menu {
-    font-size: 24px;
-    padding: 8px;
   }
 }

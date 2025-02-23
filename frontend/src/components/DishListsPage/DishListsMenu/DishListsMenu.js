@@ -127,6 +127,8 @@ const DishListsMenu = ({ dishLists }) => {
     setMenuOpen(false);
   }
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <div className="menu-container">
       {/* Menu Icon */}
@@ -136,6 +138,8 @@ const DishListsMenu = ({ dishLists }) => {
         className="header-menu"
         onClick={() => setMenuOpen(!menuOpen)}
       />
+
+      {menuOpen && <div className="overlay" onClick={closeMenu}></div>}
 
       {/* Dropdown Menu */}
       {menuOpen && (

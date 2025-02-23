@@ -66,10 +66,24 @@
     .dish-tiles {
       grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
     }
+
+    .dish-tile{
+      height: 100px;
+    }
+
+    .pin {
+      height: 30px;
+      width: 30px;
+    }
   }
   
   @media (max-width: 480px) {
     .dish-tiles {
-      grid-template-columns: 1fr; /* 1 column on small screens */
+      grid-template-columns: repeat(2, 1fr); /* 2 column on small screens */
+    }
+
+    .pin {
+      height: 20px;
+      width: 20px;
     }
   }

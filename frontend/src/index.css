@@ -13,20 +13,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* DishList page header container */
-.title-menu-container {
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  width: 100%;
-  padding: 0 20px;
-  position: relative;
-  margin-top: 5%;
-}
+  /* DishList page header container */
+  .title-menu-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 100%;
+    padding: 0 20px;
+    position: relative;
+    margin-top: 5%;
+  }
 
   /* Shared page title */
   .page-title {
-    font-size: clamp(24px, 5vw, 56px);
+    font-size: clamp(30px, 5vw, 56px);
     color: #1E1E1E;
     font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
     font-weight: bolder;
@@ -52,7 +52,7 @@ body {
     font-family: "Bricolage Grotesque","Segoe UI", Helvetica, Arial, sans-serif;
   }
 
-  .utensil-drawing {
+  .branch-drawing {
     position: absolute;
     left: 2%; 
     display: flex;
@@ -61,3 +61,19 @@ body {
     transform-origin: bottom left; 
     z-index: 0;
   }
+
+@media (max-width: 768px) {
+  .branch-drawing {
+    height: 150px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .title-menu-container{
+    margin-bottom: 5%;
+  }
+  
+  .branch-drawing {
+    display: none;
+  }
+}

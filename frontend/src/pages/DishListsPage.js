@@ -77,8 +77,8 @@ const DishListsPage = () => {
       <div className="title-menu-container">
         <img
           src={branchDrawing}
-          alt="utensil-heading"
-          className="utensil-drawing"
+          alt="branch-heading"
+          className="branch-drawing"
         />
         <PageTitle title="DishLists" />
         <DishListsMenu dishLists={filteredDishLists} />

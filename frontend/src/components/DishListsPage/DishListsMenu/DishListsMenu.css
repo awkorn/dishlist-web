@@ -42,3 +42,14 @@
     border: 1px solid #ddd;
     border-radius: 4px;
   }
+
+
+  
+@media (max-width: 480px) {
+  .header-menu{
+    width: 30px; 
+    height: 30px;
+  }
+
+
+}
