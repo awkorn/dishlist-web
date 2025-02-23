@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, useMutation, useLazyQuery, gql } from "@apollo/client";
 import { useAuth } from "../contexts/AuthProvider";
 import TopNav from "../components/TopNav/TopNav";
 import PageTitle from "../components/PageTitle/PageTitle";
 import DishListTile from "../components/DishListsPage/DishListTile/DishListTile";
 import DishListsMenu from "../components/DishListsPage/DishListsMenu/DishListsMenu";
 import DishListFooter from "../components/DishListsPage/DishListsFooter/DishListFooter";
-import branchDrawing from "../assets/images/one-line-branch.svg"
+import branchDrawing from "../assets/images/one-line-branch.svg";
 
 // GraphQL Queries & Mutations
 const FETCH_DISHLISTS = gql`
@@ -15,16 +15,46 @@ const FETCH_DISHLISTS = gql`
       id
       title
       isPinned
+      collaborators
+      userId
     }
   }
 `;
 
 const ADD_DEFAULT_DISHLIST = gql`
-  mutation AddDishList($userId: String!, $title: String!, $isPinned: Boolean!) {
-    addDishList(userId: $userId, title: $title, isPinned: $isPinned) {
+  mutation AddDishList(
+    $userId: String!
+    $title: String!
+    $isPinned: Boolean!
+    $collaborators: [String]
+  ) {
+    addDishList(
+      userId: $userId
+      title: $title
+      isPinned: $isPinned
+      collaborators: $collaborators
+    ) {
       id
       title
       isPinned
+      collaborators
+    }
+  }
+`;
+
+const INVITE_COLLABORATOR = gql`
+  mutation InviteCollaborator($dishListId: ID!, $userId: String!) {
+    inviteCollaborator(dishListId: $dishListId, userId: $userId) {
+      id
+      collaborators
+    }
+  }
+`;
+
+const GET_USER_BY_EMAIL = gql`
+  query GetUserByEmail($email: String!) {
+    getUserByEmail(email: $email) {
+      id
     }
   }
 `;
@@ -43,24 +73,62 @@ const DishListsPage = () => {
     onCompleted: () => refetch(),
   });
 
-  //update filteredDishLists when data is loaded
+  const [inviteCollaborator] = useMutation(INVITE_COLLABORATOR, {
+    onCompleted: () => refetch(),
+  });
+
+  const [getUserByEmail] = useLazyQuery(GET_USER_BY_EMAIL);
+
   useEffect(() => {
     if (data?.getDishLists) {
+      console.log("All dishlists: ", data.getDishLists);
+  
+      const userDishLists = data.getDishLists.filter(
+        (list) =>
+          list.userId === currentUser?.uid ||
+          list.collaborators.includes(currentUser?.uid)
+      );
+  
+      console.log("User's DishLists:", userDishLists);
+  
       setAllDishLists(data.getDishLists);
-      setFilteredDishLists(data.getDishLists);
-      
-      //create default "User Recipes" DishList if none exist
-      if (currentUser && data.getDishLists.length === 0) {
+      setFilteredDishLists(userDishLists);
+  
+      const userHasDefaultDishList = data.getDishLists.some(
+        (list) => list.userId === currentUser?.uid && list.title === "User Recipes"
+      );
+  
+      console.log("Does user have 'User Recipes'?", userHasDefaultDishList);
+  
+      if (currentUser && !userHasDefaultDishList) {
+        console.log("Creating 'User Recipes' DishList for", currentUser.uid);
         addDishList({
           variables: {
             userId: currentUser.uid,
             title: "User Recipes",
             isPinned: true,
+            collaborators: [],
           },
         });
       }
     }
-  }, [data, addDishList, currentUser]);
+  }, [data, currentUser]);
+  
+
+  const handleInviteCollaborator = (dishListId) => {
+    const collaboratorEmail = prompt("Enter collaborator's email:");
+
+    if (!collaboratorEmail) return;
+    const collaboratorId = getUserByEmail(collaboratorEmail);
+
+    if (collaboratorId) {
+      inviteCollaborator({
+        variables: { dishListId, userId: collaboratorId },
+      });
+    } else {
+      alert("User not found.");
+    }
+  };
 
   if (!currentUser) return <p>Please log in to view your DishLists.</p>;
   if (loading) return <p>Loading DishLists...</p>;
@@ -84,7 +152,10 @@ const DishListsPage = () => {
         <DishListsMenu dishLists={filteredDishLists} />
       </div>
 
-      <DishListTile dishLists={filteredDishLists} />
+      <DishListTile
+        dishLists={filteredDishLists}
+        onInviteCollaborator={handleInviteCollaborator}
+      />
 
       <DishListFooter />
     </div>

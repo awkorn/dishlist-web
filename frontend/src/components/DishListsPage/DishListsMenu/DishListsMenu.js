@@ -106,9 +106,12 @@ const DishListsMenu = ({ dishLists }) => {
   const handleDeleteDishList = async () => {
     if (!selectedDishList) return;
     if (window.confirm("Are you sure you want to delete DishList?")) {
-      await deleteDishList({ variables: { id: selectedDishList } });
-      //force refetch to update ui
-      client.refetchQueries({ include: [FETCH_DISHLISTS] });
+      await deleteDishList({
+        variables: { id: selectedDishList },
+        refetchQueries: [
+          { query: FETCH_DISHLISTS, variables: { userId: currentUser.uid } }
+        ],
+      });
     }
     setMenuOpen(false);
   };
