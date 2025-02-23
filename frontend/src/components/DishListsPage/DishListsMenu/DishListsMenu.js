@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation, useApolloClient, gql } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 import { useAuth } from "../../../contexts/AuthProvider";
 import menuIcon from "../../../assets/icons/icon-menu.png";
 import "./DishListsMenu.css";
@@ -61,7 +61,6 @@ const DishListsMenu = ({ dishLists }) => {
   const { currentUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedDishList, setSelectedDishList] = useState(null);
-  const client = useApolloClient();
 
   //GraphQL Mutations
   const [addDishList] = useMutation(ADD_DISHLIST, {

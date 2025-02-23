@@ -8,18 +8,28 @@ const userResolvers = {
     getUserByEmail: async (_, { email }) => {
       const user = await User.findOne({ email });
       if (!user) throw new Error("User not found");
-      return { id: user.id };
+      return user;
     },
   },
 
   Mutation: {
-    followDishList: async (_, { userId, dishListId }) => {
-      return await User.findByIdAndUpdate(
-        userId,
-        { $addToSet: { followingDishLists: dishListId } },
-        { new: true }
-      );
+    createUser: async (_, { firebaseUid, email, username }) => {
+      try {
+        let user = await User.findOne({ firebaseUid });
+
+        if (!user) {
+          console.log("Creating new user in MongoDB:", email);
+          user = new User({ firebaseUid, email, username });
+          await user.save();
+        }
+
+        return user;
+      } catch (error) {
+        console.error("Error creating user:", error);
+        throw new Error("Could not create user");
+      }
     },
+
     saveRecipe: async (_, { userId, recipeId }) => {
       return await User.findByIdAndUpdate(
         userId,

@@ -4,14 +4,14 @@ import "./index.css";
 import App from "./App";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./contexts/AuthProvider";
+import { ApolloProvider } from "@apollo/client";
+import client from "./services/apolloClient";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <AuthProvider>
-    <App />
-  </AuthProvider>
+  <ApolloProvider client={client}>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </ApolloProvider>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
