@@ -41,6 +41,7 @@
 .nav-container {
   display: flex;
   gap: 15px;
+  z-index: 50;
 }
 
 /* Navigation Buttons */
@@ -97,7 +98,7 @@
   width: 100%;
   height: 100%;
   background: transparent; 
-  z-index: 500;
+  z-index: 10;
 }
 
 /* Tablet screens */
