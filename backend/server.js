@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import OpenAI from "openai";
 import { ApolloServer } from "apollo-server-express";
-import typeDefs from "./graphql/typeDefs.js";
-import resolvers from "./graphql/resolvers.js";
+import typeDefs from "./graphql/typeDefs/index.js";
+import resolvers from "./graphql/resolvers/index.js";
 
 dotenv.config();
 

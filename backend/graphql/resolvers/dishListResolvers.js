@@ -1,4 +1,4 @@
-import DishList from "../models/DishList.js";
+import { DishList } from "../../models/index.js";
 
 const resolvers = {
   Query: {
