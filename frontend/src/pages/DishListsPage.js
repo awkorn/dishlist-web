@@ -82,24 +82,25 @@ const DishListsPage = () => {
   useEffect(() => {
     if (data?.getDishLists) {
       console.log("All dishlists: ", data.getDishLists);
-  
+
       const userDishLists = data.getDishLists.filter(
         (list) =>
           list.userId === currentUser?.uid ||
           list.collaborators.includes(currentUser?.uid)
       );
-  
+
       console.log("User's DishLists:", userDishLists);
-  
+
       setAllDishLists(data.getDishLists);
       setFilteredDishLists(userDishLists);
-  
+
       const userHasDefaultDishList = data.getDishLists.some(
-        (list) => list.userId === currentUser?.uid && list.title === "User Recipes"
+        (list) =>
+          list.userId === currentUser?.uid && list.title === "User Recipes"
       );
-  
+
       console.log("Does user have 'User Recipes'?", userHasDefaultDishList);
-  
+
       if (currentUser && !userHasDefaultDishList) {
         console.log("Creating 'User Recipes' DishList for", currentUser.uid);
         addDishList({
@@ -113,21 +114,26 @@ const DishListsPage = () => {
       }
     }
   }, [data, currentUser]);
-  
 
   const handleInviteCollaborator = (dishListId) => {
     const collaboratorEmail = prompt("Enter collaborator's email:");
-
     if (!collaboratorEmail) return;
-    const collaboratorId = getUserByEmail(collaboratorEmail);
 
-    if (collaboratorId) {
-      inviteCollaborator({
-        variables: { dishListId, userId: collaboratorId },
+    getUserByEmail({ variables: { email: collaboratorEmail } })
+      .then(({ data }) => {
+        if (data?.getUserByEmail) {
+          const collaboratorId = data.getUserByEmail.id;
+          inviteCollaborator({
+            variables: { dishListId, userId: collaboratorId },
+          });
+        } else {
+          alert("User not found.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+        alert("An error occurred while fetching the user.");
       });
-    } else {
-      alert("User not found.");
-    }
   };
 
   if (!currentUser) return <p>Please log in to view your DishLists.</p>;
