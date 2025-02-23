@@ -83,7 +83,7 @@
 }
 
 /* Hamburger Menu Icon */
-.menu-icon {
+.mobile-menu {
   display: none;
   font-size: 28px;
   cursor: pointer;
@@ -96,6 +96,16 @@
     width: 100%;
     margin-top: 10px;
     border-radius: 12px;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent; 
+    z-index: 500;
   }
 
   /* Hide the nav container by default and style it as a dropdown */
@@ -119,7 +129,7 @@
     display: flex;
   }
 
-  .menu-icon {
+  .mobile-menu {
     display: block;
   }
 }
@@ -158,7 +168,7 @@
     font-size: 14px;
   }
 
-  .menu-icon {
+  .mobile-menu {
     font-size: 24px;
     padding: 8px;
   }

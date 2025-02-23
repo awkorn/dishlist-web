@@ -133,7 +133,7 @@ const DishListsMenu = ({ dishLists }) => {
       <img
         src={menuIcon}
         alt="menu"
-        className="menu-icon"
+        className="header-menu"
         onClick={() => setMenuOpen(!menuOpen)}
       />
 
