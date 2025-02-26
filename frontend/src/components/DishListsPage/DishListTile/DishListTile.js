@@ -26,23 +26,9 @@ const REQUEST_TO_FOLLOW = gql`
   }
 `;
 
-const UPDATE_VISIBILITY = gql`
-  mutation UpdateVisibility($id: ID!, $visibility: String!, $userId: String!) {
-    updateVisibility(id: $id, visibility: $visibility, userId: $userId) {
-      id
-      visibility
-    }
-  }
-`;
-
 const DishListTile = ({
   dishLists,
   currentUserId,
-  onInviteCollaborator,
-  onShareDishList,
-  isOwner,
-  isCollaborator,
-  isFollowing,
   refetch,
 }) => {
   const [followDishList] = useMutation(FOLLOW_DISHLIST, {
@@ -54,10 +40,6 @@ const DishListTile = ({
   });
 
   const [requestToFollow] = useMutation(REQUEST_TO_FOLLOW, {
-    onCompleted: () => refetch(),
-  });
-
-  const [updateVisibility] = useMutation(UPDATE_VISIBILITY, {
     onCompleted: () => refetch(),
   });
 
@@ -78,33 +60,6 @@ const DishListTile = ({
       variables: { dishListId, userId: currentUserId },
     });
     alert("Follow request sent!");
-  };
-
-  const handleVisibilityChange = (dishListId, currentVisibility) => {
-    const options = ["public", "private", "shared"];
-    const message = `Select visibility:
-1. Public (anyone can view)
-2. Private (only you and collaborators)
-3. Shared (specific people you invite)
-Current: ${currentVisibility}`;
-
-    const choice = prompt(message);
-    if (!choice) return;
-
-    const index = parseInt(choice) - 1;
-    if (isNaN(index) || index < 0 || index >= options.length) {
-      alert("Invalid selection");
-      return;
-    }
-
-    const newVisibility = options[index];
-    updateVisibility({
-      variables: {
-        id: dishListId,
-        visibility: newVisibility,
-        userId: currentUserId,
-      },
-    });
   };
 
   if (!dishLists || dishLists.length === 0)
@@ -135,10 +90,6 @@ Current: ${currentVisibility}`;
               )}
             </div>
 
-            {dishlist.description && (
-              <p className="description">{dishlist.description}</p>
-            )}
-
             <div className="status-badges">
               {userIsOwner && <span className="badge owner-badge">Owner</span>}
               {userIsCollaborator && (
@@ -148,7 +99,7 @@ Current: ${currentVisibility}`;
                 <span className="badge follower-badge">Following</span>
               )}
               {userHasPendingRequest && (
-                <span className="badge pending-badge">Request Pending</span>
+                <span className="badge pending-badge">Pending</span>
               )}
               <span className={`badge visibility-badge ${dishlist.visibility}`}>
                 {dishlist.visibility.charAt(0).toUpperCase() +
@@ -156,77 +107,35 @@ Current: ${currentVisibility}`;
               </span>
             </div>
 
-            {dishlist.collaborators.length > 0 && (
-              <div className="collaborators-section">
-                <h4>Collaborators:</h4>
-                <p className="collaborators">{dishlist.collaborators.length}</p>
+            {/* Only show follow/unfollow for non-owners and non-collaborators */}
+            {!userIsOwner && !userIsCollaborator && (
+              <div className="follow-action">
+                {userIsFollower ? (
+                  <button
+                    className="unfollow-btn"
+                    onClick={() => handleUnfollow(dishlist.id)}
+                  >
+                    Unfollow
+                  </button>
+                ) : dishlist.visibility === "public" ? (
+                  <button
+                    className="follow-btn"
+                    onClick={() => handleFollow(dishlist.id)}
+                  >
+                    Follow
+                  </button>
+                ) : (
+                  !userHasPendingRequest && (
+                    <button
+                      className="request-follow-btn"
+                      onClick={() => handleRequestFollow(dishlist.id)}
+                    >
+                      Request to Follow
+                    </button>
+                  )
+                )}
               </div>
             )}
-
-            {dishlist.followers.length > 0 && (
-              <div className="followers-section">
-                <h4>Followers:</h4>
-                <p className="followers">{dishlist.followers.length}</p>
-              </div>
-            )}
-
-            <div className="dish-tile-actions">
-              {/* Owner actions */}
-              {userIsOwner && (
-                <>
-                  <button
-                    className="invite-btn"
-                    onClick={() => onInviteCollaborator(dishlist.id)}
-                  >
-                    Invite Collaborator
-                  </button>
-                  <button
-                    className="share-btn"
-                    onClick={() => onShareDishList(dishlist.id)}
-                  >
-                    Share DishList
-                  </button>
-                  <button
-                    className="visibility-btn"
-                    onClick={() =>
-                      handleVisibilityChange(dishlist.id, dishlist.visibility)
-                    }
-                  >
-                    Change Visibility
-                  </button>
-                </>
-              )}
-
-              {/* Follow/Unfollow actions */}
-              {!userIsOwner && !userIsCollaborator && (
-                <>
-                  {userIsFollower ? (
-                    <button
-                      className="unfollow-btn"
-                      onClick={() => handleUnfollow(dishlist.id)}
-                    >
-                      Unfollow
-                    </button>
-                  ) : dishlist.visibility === "public" ? (
-                    <button
-                      className="follow-btn"
-                      onClick={() => handleFollow(dishlist.id)}
-                    >
-                      Follow
-                    </button>
-                  ) : (
-                    !userHasPendingRequest && (
-                      <button
-                        className="request-follow-btn"
-                        onClick={() => handleRequestFollow(dishlist.id)}
-                      >
-                        Request to Follow
-                      </button>
-                    )
-                  )}
-                </>
-              )}
-            </div>
           </div>
         );
       })}

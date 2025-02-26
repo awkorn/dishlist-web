@@ -11,7 +11,7 @@ const ADD_DISHLIST = gql`
     $title: String!
     $isPinned: Boolean!
     $description: String
-    $visibility: String
+    $visibility: String!
   ) {
     addDishList(
       userId: $userId
@@ -41,13 +41,11 @@ const EDIT_DISHLIST = gql`
     $id: ID!
     $title: String!
     $description: String
-    $userId: String!
   ) {
     editDishList(
       id: $id
       title: $title
       description: $description
-      userId: $userId
     ) {
       id
       title

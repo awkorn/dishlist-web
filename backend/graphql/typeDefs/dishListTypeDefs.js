@@ -26,11 +26,13 @@ const dishListTypeDefs = gql`
       title: String!
       isPinned: Boolean!
       collaborators: [String]
+      description: String
+      visibility: String!
     ): DishList
-    editDishList(id: ID!, title: String!): DishList
-    removeDishList(id: ID!): DishList
-    pinDishList(id: ID!): DishList
-    unpinDishList(id: ID!): DishList
+    editDishList(id: ID!, title: String!, userId: String!): DishList
+    removeDishList(id: ID!, userId: String!): DishList
+    pinDishList(id: ID!, userId: String!): DishList
+    unpinDishList(id: ID!, userId: String!): DishList
     followDishList(dishListId: ID!, userId: String!): DishList
     shareDishList(dishListId: ID!, visbility: String!): DishList
     inviteCollaborator(dishListId: ID!, userId: String!): DishList
