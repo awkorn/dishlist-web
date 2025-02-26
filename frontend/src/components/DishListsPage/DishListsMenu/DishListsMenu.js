@@ -32,7 +32,9 @@ const ADD_DISHLIST = gql`
 
 const DELETE_DISHLIST = gql`
   mutation RemoveDishList($id: ID!, $userId: String!) {
-    removeDishList(id: $id, userId: $userId)
+    removeDishList(id: $id, userId: $userId) {
+      id
+    }
   }
 `;
 
@@ -40,15 +42,18 @@ const EDIT_DISHLIST = gql`
   mutation EditDishList(
     $id: ID!
     $title: String!
+    $userId: String!
     $description: String
   ) {
     editDishList(
       id: $id
       title: $title
+      userId: $userId
       description: $description
     ) {
       id
       title
+      userId
       description
     }
   }
@@ -72,7 +77,7 @@ const UNPIN_DISHLIST = gql`
   }
 `;
 
-const DishListsMenu = ({ dishLists, currentUserId, isOwner, refetch }) => {
+const DishListsMenu = ({ dishLists, isOwner, refetch }) => {
   const { currentUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedDishList, setSelectedDishList] = useState(null);

@@ -6,7 +6,6 @@ import PageTitle from "../components/PageTitle/PageTitle";
 import DishListTile from "../components/DishListsPage/DishListTile/DishListTile";
 import DishListsMenu from "../components/DishListsPage/DishListsMenu/DishListsMenu";
 import DishListFooter from "../components/DishListsPage/DishListsFooter/DishListFooter";
-import branchDrawing from "../assets/images/one-line-branch.svg";
 
 // Updated GraphQL Queries & Mutations
 const FETCH_DISHLISTS = gql`
@@ -328,11 +327,6 @@ const DishListsPage = () => {
       />
 
       <div className="title-menu-container">
-        <img
-          src={branchDrawing}
-          alt="branch-heading"
-          className="branch-drawing"
-        />
         <PageTitle title="DishLists" />
         <div className="view-controls">
           <button
