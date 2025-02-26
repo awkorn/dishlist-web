@@ -12,14 +12,14 @@ const SignInForm = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, dbUser } = useAuth();
 
-  //redirect to dishlists page
+  // Redirect to dishlists page when both Firebase auth and MongoDB user are ready
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && dbUser) {
       navigate("/dishlists");
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, dbUser, navigate]);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -35,6 +35,9 @@ const SignInForm = () => {
 
       setEmail("");
       setPassword("");
+      
+      // Toast success message
+      toast.success("Successfully signed in!");
 
     } catch (error) {
       if (error.code === "auth/user-not-found") {
@@ -90,7 +93,7 @@ const SignInForm = () => {
       <a href="/signup" className="signup-link">
         New User? Sign up
       </a>
-      <ToastContainer></ToastContainer>
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
     </form>
   );
 };

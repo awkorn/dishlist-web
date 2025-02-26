@@ -9,14 +9,24 @@ const dishListTypeDefs = gql`
     followers: [String]!
     collaborators: [String]!
     visibility: String!
+    sharedWith: [String]
+    followRequests: [String]
+    description: String
   }
 
   type Query {
     getDishLists(userId: String!): [DishList]
+    getPublicDishLists(limit: Int, offset: Int): [DishList]
+    getDishList(id: ID!, userId: String!): DishList
   }
 
   type Mutation {
-    addDishList(userId: String!, title: String!, isPinned: Boolean!, collaborators: [String]): DishList
+    addDishList(
+      userId: String!
+      title: String!
+      isPinned: Boolean!
+      collaborators: [String]
+    ): DishList
     editDishList(id: ID!, title: String!): DishList
     removeDishList(id: ID!): DishList
     pinDishList(id: ID!): DishList
@@ -24,6 +34,14 @@ const dishListTypeDefs = gql`
     followDishList(dishListId: ID!, userId: String!): DishList
     shareDishList(dishListId: ID!, visbility: String!): DishList
     inviteCollaborator(dishListId: ID!, userId: String!): DishList
+    updateVisibility(id: ID!, visibility: String!): DishList
+    addSharedUser(dishListId: ID!, userId: String!): DishList
+    removeSharedUser(dishListId: ID!, userId: String!): DishList
+    requestToFollow(dishListId: ID!, userId: String!): Boolean
+    approveFollowRequest(dishListId: ID!, userId: String!): DishList
+    rejectFollowRequest(dishListId: ID!, userId: String!): Boolean
+    removeCollaborator(dishListId: ID!, userId: String!): DishList
+    unfollowDishList(dishListId: ID!, userId: String!): Boolean
   }
 `;
 

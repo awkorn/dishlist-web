@@ -4,132 +4,212 @@ import { useAuth } from "../../../contexts/AuthProvider";
 import menuIcon from "../../../assets/icons/icon-menu.png";
 import "./DishListsMenu.css";
 
-const FETCH_DISHLISTS = gql`
-  query GetDishLists($userId: String!) {
-    getDishLists(userId: $userId) {
-      id
-      title
-      isPinned
-    }
-  }
-`;
-
-//GraphQL Mutations
+// GraphQL Mutations
 const ADD_DISHLIST = gql`
-  mutation AddDishList($userId: String!, $title: String!, $isPinned: Boolean!) {
-    addDishList(userId: $userId, title: $title, isPinned: $isPinned) {
+  mutation AddDishList(
+    $userId: String!
+    $title: String!
+    $isPinned: Boolean!
+    $description: String
+    $visibility: String
+  ) {
+    addDishList(
+      userId: $userId
+      title: $title
+      isPinned: $isPinned
+      description: $description
+      visibility: $visibility
+    ) {
       id
       userId
       title
       isPinned
+      description
+      visibility
     }
   }
 `;
+
 const DELETE_DISHLIST = gql`
-  mutation RemoveDishList($id: ID!) {
-    removeDishList(id: $id) {
-      id
-    }
+  mutation RemoveDishList($id: ID!, $userId: String!) {
+    removeDishList(id: $id, userId: $userId)
   }
 `;
+
 const EDIT_DISHLIST = gql`
-  mutation EditDishList($id: ID!, $title: String!) {
-    editDishList(id: $id, title: $title) {
+  mutation EditDishList(
+    $id: ID!
+    $title: String!
+    $description: String
+    $userId: String!
+  ) {
+    editDishList(
+      id: $id
+      title: $title
+      description: $description
+      userId: $userId
+    ) {
       id
       title
+      description
     }
   }
 `;
+
 const PIN_DISHLIST = gql`
-  mutation PinDishList($id: ID!) {
-    pinDishList(id: $id) {
-      id
-      isPinned
-    }
-  }
-`;
-const UNPIN_DISHLIST = gql`
-  mutation UnpinDishList($id: ID!) {
-    unpinDishList(id: $id) {
+  mutation PinDishList($id: ID!, $userId: String!) {
+    pinDishList(id: $id, userId: $userId) {
       id
       isPinned
     }
   }
 `;
 
-const DishListsMenu = ({ dishLists }) => {
+const UNPIN_DISHLIST = gql`
+  mutation UnpinDishList($id: ID!, $userId: String!) {
+    unpinDishList(id: $id, userId: $userId) {
+      id
+      isPinned
+    }
+  }
+`;
+
+const DishListsMenu = ({ dishLists, currentUserId, isOwner, refetch }) => {
   const { currentUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedDishList, setSelectedDishList] = useState(null);
 
-  //GraphQL Mutations
+  // GraphQL Mutations
   const [addDishList] = useMutation(ADD_DISHLIST, {
-    refetchQueries: ["GetDishLists"],
+    onCompleted: () => refetch(),
   });
 
   const [deleteDishList] = useMutation(DELETE_DISHLIST, {
-    refetchQueries: [{ query: FETCH_DISHLISTS }],
+    onCompleted: () => refetch(),
   });
 
   const [editDishList] = useMutation(EDIT_DISHLIST, {
-    refetchQueries: ["GetDishLists"],
+    onCompleted: () => refetch(),
   });
 
   const [pinDishList] = useMutation(PIN_DISHLIST, {
-    refetchQueries: ["GetDishLists"],
+    onCompleted: () => refetch(),
   });
 
   const [unpinDishList] = useMutation(UNPIN_DISHLIST, {
-    refetchQueries: ["GetDishLists"],
+    onCompleted: () => refetch(),
   });
 
   const handleAddDishList = () => {
     const title = prompt("Enter DishList title: ");
-    if (title) {
-      addDishList({
-        variables: { userId: currentUser.uid, title, isPinned: false },
-      });
-    }
+    if (!title) return;
+
+    const description = prompt("Enter a description (optional): ");
+
+    const visibilityOptions =
+      "Select visibility:\n1. Public\n2. Private\n3. Shared";
+    const visibilityChoice = prompt(visibilityOptions, "2");
+
+    let visibility = "private"; // Default
+    if (visibilityChoice === "1") visibility = "public";
+    if (visibilityChoice === "3") visibility = "shared";
+
+    addDishList({
+      variables: {
+        userId: currentUser.uid,
+        title,
+        isPinned: false,
+        description: description || "",
+        visibility,
+      },
+    });
+
     setMenuOpen(false);
   };
 
   const handleEditDishList = () => {
     if (!selectedDishList) return;
-    const newTitle = prompt("Enter new title: ");
-    if (newTitle) {
-      editDishList({ variables: { id: selectedDishList, title: newTitle } });
+
+    // Check if user has permission
+    const dishList = dishLists.find((dish) => dish.id === selectedDishList);
+    if (!dishList || !isOwner(selectedDishList)) {
+      alert("You can only edit dishlists you own");
+      return;
     }
+
+    const newTitle = prompt("Enter new title:", dishList.title);
+    if (!newTitle) return;
+
+    const currentDesc = dishList.description || "";
+    const newDescription = prompt("Enter new description:", currentDesc);
+
+    editDishList({
+      variables: {
+        id: selectedDishList,
+        title: newTitle,
+        description: newDescription,
+        userId: currentUser.uid,
+      },
+    });
+
     setMenuOpen(false);
   };
 
   const handleDeleteDishList = async () => {
     if (!selectedDishList) return;
-    if (window.confirm("Are you sure you want to delete DishList?")) {
+
+    // Check if user has permission
+    if (!isOwner(selectedDishList)) {
+      alert("You can only delete dishlists you own");
+      return;
+    }
+
+    if (window.confirm("Are you sure you want to delete this DishList?")) {
       await deleteDishList({
-        variables: { id: selectedDishList },
-        refetchQueries: [
-          { query: FETCH_DISHLISTS, variables: { userId: currentUser.uid } }
-        ],
+        variables: {
+          id: selectedDishList,
+          userId: currentUser.uid,
+        },
       });
     }
+
     setMenuOpen(false);
   };
 
   const handleTogglePinDishList = () => {
-    if(!selectedDishList) return;
+    if (!selectedDishList) return;
 
-    const dishList = dishLists.find(dish => dish.id === selectedDishList)
+    // Check if user has permission
+    if (!isOwner(selectedDishList)) {
+      alert("You can only pin/unpin dishlists you own");
+      return;
+    }
+
+    const dishList = dishLists.find((dish) => dish.id === selectedDishList);
 
     if (dishList?.isPinned) {
-      unpinDishList({ variables: { id: selectedDishList } });
+      unpinDishList({
+        variables: {
+          id: selectedDishList,
+          userId: currentUser.uid,
+        },
+      });
     } else {
-      pinDishList({ variables: { id: selectedDishList } });
+      pinDishList({
+        variables: {
+          id: selectedDishList,
+          userId: currentUser.uid,
+        },
+      });
     }
 
     setMenuOpen(false);
-  }
+  };
 
   const closeMenu = () => setMenuOpen(false);
+
+  // Filter dishlists for the dropdown to only show those the user can modify
+  const editableDishLists = dishLists.filter((dish) => isOwner(dish.id));
 
   return (
     <div className="menu-container">
@@ -155,7 +235,7 @@ const DishListsMenu = ({ dishLists }) => {
             <option value="" disabled>
               Select DishList
             </option>
-            {dishLists.map((dish) => (
+            {editableDishLists.map((dish) => (
               <option key={dish.id} value={dish.id}>
                 {dish.title}
               </option>
@@ -168,8 +248,15 @@ const DishListsMenu = ({ dishLists }) => {
           <button onClick={handleDeleteDishList} disabled={!selectedDishList}>
             🗑 Delete DishList
           </button>
-          <button onClick={handleTogglePinDishList} disabled={!selectedDishList}>
-            📌 {dishLists.find(dish => dish.id === selectedDishList)?.isPinned ? "Unpin" : "Pin"} DishList
+          <button
+            onClick={handleTogglePinDishList}
+            disabled={!selectedDishList}
+          >
+            📌{" "}
+            {dishLists.find((dish) => dish.id === selectedDishList)?.isPinned
+              ? "Unpin"
+              : "Pin"}{" "}
+            DishList
           </button>
         </div>
       )}

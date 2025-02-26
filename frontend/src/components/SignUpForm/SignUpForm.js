@@ -17,11 +17,12 @@ const SignUpForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, dbUser } = useAuth();
 
   useEffect(() => {
-    if (currentUser) {
-      //check if this is the first time signing in 
+    // Only redirect when both Firebase auth and MongoDB user are ready
+    if (currentUser && dbUser) {
+      // Check if this is the first time signing in
       const isNewUser = currentUser.metadata.creationTime === currentUser.metadata.lastSignInTime;
       
       if (isNewUser) {
@@ -30,12 +31,12 @@ const SignUpForm = () => {
   
       navigate("/dishlists");
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, dbUser, navigate]);
 
   const handleSignUp = async (e) => {
-    e.preventDefault(); //prevents page reload
+    e.preventDefault(); // Prevents page reload
 
-    //password verification
+    // Password verification
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
@@ -45,13 +46,13 @@ const SignUpForm = () => {
       return;
     }
 
-    //check for empty fields
+    // Check for empty fields
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       toast.error("Please fill out all fields.");
       return;
     }
 
-    //validate passwords match
+    // Validate passwords match
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
       return;
@@ -59,7 +60,7 @@ const SignUpForm = () => {
 
     setLoading(true);
 
-    //create user with email and password
+    // Create user with email and password
     try {
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
@@ -68,8 +69,11 @@ const SignUpForm = () => {
       );
       const user = userCredentials.user;
 
+      // Combine first and last name for display name
+      const fullName = `${firstName} ${lastName}`;
+      
       try {
-        await updateProfile(user, { displayName: firstName });
+        await updateProfile(user, { displayName: fullName });
       } catch (error) {
         if (error.code === "auth/requires-recent-login") {
           toast.error("Please log in again to update your profile.");
@@ -83,15 +87,17 @@ const SignUpForm = () => {
         }
       }
 
-      //reset form fields
+      // Reset form fields
       setFirstName("");
       setLastName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
 
-      //redirect user to dishlists page on success
-      navigate("/dishlists");
+      // AuthProvider will handle creating MongoDB user via the createUser mutation
+      toast.success("Account created successfully!");
+      
+      // No need to navigate here - useEffect will handle it once currentUser and dbUser are updated
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         toast.error("This email is already registered.");
@@ -99,6 +105,7 @@ const SignUpForm = () => {
         toast.error("Invalid email address. Please try again.");
       } else {
         toast.error("Error during sign-up: " + error.message);
+        console.error("Sign-up error:", error);
       }
     } finally {
       setLoading(false);
@@ -114,7 +121,7 @@ const SignUpForm = () => {
         value={firstName}
         placeholder="First Name"
         onChange={(e) => setFirstName(e.target.value)}
-        autoComplete="name"
+        autoComplete="given-name"
         required
       />
 
@@ -125,7 +132,7 @@ const SignUpForm = () => {
         value={lastName}
         placeholder="Last Name"
         onChange={(e) => setLastName(e.target.value)}
-        autoComplete="name"
+        autoComplete="family-name"
         required
       />
 
@@ -202,7 +209,7 @@ const SignUpForm = () => {
         {loading ? "Signing up..." : "Sign Up"}
       </button>
 
-      <ToastContainer />
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
     </form>
   );
 };
