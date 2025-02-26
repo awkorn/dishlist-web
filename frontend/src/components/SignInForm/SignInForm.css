@@ -29,19 +29,19 @@
 }
 
 .sign-in-input:focus {
-  border-color: #013328;
+  border-color: #274b75;
   box-shadow: 0 0 0 3px rgba(1, 51, 40, 0.1); 
 }
 
 .sign-in-input:hover {
-  border-color: #01654a;
+  border-color: #274b75;
   background-color: #f9f9f9;
 }
 
 .login-button {
   width: 50%; 
   padding: 14px 20px;
-  background-color: #013328;
+  background-color: #274b75;
   color: white;
   border: none;
   border-radius: 12px;
@@ -58,7 +58,7 @@
 }
 
 .login-button:hover {
-  background-color: #01654a;
+  background-color: #336299;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(1, 51, 40, 0.2);
 }

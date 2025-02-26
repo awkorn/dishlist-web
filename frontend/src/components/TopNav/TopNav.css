@@ -275,7 +275,7 @@
 }
 
 /* ===== DARK MODE SUPPORT ===== */
-/*
+
 @media (prefers-color-scheme: dark) {
   .top-nav {
     background-color: #1a1a1a;
@@ -356,7 +356,7 @@
     background-color: #4d7aba;
   }
 }
-*/
+
 
 /* ===== RESPONSIVE STYLING ===== */
 @media (max-width: 992px) {

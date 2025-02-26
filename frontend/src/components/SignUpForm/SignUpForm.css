@@ -51,13 +51,13 @@
 }
 
 .sign-up-input:focus {
-  border-color: #013328;
+  border-color: #274b75;
   background-color: #fff;
   box-shadow: 0 0 0 3px rgba(1, 51, 40, 0.08);
 }
 
 .sign-up-input:hover {
-  border-color: #013328;
+  border-color: #274b75;
   background-color: #f7f7f7;
 }
 
@@ -107,7 +107,7 @@
 
 .password-icon:hover {
   background-color: rgba(0, 0, 0, 0.05);
-  color: #013328;
+  color: #274b75;
 }
 
 .password-strength {
@@ -146,7 +146,7 @@
   margin-top: 20px;
   width: 50%; /* Slightly wider button */
   padding: 14px 20px;
-  background-color: #013328;
+  background-color: #274b75;
   color: white;
   border: none;
   border-radius: 12px;
@@ -219,7 +219,7 @@
 }
 
 .already-user a {
-  color: #013328;
+  color: #274b75;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s ease;
