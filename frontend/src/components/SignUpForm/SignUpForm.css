@@ -1,50 +1,85 @@
+/* ===== SIGN-UP FORM COMPONENT ===== */
 .sign-up-form {
   display: flex;
   flex-direction: column;
   max-width: 500px;
   margin: 0 auto;
-  gap: 20px;
-  padding: 20px;
+  gap: 24px; /* Slightly increased spacing */
+  padding: 30px;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.form-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1E1E1E;
+  margin-bottom: 8px;
+  font-family: 'Bricolage Grotesque', 'Franklin Gothic Medium', sans-serif;
+}
+
+.form-header p {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
 }
 
 .sign-up-input {
   width: 100%;
-  padding: 12px 16px;
-  border: 0.1px solid #e4e2e2;
-  border-radius: 16px;
+  padding: 14px 18px;
+  border: 1.5px solid #e4e2e2;
+  border-radius: 12px;
   font-size: 16px;
   outline: none;
   box-sizing: border-box;
-  font-family: "Franklin Gothic Light", "Arial", sans-serif;
+  font-family: 'Bricolage Grotesque', "Franklin Gothic Light", "Arial", sans-serif;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
 }
 
 .sign-up-input::placeholder {
-  font-family: "Franklin Gothic Light", "Arial", sans-serif;
+  font-family: 'Bricolage Grotesque', "Franklin Gothic Light", "Arial", sans-serif;
   color: #a19f9f;
+  opacity: 0.8;
 }
 
 .sign-up-input:focus {
   border-color: #013328;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(1, 51, 40, 0.08);
 }
 
-.sign-up-button {
-  margin-top: 15%;
-  width: 40%;
-  padding: 12px 16px;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 16px;
-  font-size: 16px;
-  cursor: pointer;
-  text-align: center;
-  align-self: center;
-  box-sizing: border-box;
-  font-family: "Franklin Gothic Medium", "Arial", sans-serif;
+.sign-up-input:hover {
+  border-color: #013328;
+  background-color: #f7f7f7;
 }
 
-.sign-up-button:hover {
-  background-color: #013328;
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-left: 4px;
+  font-family: 'Bricolage Grotesque', "Franklin Gothic Medium", "Arial", sans-serif;
+}
+
+.input-hint {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+  margin-left: 4px;
 }
 
 .password-container {
@@ -54,9 +89,246 @@
 
 .password-icon {
   position: absolute;
-  right: 10px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  padding: 2px;
+}
+
+.password-icon:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #013328;
+}
+
+.password-strength {
+  display: flex;
+  margin-top: 8px;
+  height: 4px;
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.password-strength-meter {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.password-strength-meter.weak {
+  width: 33%;
+  background-color: #f44336;
+}
+
+.password-strength-meter.medium {
+  width: 66%;
+  background-color: #ff9800;
+}
+
+.password-strength-meter.strong {
+  width: 100%;
+  background-color: #4caf50;
+}
+
+.sign-up-button {
+  margin-top: 20px;
+  width: 50%; /* Slightly wider button */
+  padding: 14px 20px;
+  background-color: #013328;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  align-self: center;
+  box-sizing: border-box;
+  font-family: 'Bricolage Grotesque', "Franklin Gothic Medium", "Arial", sans-serif;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(1, 51, 40, 0.1);
+}
+
+.sign-up-button:hover {
+  background-color: #014a3a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(1, 51, 40, 0.2);
+}
+
+.sign-up-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(1, 51, 40, 0.15);
+}
+
+.sign-up-button::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sign-up-button:hover::after {
+  opacity: 1;
+}
+
+.terms-agreement {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
+.terms-agreement a {
+  color: #013328;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.terms-agreement a:hover {
+  color: #014a3a;
+  text-decoration: underline;
+}
+
+.already-user {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.already-user a {
+  color: #013328;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.already-user a:hover {
+  color: #014a3a;
+  text-decoration: underline;
+}
+
+/* Error states */
+.input-error {
+  border-color: #f44336;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 4px;
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+  .sign-up-form {
+    background-color: #1a1a1a;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+  
+  .form-header h2 {
+    color: #e0e0e0;
+  }
+  
+  .form-header p {
+    color: #aaa;
+  }
+  
+  .input-label {
+    color: #c0c0c0;
+  }
+  
+  .sign-up-input {
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+  
+  .sign-up-input::placeholder {
+    color: #777;
+  }
+  
+  .sign-up-input:focus {
+    background-color: #333;
+    box-shadow: 0 0 0 3px rgba(1, 51, 40, 0.2);
+  }
+  
+  .sign-up-input:hover {
+    background-color: #333;
+  }
+  
+  .password-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .password-strength {
+    background-color: #444;
+  }
+  
+  .input-hint,
+  .terms-agreement,
+  .already-user {
+    color: #aaa;
+  }
+  
+  .terms-agreement a,
+  .already-user a {
+    color: #4CAF50;
+  }
+  
+  .terms-agreement a:hover,
+  .already-user a:hover {
+    color: #66BB6A;
+  }
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+  .sign-up-form {
+    padding: 25px 20px;
+    gap: 20px;
+    max-width: 90%;
+  }
+  
+  .sign-up-button {
+    width: 70%;
+  }
+}
+
+@media (max-width: 480px) {
+  .sign-up-form {
+    padding: 20px 15px;
+    gap: 16px;
+  }
+  
+  .form-header h2 {
+    font-size: 24px;
+  }
+  
+  .sign-up-button {
+    width: 100%;
+  }
 }

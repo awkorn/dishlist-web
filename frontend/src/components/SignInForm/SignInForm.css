@@ -1,85 +1,198 @@
+/* ===== SIGN IN FORM COMPONENT ===== */
 .sign-in-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 500px;
-    margin: 0 auto;
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .sign-in-input {
-    width: 100%;
-    padding: 12px 16px; 
-    border: 1px solid #ccc;
-    border-radius: 16px;
-    font-size: 16px;
-    outline: none;
-    box-sizing: border-box; 
-    font-family: "Franklin Gothic Medium", "Arial", sans-serif;
-  }
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 24px; 
+  padding: 30px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); 
+}
 
-  .sign-in-input::placeholder {
-    font-family: "Franklin Gothic Light", "Arial", sans-serif;
-    color: #999; 
+.sign-in-input {
+  width: 100%;
+  padding: 14px 18px; 
+  border: 1.5px solid #e0e0e0; 
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box; 
+  font-family: 'Bricolage Grotesque', "Franklin Gothic Medium", "Arial", sans-serif;
+  transition: all 0.2s ease;
+}
+
+.sign-in-input::placeholder {
+  font-family: 'Bricolage Grotesque', "Franklin Gothic Light", "Arial", sans-serif;
+  color: #aaa; 
+}
+
+.sign-in-input:focus {
+  border-color: #013328;
+  box-shadow: 0 0 0 3px rgba(1, 51, 40, 0.1); 
+}
+
+.sign-in-input:hover {
+  border-color: #01654a;
+  background-color: #f9f9f9;
+}
+
+.login-button {
+  width: 50%; 
+  padding: 14px 20px;
+  background-color: #013328;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  align-self: center; 
+  box-sizing: border-box;
+  font-family: 'Bricolage Grotesque', "Franklin Gothic Medium", "Arial", sans-serif;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-button:hover {
+  background-color: #01654a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(1, 51, 40, 0.2);
+}
+
+.login-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(1, 51, 40, 0.2);
+}
+
+.login-button::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.login-button:hover::after {
+  opacity: 1;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.line {
+  flex-grow: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ccc 15%, #ccc 85%, transparent);
+  border: none;
+}
+
+.divider span {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.google-button-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center;    
+  width: 100%;             
+  margin-top: 24px;
+}
+
+.signup-link {
+  margin-top: 10%;
+  color: #333;
+  text-align: center;
+  align-self: center;
+  font-size: 15px;
+  padding: 10px;
+  transition: color 0.2s ease;
+}
+
+.signup-link a {
+  color: #013328;
+  font-weight: 600;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.signup-link a:hover {
+  color: #01654a;
+  border-bottom-color: #01654a;
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+@media (max-width: 768px) {
+  .logo-banner {
+    min-height: 80px; 
   }
   
-  .sign-in-input:focus {
-    border-color: #013328;
+  .logo {
+    max-height: 60px; 
   }
   
-  .sign-in-input:hover {
-    background-color: #f1f1f1;
+  .sign-in-form {
+    padding: 20px 15px;
+    max-width: 90%;
   }
   
   .login-button {
-    width: 40%; 
-    padding: 12px 16px;
-    background-color: #013328;
-    color: white;
-    border: none;
-    border-radius: 16px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    align-self: center; 
-    box-sizing: border-box;
-    font-family: "Franklin Gothic Medium", "Arial", sans-serif;
+    width: 70%;
+  }
+}
+
+/* ===== DARK MODE SUPPORT (Optional) ===== */
+@media (prefers-color-scheme: dark) {
+  .sign-in-form {
+    background-color: #1a1a1a;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
   
-  .login-button:hover {
-    background-color: #01654a;
+  .sign-in-input {
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
   }
-
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0;
+  
+  .sign-in-input::placeholder {
+    color: #888;
   }
-
+  
+  .sign-in-input:hover {
+    background-color: #333;
+  }
+  
   .line {
-    flex-grow: 1;
-    height: 1px;
-    background-color: #ccc;
-    border: none;
+    background: linear-gradient(90deg, transparent, #444 15%, #444 85%, transparent);
   }
   
-  .divider span {
-    font-size: 14px;
-    color: #666;
+  .divider span,
+  .signup-link {
+    color: #bbb;
   }
-
-  .google-button-container {
-    display: flex;
-    justify-content: center; 
-    align-items: center;    
-    width: 100%;             
-    margin-top: 20px;     
+  
+  .signup-link a {
+    color: #4CAF50;
   }
-
-  .signup-link{
-    margin-top: 10%;
-    color: black;
-    text-align: center;
-    align-self: center; 
+  
+  .signup-link a:hover {
+    color: #81C784;
+    border-bottom-color: #81C784;
   }
+}

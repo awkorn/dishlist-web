@@ -1,94 +1,259 @@
+/* ===== TOP NAVIGATION BAR ===== */
 .top-nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Changed from space-between to flex-start */
   align-items: center;
   flex-wrap: wrap;
-  padding: 20px;
+  padding: 16px 24px;
   background-color: #F4F2EE;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.top-nav.scrolled {
+  padding: 12px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-logo {
   height: 60px;
+  transition: all 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05);
 }
 
 .search-container {
   flex-grow: 1;
-  margin: 0 20px;
-  z-index: 10;
+  margin: 0 12px 0 20px; /* Reduced margin, especially on the left */
+  max-width: 500px;
+  position: relative;
 }
 
 .search-input {
-  width: 30%;
-  padding: 8px;
-  border: 0.5px solid #ddd;
-  border-radius: 16px;
-  height: 25px;
+  width: 100%;
+  padding: 12px 16px;
+  padding-left: 40px; /* Space for the search icon */
+  border: 1.5px solid #e0e0e0;
+  border-radius: 24px;
+  height: auto;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  font-size: 18px;
+  pointer-events: none;
+  transition: all 0.2s ease;
 }
 
 .search-input:focus {
-  border-color: #2a354b;
+  border-color: #274b75;
   outline: none;
-  box-shadow: 0 0 2px rgba(1, 51, 40, 0.5);
+  box-shadow: 0 0 0 3px rgba(42, 53, 75, 0.1);
+}
+
+.search-input:focus + .search-icon {
+  color: #274b75;
 }
 
 .search-input::placeholder {
   font-family: "Bricolage Grotesque", "Segoe UI", Helvetica, Arial, sans-serif;
-  color: #999;
+  color: #aaa;
   font-size: medium;
 }
 
 /* Navigation container wrapping nav and auth buttons */
 .nav-container {
   display: flex;
-  gap: 15px;
+  gap: 16px;
   z-index: 50;
+  align-items: center;
+  margin-left: auto; /* Push to the right side */
 }
 
 /* Navigation Buttons */
 .nav-btn {
   background: none;
   border: none;
-  padding: 8px 12px;
+  padding: 10px 16px;
   font-size: 16px;
   cursor: pointer;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
   font-weight: 600;
-  border-radius: 50px;
+  border-radius: 24px;
+  transition: all 0.2s ease;
+  color: #333;
+  position: relative;
 }
 
 .nav-btn.active {
   color: #F4F2EE;
   font-weight: 600;
-  padding: 8px 16px;
-  background: #2a354b;
+  padding: 10px 18px;
+  background: #274b75;
+  box-shadow: 0 4px 8px rgba(42, 53, 75, 0.15);
+}
+
+.nav-btn:not(.active) {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-btn:not(.active)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #274b75;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-btn:not(.active):hover::after {
+  width: 60%;
 }
 
 .nav-btn:not(.active):hover {
-  color: #495b80;
+  color: #274b75;
+  background-color: rgba(42, 53, 75, 0.05);
+  transform: translateY(-2px);
 }
 
 /* Auth Buttons */
 .auth-btn {
   background: none;
-  padding: 8px 16px;
+  padding: 10px 20px;
   font-size: 16px;
-  border: none;
+  border: 1.5px solid #274b75;
   cursor: pointer;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
   font-weight: 600;
-  border-radius: 50px;
+  border-radius: 24px;
+  transition: all 0.25s ease;
+  color: #274b75;
 }
 
-.auth-btn:hover {
-  color: #495b80;
+.login-btn {
+  background: none;
+  color: #274b75;
+}
+
+.login-btn:hover {
+  background-color: rgba(42, 53, 75, 0.08);
+  transform: translateY(-2px);
+}
+
+.signup-btn {
+  background-color: #274b75;
+  color: white;
+  margin-left: 8px;
+}
+
+.signup-btn:hover {
+  background-color: #1c3657;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(42, 53, 75, 0.2);
+}
+
+/* User profile section */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 24px;
+  transition: all 0.2s ease;
+}
+
+.user-profile:hover {
+  background-color: rgba(42, 53, 75, 0.05);
+}
+
+.profile-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #274b75;
+}
+
+.username {
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: #333;
 }
 
 /* Hamburger Menu Icon */
 .mobile-menu {
   display: none;
-  font-size: 28px;
   cursor: pointer;
-  padding: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+}
+
+.mobile-menu:hover {
+  background-color: rgba(42, 53, 75, 0.1);
+}
+
+.hamburger-icon {
+  display: block;
+  width: 24px;
+  height: 20px;
+  position: relative;
+}
+
+.hamburger-icon span {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #274b75;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-icon span:nth-child(1) {
+  top: 0;
+}
+
+.hamburger-icon span:nth-child(2) {
+  top: 9px;
+}
+
+.hamburger-icon span:nth-child(3) {
+  top: 18px;
+}
+
+/* When menu is open */
+.hamburger-icon.open span:nth-child(1) {
+  transform: rotate(45deg);
+  top: 9px;
+}
+
+.hamburger-icon.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-icon.open span:nth-child(3) {
+  transform: rotate(-45deg);
+  top: 9px;
 }
 
 .overlay {
@@ -97,98 +262,212 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent; 
-  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+/*
+@media (prefers-color-scheme: dark) {
+  .top-nav {
+    background-color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .search-input {
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+  
+  .search-input::placeholder {
+    color: #777;
+  }
+  
+  .search-icon {
+    color: #777;
+  }
+  
+  .search-input:focus {
+    border-color: #3a5f8f;
+    box-shadow: 0 0 0 3px rgba(42, 53, 75, 0.2);
+  }
+  
+  .search-input:focus + .search-icon {
+    color: #3a5f8f;
+  }
+  
+  .nav-btn {
+    color: #e0e0e0;
+  }
+  
+  .nav-btn.active {
+    background: #3a5f8f;
+    color: #f0f0f0;
+  }
+  
+  .nav-btn:not(.active):hover {
+    color: #4d7aba;
+    background-color: rgba(77, 122, 186, 0.1);
+  }
+  
+  .nav-btn:not(.active)::after {
+    background-color: #4d7aba;
+  }
+  
+  .auth-btn {
+    border-color: #4d7aba;
+    color: #4d7aba;
+  }
+  
+  .login-btn:hover {
+    background-color: rgba(77, 122, 186, 0.1);
+  }
+  
+  .signup-btn {
+    background-color: #3a5f8f;
+  }
+  
+  .signup-btn:hover {
+    background-color: #2c4a70;
+  }
+  
+  .user-profile:hover {
+    background-color: rgba(77, 122, 186, 0.1);
+  }
+  
+  .profile-pic {
+    border-color: #4d7aba;
+  }
+  
+  .username {
+    color: #e0e0e0;
+  }
+  
+  .hamburger-icon span {
+    background-color: #4d7aba;
+  }
+}
+*/
+
+/* ===== RESPONSIVE STYLING ===== */
+@media (max-width: 992px) {
+  .search-container {
+    max-width: 400px;
+  }
+  
+  .nav-btn, .auth-btn {
+    padding: 8px 14px;
+    font-size: 15px;
+  }
 }
 
 /* Tablet screens */
 @media (max-width: 768px) {
-  .search-input {
-    width: 100%;
-    margin-top: 10px;
-    border-radius: 12px;
+  .top-nav {
+    padding: 14px 20px;
   }
-
-  /* Hide the nav container by default and style it as a dropdown */
+  
+  .navbar-logo {
+    height: 48px;
+  }
+  
+  .search-container {
+    order: 3;
+    margin: 12px 0 0 0;
+    max-width: 100%;
+    width: 100%;
+  }
+  
   .nav-container {
     display: none;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     position: absolute;
-    top: 60px; 
+    top: 100%;
     right: 0;
-    background-color: lightgray;
-    width: 100px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    border-radius: 8px;
-    z-index: 30;
+    background-color: #F4F2EE;
+    width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    border-radius: 12px;
+    z-index: 95;
+    transition: all 0.3s ease;
+    transform: translateY(10px);
+    opacity: 0;
+    visibility: hidden;
   }
-
+  
   /* When the menu is toggled open */
   .nav-container.open {
     display: flex;
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
   }
-
+  
+  .nav-btn, .auth-btn {
+    width: 100%;
+    text-align: left;
+    margin: 4px 0;
+  }
+  
   .mobile-menu {
     display: block;
+    order: 2;
+  }
+  
+  .nav-btn:not(.active):hover::after {
+    width: 40%;
   }
 }
 
 /* Phone screens */
 @media (max-width: 480px) {
-
   .top-nav {
-    display: flex;
-    flex-direction: row; /* Ensure all elements are on the same line */
-    align-items: center;
-    justify-content: space-between;
-    width: 95%;
-    padding: 10px;
-    margin-bottom: 5%;
+    padding: 12px 16px;
+    width: calc(100% - 32px);
+    margin-bottom: 0;
   }
-
+  
   .navbar-logo {
     height: 40px;
-    flex-shrink: 0;
   }
-
-  .search-container {
-    flex-grow: 1;
-    margin: 0 10px;
-    display: flex;
-    justify-content: center;
-  }
-
+  
   .search-input {
-    width: 100%;
+    padding: 10px 16px 10px 36px;
     font-size: 14px;
+  }
+  
+  .search-icon {
+    left: 12px;
+    font-size: 16px;
+  }
+  
+  .nav-container {
+    width: 220px;
+    right: 16px;
+  }
+  
+  .nav-btn, .auth-btn {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+  
+  .mobile-menu {
     padding: 6px;
   }
-
-  .mobile-menu {
-    font-size: 24px;
-    padding: 8px;
-    flex-shrink: 0;
-  }
-
-  .nav-container {
-    width: 50%;
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: #F4F2EE;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 30;
-  }
-
-  .nav-btn,
-  .auth-btn {
-    width: 100%;
-    text-align: left;
-    padding: 8px 12px;
-    font-size: 14px;
+  
+  .hamburger-icon {
+    width: 22px;
+    height: 18px;
   }
 }
