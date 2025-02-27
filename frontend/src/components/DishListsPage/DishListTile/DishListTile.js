@@ -81,9 +81,6 @@ const DishListTile = ({
           </svg>
         </div>
         <h3 className="no-dishlists-message">No DishLists Found</h3>
-        <p className="no-dishlists-description">
-          You don't have any DishLists yet. Create your first DishList to start organizing your favorite recipes.
-        </p>
       </div>
     );
 

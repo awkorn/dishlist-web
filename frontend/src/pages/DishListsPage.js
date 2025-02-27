@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useQuery, useMutation, useLazyQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { useAuth } from "../contexts/AuthProvider";
 import TopNav from "../components/TopNav/TopNav";
 import PageTitle from "../components/PageTitle/PageTitle";
@@ -46,49 +46,6 @@ const ADD_DEFAULT_DISHLIST = gql`
   }
 `;
 
-const INVITE_COLLABORATOR = gql`
-  mutation InviteCollaborator(
-    $dishListId: ID!
-    $targetUserId: String!
-    $userId: String!
-  ) {
-    inviteCollaborator(
-      dishListId: $dishListId
-      targetUserId: $targetUserId
-      userId: $userId
-    ) {
-      id
-      collaborators
-    }
-  }
-`;
-
-const SEARCH_USERS = gql`
-  query SearchUsers($searchTerm: String!, $limit: Int) {
-    searchUsers(searchTerm: $searchTerm, limit: $limit) {
-      id
-      firebaseUid
-      username
-      email
-      profilePicture
-    }
-  }
-`;
-
-const SHARE_DISHLIST = gql`
-  mutation ShareDishList(
-    $dishListId: ID!
-    $userIds: [String!]!
-    $userId: String!
-  ) {
-    shareDishList(dishListId: $dishListId, userIds: $userIds, userId: $userId) {
-      id
-      visibility
-      sharedWith
-    }
-  }
-`;
-
 const DishListsPage = () => {
   const { currentUser, isOwner, isCollaborator, isFollowing } = useAuth();
   const { loading, error, data, refetch } = useQuery(FETCH_DISHLISTS, {
@@ -103,14 +60,15 @@ const DishListsPage = () => {
   const [selectedDishList, setSelectedDishList] = useState(null);
 
   const [addDishList] = useMutation(ADD_DEFAULT_DISHLIST, {
-    onCompleted: () => refetch(),
+    onCompleted: (data) => {
+      // Add the new DishList to the allDishLists array
+      const updatedAllDishLists = [...allDishLists, data.addDishList];
+      setAllDishLists(updatedAllDishLists);
+
+      // Update the filtered DishLists with the new data
+      filterDishListsByMode(updatedAllDishLists, viewMode);
+    },
   });
-
-  const [inviteCollaborator] = useMutation(INVITE_COLLABORATOR);
-
-  const [shareDishList] = useMutation(SHARE_DISHLIST);
-
-  const [searchUsers] = useLazyQuery(SEARCH_USERS);
 
   useEffect(() => {
     if (data?.getDishLists) {
@@ -165,150 +123,6 @@ const DishListsPage = () => {
         filtered = dishLists;
     }
     setFilteredDishLists(filtered);
-  };
-
-  const handleInviteCollaborator = async (dishListId) => {
-    // First check if user is the owner
-    const dishList = allDishLists.find((list) => list.id === dishListId);
-    if (!dishList || dishList.userId !== currentUser.uid) {
-      alert("Only the owner can invite collaborators");
-      return;
-    }
-
-    // Prompt for collaborator search
-    const searchTerm = prompt("Search for users by email or username:");
-    if (!searchTerm) return;
-
-    try {
-      // Search for users
-      const { data } = await searchUsers({
-        variables: { searchTerm, limit: 5 },
-      });
-
-      if (!data?.searchUsers?.length) {
-        alert("No users found with that email or username");
-        return;
-      }
-
-      // Create a list of users to choose from
-      const userOptions = data.searchUsers.map(
-        (user) => `${user.username} (${user.email})`
-      );
-
-      // Add option numbers
-      const numberedOptions = userOptions.map(
-        (option, index) => `${index + 1}. ${option}`
-      );
-
-      // Create a prompt message
-      const promptMessage =
-        "Select a user to invite (enter number):\n" +
-        numberedOptions.join("\n");
-
-      // Show prompt with options
-      const selectedIndex = parseInt(prompt(promptMessage)) - 1;
-
-      // Validate selection
-      if (
-        isNaN(selectedIndex) ||
-        selectedIndex < 0 ||
-        selectedIndex >= data.searchUsers.length
-      ) {
-        alert("Invalid selection");
-        return;
-      }
-
-      const targetUser = data.searchUsers[selectedIndex];
-
-      // Send invitation
-      await inviteCollaborator({
-        variables: {
-          dishListId,
-          targetUserId: targetUser.firebaseUid,
-          userId: currentUser.uid,
-        },
-        onCompleted: () => {
-          alert(`Invitation sent to ${targetUser.username}`);
-          refetch();
-        },
-      });
-    } catch (error) {
-      console.error("Error inviting collaborator:", error);
-      alert("An error occurred while inviting the collaborator.");
-    }
-  };
-
-  const handleShareDishList = async (dishListId) => {
-    // First check if user is the owner
-    const dishList = allDishLists.find((list) => list.id === dishListId);
-    if (!dishList || dishList.userId !== currentUser.uid) {
-      alert("Only the owner can share this dishlist");
-      return;
-    }
-
-    // Prompt for user search
-    const searchTerm = prompt(
-      "Search for users by email or username to share with:"
-    );
-    if (!searchTerm) return;
-
-    try {
-      // Search for users
-      const { data } = await searchUsers({
-        variables: { searchTerm, limit: 5 },
-      });
-
-      if (!data?.searchUsers?.length) {
-        alert("No users found with that email or username");
-        return;
-      }
-
-      // Create a list of users to choose from
-      const userOptions = data.searchUsers.map(
-        (user) => `${user.username} (${user.email})`
-      );
-
-      // Add option numbers
-      const numberedOptions = userOptions.map(
-        (option, index) => `${index + 1}. ${option}`
-      );
-
-      // Create a prompt message
-      const promptMessage =
-        "Select a user to share with (enter number):\n" +
-        numberedOptions.join("\n");
-
-      // Show prompt with options
-      const selectedIndex = parseInt(prompt(promptMessage)) - 1;
-
-      // Validate selection
-      if (
-        isNaN(selectedIndex) ||
-        selectedIndex < 0 ||
-        selectedIndex >= data.searchUsers.length
-      ) {
-        alert("Invalid selection");
-        return;
-      }
-
-      const targetUser = data.searchUsers[selectedIndex];
-
-      // Share the dishlist
-      await shareDishList({
-        variables: {
-          dishListId,
-          userIds: [targetUser.firebaseUid],
-          userId: currentUser.uid,
-        },
-        onCompleted: () => {
-          alert(`DishList shared with ${targetUser.username}`);
-          refetch();
-        },
-      });
-    } catch (error) {
-      console.error("Error sharing dishlist:", error);
-      alert("An error occurred while sharing the dishlist.");
-    }
   };
 
   const handleViewModeChange = (mode) => {
@@ -378,7 +192,7 @@ const DishListsPage = () => {
           onSelectionModeChange={handleSelectionModeChange}
           selectedDishList={selectedDishList}
         />
-        
+
         {selectionMode && (
           <div className="selection-mode-indicator">
             <p>Select a DishList to edit, delete, or pin</p>
@@ -389,8 +203,6 @@ const DishListsPage = () => {
       <DishListTile
         dishLists={filteredDishLists}
         currentUserId={currentUser?.uid}
-        onInviteCollaborator={handleInviteCollaborator}
-        onShareDishList={handleShareDishList}
         isOwner={isOwner}
         isCollaborator={isCollaborator}
         isFollowing={isFollowing}
