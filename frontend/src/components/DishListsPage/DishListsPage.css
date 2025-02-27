@@ -268,16 +268,21 @@
 /* ===== NO DISHLISTS STATE ===== */
 .no-dishlists-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50vh;
-  text-align: center;
+  height: 30vh;
   width: 100%;
+  text-align: center;
+  padding: 30px;
 }
 
 .no-dishlists-message {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  color: #555;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  color: #444;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  font-family: "Bricolage Grotesque", "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
 /* ===== RESPONSIVE STYLES ===== */
