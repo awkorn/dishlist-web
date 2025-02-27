@@ -99,6 +99,8 @@ const DishListsPage = () => {
   const [filteredDishLists, setFilteredDishLists] = useState([]);
   const [allDishLists, setAllDishLists] = useState([]);
   const [viewMode, setViewMode] = useState("all"); // "all", "owned", "collaborated", "followed"
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedDishList, setSelectedDishList] = useState(null);
 
   const [addDishList] = useMutation(ADD_DEFAULT_DISHLIST, {
     onCompleted: () => refetch(),
@@ -314,6 +316,18 @@ const DishListsPage = () => {
     filterDishListsByMode(allDishLists, mode);
   };
 
+  const handleSelectionModeChange = (isActive) => {
+    setSelectionMode(isActive);
+    // Clear selection when exiting selection mode
+    if (!isActive) {
+      setSelectedDishList(null);
+    }
+  };
+
+  const handleSelectDishList = (dishListId) => {
+    setSelectedDishList(dishListId);
+  };
+
   if (!currentUser) return <p>Please log in to view your DishLists.</p>;
   if (loading) return <p>Loading DishLists...</p>;
   if (error) return <p>Error loading DishLists!</p>;
@@ -361,7 +375,15 @@ const DishListsPage = () => {
           currentUserId={currentUser?.uid}
           isOwner={isOwner}
           refetch={refetch}
+          onSelectionModeChange={handleSelectionModeChange}
+          selectedDishList={selectedDishList}
         />
+        
+        {selectionMode && (
+          <div className="selection-mode-indicator">
+            <p>Select a DishList to edit, delete, or pin</p>
+          </div>
+        )}
       </div>
 
       <DishListTile
@@ -373,6 +395,9 @@ const DishListsPage = () => {
         isCollaborator={isCollaborator}
         isFollowing={isFollowing}
         refetch={refetch}
+        selectionMode={selectionMode}
+        selectedDishList={selectedDishList}
+        onSelectDishList={handleSelectDishList}
       />
 
       <DishListFooter />

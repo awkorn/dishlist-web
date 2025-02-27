@@ -1,55 +1,233 @@
 .header-menu {
-    width: 40px; 
-    height: 40px;
-    cursor: pointer;
+  width: 40px; 
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 4px;
+}
+
+.header-menu:hover {
+  transform: scale(1.1);
+  background-color: rgba(39, 75, 117, 0.08);
+}
+
+.menu-options {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  z-index: 20;
+  min-width: 220px;
+  padding: 12px;
+  animation: slide-down 0.25s ease;
+  overflow: hidden;
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-options::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 13px;
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.menu-options button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 14px;
+  font-size: 15px;
+  text-align: left;
+  width: 100%;
+  border-radius: 8px;
+  font-family: 'Bricolage Grotesque', 'Segoe UI', sans-serif;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-options button::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.7) 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.5s;
+}
+
+.menu-options button:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
+
+.menu-options button:hover {
+  background-color: #f5f5f5;
+  color: #274b75;
+}
+
+.menu-options button.active {
+  background-color: #e6f7ff;
+  color: #274b75;
+  font-weight: 600;
+}
+
+.menu-options button.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.menu-options button.disabled:hover {
+  background-color: transparent;
+}
+
+.menu-options select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23444444%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px top 50%;
+  background-size: 10px auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.menu-options select:focus {
+  border-color: #274b75;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(39, 75, 117, 0.1);
+}
+
+/* Selected dish info styles */
+.selected-dish-info {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+}
+
+.selected-dish-info p {
+  margin: 0;
+  color: #666;
+  text-align: center;
+}
+
+.selected-dish-info strong {
+  color: #274b75;
+  font-weight: 600;
+}
+
+/* Menu divider */
+.menu-divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 5px 0;
+  border: none;
+}
+
+/* Dark mode support */
+/* @media (prefers-color-scheme: dark) {
+  .menu-options {
+    background: #222;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
   
-  .menu-options {
-    position: absolute;
-    top: 30px;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 20;
-    min-width: 150px; 
-    padding: 12px 16px;
-
+  .menu-options::before {
+    background-color: #222;
   }
   
   .menu-options button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    font-size: 14px;
-    text-align: left;
-    width: 100%;
+    color: #e0e0e0;
   }
   
   .menu-options button:hover {
-    background: #f0f0f0;
+    background-color: #333;
+    color: #89CFF0;
+  }
+  
+  .menu-options button.active {
+    background-color: #1c3657;
+    color: #89CFF0;
+  }
+  
+  .menu-options button.disabled {
+    color: #666;
   }
   
   .menu-options select {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    background-color: #333;
+    border-color: #444;
+    color: #e0e0e0;
   }
-
-
   
-@media (max-width: 480px) {
-  .header-menu{
-    width: 30px; 
-    height: 30px;
+  .selected-dish-info {
+    border-top-color: #444;
   }
-
-
+  
+  .selected-dish-info p {
+    color: #aaa;
+  }
+  
+  .selected-dish-info strong {
+    color: #89CFF0;
+  }
+  
+  .menu-divider {
+    background-color: #444;
+  }
 }
+
+@media (max-width: 480px) {
+  .header-menu {
+    width: 32px; 
+    height: 32px;
+  }
+  
+  .menu-options {
+    width: 200px;
+    right: 0;
+    padding: 10px;
+  }
+  
+  .menu-options button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+} */

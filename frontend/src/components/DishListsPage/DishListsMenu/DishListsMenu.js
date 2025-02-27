@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation, gql } from "@apollo/client";
 import { useAuth } from "../../../contexts/AuthProvider";
 import menuIcon from "../../../assets/icons/icon-menu.png";
@@ -77,10 +77,22 @@ const UNPIN_DISHLIST = gql`
   }
 `;
 
-const DishListsMenu = ({ dishLists, isOwner, refetch }) => {
+const DishListsMenu = ({ 
+  dishLists, 
+  isOwner, 
+  refetch, 
+  onSelectionModeChange,
+  selectedDishList
+}) => {
   const { currentUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedDishList, setSelectedDishList] = useState(null);
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [localSelectedDishList, setLocalSelectedDishList] = useState(null);
+
+  // Update local state when prop changes
+  useEffect(() => {
+    setLocalSelectedDishList(selectedDishList);
+  }, [selectedDishList]);
 
   // GraphQL Mutations
   const [addDishList] = useMutation(ADD_DISHLIST, {
@@ -128,14 +140,19 @@ const DishListsMenu = ({ dishLists, isOwner, refetch }) => {
     });
 
     setMenuOpen(false);
+    toggleSelectionMode(false);
   };
 
   const handleEditDishList = () => {
-    if (!selectedDishList) return;
+    if (!localSelectedDishList) {
+      alert("Please select a DishList first");
+      toggleSelectionMode(true);
+      return;
+    }
 
     // Check if user has permission
-    const dishList = dishLists.find((dish) => dish.id === selectedDishList);
-    if (!dishList || !isOwner(selectedDishList)) {
+    const dishList = dishLists.find((dish) => dish.id === localSelectedDishList);
+    if (!dishList || !isOwner(localSelectedDishList)) {
       alert("You can only edit dishlists you own");
       return;
     }
@@ -148,7 +165,7 @@ const DishListsMenu = ({ dishLists, isOwner, refetch }) => {
 
     editDishList({
       variables: {
-        id: selectedDishList,
+        id: localSelectedDishList,
         title: newTitle,
         description: newDescription,
         userId: currentUser.uid,
@@ -156,13 +173,18 @@ const DishListsMenu = ({ dishLists, isOwner, refetch }) => {
     });
 
     setMenuOpen(false);
+    toggleSelectionMode(false);
   };
 
   const handleDeleteDishList = async () => {
-    if (!selectedDishList) return;
+    if (!localSelectedDishList) {
+      alert("Please select a DishList first");
+      toggleSelectionMode(true);
+      return;
+    }
 
     // Check if user has permission
-    if (!isOwner(selectedDishList)) {
+    if (!isOwner(localSelectedDishList)) {
       alert("You can only delete dishlists you own");
       return;
     }
@@ -170,49 +192,74 @@ const DishListsMenu = ({ dishLists, isOwner, refetch }) => {
     if (window.confirm("Are you sure you want to delete this DishList?")) {
       await deleteDishList({
         variables: {
-          id: selectedDishList,
+          id: localSelectedDishList,
           userId: currentUser.uid,
         },
       });
     }
 
     setMenuOpen(false);
+    toggleSelectionMode(false);
   };
 
   const handleTogglePinDishList = () => {
-    if (!selectedDishList) return;
+    if (!localSelectedDishList) {
+      alert("Please select a DishList first");
+      toggleSelectionMode(true);
+      return;
+    }
 
     // Check if user has permission
-    if (!isOwner(selectedDishList)) {
+    if (!isOwner(localSelectedDishList)) {
       alert("You can only pin/unpin dishlists you own");
       return;
     }
 
-    const dishList = dishLists.find((dish) => dish.id === selectedDishList);
+    const dishList = dishLists.find((dish) => dish.id === localSelectedDishList);
 
     if (dishList?.isPinned) {
       unpinDishList({
         variables: {
-          id: selectedDishList,
+          id: localSelectedDishList,
           userId: currentUser.uid,
         },
       });
     } else {
       pinDishList({
         variables: {
-          id: selectedDishList,
+          id: localSelectedDishList,
           userId: currentUser.uid,
         },
       });
     }
 
     setMenuOpen(false);
+    toggleSelectionMode(false);
   };
 
-  const closeMenu = () => setMenuOpen(false);
+  const toggleSelectionMode = (value) => {
+    setSelectionMode(value);
+    // Notify the parent component about selection mode change
+    if (onSelectionModeChange) {
+      onSelectionModeChange(value);
+    }
+    // Keep menu open when entering selection mode
+    if (value) {
+      setMenuOpen(true);
+    }
+  };
 
-  // Filter dishlists for the dropdown to only show those the user can modify
-  const editableDishLists = dishLists.filter((dish) => isOwner(dish.id));
+  const closeMenu = () => {
+    setMenuOpen(false);
+    toggleSelectionMode(false);
+  };
+
+  // Check if selected dishlist is owned by current user
+  const selectedDishListOwned = localSelectedDishList && 
+    dishLists.some(dish => dish.id === localSelectedDishList && dish.userId === currentUser?.uid);
+
+  // Find the selected dishlist
+  const selectedDishListData = dishLists.find(dish => dish.id === localSelectedDishList);
 
   return (
     <div className="menu-container">
@@ -230,37 +277,47 @@ const DishListsMenu = ({ dishLists, isOwner, refetch }) => {
       {menuOpen && (
         <div className="menu-options">
           <button onClick={handleAddDishList}>➕ Add DishList</button>
-
-          <select
-            onChange={(e) => setSelectedDishList(e.target.value)}
-            defaultValue=""
+          
+          <button 
+            onClick={() => toggleSelectionMode(!selectionMode)} 
+            className={selectionMode ? "active" : ""}
           >
-            <option value="" disabled>
-              Select DishList
-            </option>
-            {editableDishLists.map((dish) => (
-              <option key={dish.id} value={dish.id}>
-                {dish.title}
-              </option>
-            ))}
-          </select>
+            {selectionMode ? "✓ Select Mode (On)" : "⬚ Select DishList"}
+          </button>
 
-          <button onClick={handleEditDishList} disabled={!selectedDishList}>
+          <button 
+            onClick={handleEditDishList} 
+            disabled={!selectedDishListOwned}
+            className={!selectedDishListOwned ? "disabled" : ""}
+          >
             ✏️ Edit DishList
           </button>
-          <button onClick={handleDeleteDishList} disabled={!selectedDishList}>
+          
+          <button 
+            onClick={handleDeleteDishList} 
+            disabled={!selectedDishListOwned}
+            className={!selectedDishListOwned ? "disabled" : ""}
+          >
             🗑 Delete DishList
           </button>
+          
           <button
             onClick={handleTogglePinDishList}
-            disabled={!selectedDishList}
+            disabled={!selectedDishListOwned}
+            className={!selectedDishListOwned ? "disabled" : ""}
           >
             📌{" "}
-            {dishLists.find((dish) => dish.id === selectedDishList)?.isPinned
+            {selectedDishListData?.isPinned
               ? "Unpin"
               : "Pin"}{" "}
             DishList
           </button>
+          
+          {localSelectedDishList && (
+            <div className="selected-dish-info">
+              <p>Selected: <strong>{selectedDishListData?.title}</strong></p>
+            </div>
+          )}
         </div>
       )}
     </div>
