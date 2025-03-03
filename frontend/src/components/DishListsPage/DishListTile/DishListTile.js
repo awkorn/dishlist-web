@@ -1,30 +1,13 @@
 import React from "react";
-import { useMutation, gql } from "@apollo/client";
-import "../DishListsPage.css";
+import { useMutation } from "@apollo/client";
 import pinIcon from "../../../assets/icons/pin-drawing.png";
 import { Link } from "react-router-dom";
-
-// GraphQL Mutations
-const FOLLOW_DISHLIST = gql`
-  mutation FollowDishList($dishListId: ID!, $userId: String!) {
-    followDishList(dishListId: $dishListId, userId: $userId) {
-      id
-      followers
-    }
-  }
-`;
-
-const UNFOLLOW_DISHLIST = gql`
-  mutation UnfollowDishList($dishListId: ID!, $userId: String!) {
-    unfollowDishList(dishListId: $dishListId, userId: $userId)
-  }
-`;
-
-const REQUEST_TO_FOLLOW = gql`
-  mutation RequestToFollow($dishListId: ID!, $userId: String!) {
-    requestToFollow(dishListId: $dishListId, userId: $userId)
-  }
-`;
+import "../DishListsPage.css";
+import {
+  FOLLOW_DISHLIST,
+  UNFOLLOW_DISHLIST,
+  REQUEST_TO_FOLLOW,
+} from "../../../graphql";
 
 const DishListTile = ({
   dishLists,
@@ -33,7 +16,7 @@ const DishListTile = ({
   selectionMode = false,
   selectedDishList,
   onSelectDishList,
-  isOwner
+  isOwner,
 }) => {
   const [followDishList] = useMutation(FOLLOW_DISHLIST, {
     onCompleted: () => refetch(),
@@ -76,8 +59,16 @@ const DishListTile = ({
     return (
       <div className="no-dishlists-container">
         <div className="empty-state-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#274b75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#274b75"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
         <h3 className="no-dishlists-message">No DishLists Found</h3>
@@ -88,26 +79,38 @@ const DishListTile = ({
     <div className="dish-tiles">
       {dishLists.map((dishlist) => {
         const userIsOwner = dishlist.userId === currentUserId;
-        const userIsCollaborator = dishlist.collaborators.includes(currentUserId);
+        const userIsCollaborator =
+          dishlist.collaborators.includes(currentUserId);
         const userIsFollower = dishlist.followers.includes(currentUserId);
-        const userHasPendingRequest = dishlist.followRequests?.includes(currentUserId);
+        const userHasPendingRequest =
+          dishlist.followRequests?.includes(currentUserId);
         const isSelected = selectedDishList === dishlist.id;
         const canSelect = selectionMode && userIsOwner;
 
         return (
-          <div 
-            key={dishlist.id} 
-            className={`dish-tile ${isSelected ? 'selected' : ''} ${canSelect ? 'selectable' : ''}`}
+          <div
+            key={dishlist.id}
+            className={`dish-tile ${isSelected ? "selected" : ""} ${
+              canSelect ? "selectable" : ""
+            }`}
             onClick={() => handleDishListSelection(dishlist.id)}
           >
             {isSelected && (
               <div className="selection-indicator">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </div>
             )}
-            
+
             <div className="dish-tile-header">
               <h3 className="list-title">
                 {selectionMode ? (

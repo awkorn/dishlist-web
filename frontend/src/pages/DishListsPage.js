@@ -1,50 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { useAuth } from "../contexts/AuthProvider";
 import TopNav from "../components/TopNav/TopNav";
 import PageTitle from "../components/PageTitle/PageTitle";
 import DishListTile from "../components/DishListsPage/DishListTile/DishListTile";
 import DishListsMenu from "../components/DishListsPage/DishListsMenu/DishListsMenu";
 import DishListFooter from "../components/DishListsPage/DishListsFooter/DishListFooter";
-
-// Updated GraphQL Queries & Mutations
-const FETCH_DISHLISTS = gql`
-  query GetDishLists($userId: String!) {
-    getDishLists(userId: $userId) {
-      id
-      title
-      isPinned
-      collaborators
-      followers
-      userId
-      visibility
-      sharedWith
-      followRequests
-      description
-    }
-  }
-`;
-
-const ADD_DEFAULT_DISHLIST = gql`
-  mutation AddDishList(
-    $userId: String!
-    $title: String!
-    $isPinned: Boolean!
-    $visibility: String!
-  ) {
-    addDishList(
-      userId: $userId
-      title: $title
-      isPinned: $isPinned
-      visibility: $visibility
-    ) {
-      id
-      title
-      isPinned
-      visibility
-    }
-  }
-`;
+import { FETCH_DISHLISTS, ADD_DEFAULT_DISHLIST } from "../graphql";
 
 const DishListsPage = () => {
   const { currentUser, isOwner, isCollaborator, isFollowing } = useAuth();

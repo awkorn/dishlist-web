@@ -3,86 +3,20 @@ import { useMutation, gql } from "@apollo/client";
 import { useAuth } from "../../../contexts/AuthProvider";
 import menuIcon from "../../../assets/icons/icon-menu.png";
 import "./DishListsMenu.css";
+import {
+  ADD_DISHLIST,
+  DELETE_DISHLIST,
+  EDIT_DISHLIST,
+  PIN_DISHLIST,
+  UNPIN_DISHLIST,
+} from "../../../graphql";
 
-// GraphQL Mutations
-const ADD_DISHLIST = gql`
-  mutation AddDishList(
-    $userId: String!
-    $title: String!
-    $isPinned: Boolean!
-    $description: String
-    $visibility: String!
-  ) {
-    addDishList(
-      userId: $userId
-      title: $title
-      isPinned: $isPinned
-      description: $description
-      visibility: $visibility
-    ) {
-      id
-      userId
-      title
-      isPinned
-      description
-      visibility
-    }
-  }
-`;
-
-const DELETE_DISHLIST = gql`
-  mutation RemoveDishList($id: ID!, $userId: String!) {
-    removeDishList(id: $id, userId: $userId) {
-      id
-    }
-  }
-`;
-
-const EDIT_DISHLIST = gql`
-  mutation EditDishList(
-    $id: ID!
-    $title: String!
-    $userId: String!
-    $description: String
-  ) {
-    editDishList(
-      id: $id
-      title: $title
-      userId: $userId
-      description: $description
-    ) {
-      id
-      title
-      userId
-      description
-    }
-  }
-`;
-
-const PIN_DISHLIST = gql`
-  mutation PinDishList($id: ID!, $userId: String!) {
-    pinDishList(id: $id, userId: $userId) {
-      id
-      isPinned
-    }
-  }
-`;
-
-const UNPIN_DISHLIST = gql`
-  mutation UnpinDishList($id: ID!, $userId: String!) {
-    unpinDishList(id: $id, userId: $userId) {
-      id
-      isPinned
-    }
-  }
-`;
-
-const DishListsMenu = ({ 
-  dishLists, 
-  isOwner, 
-  refetch, 
+const DishListsMenu = ({
+  dishLists,
+  isOwner,
+  refetch,
   onSelectionModeChange,
-  selectedDishList
+  selectedDishList,
 }) => {
   const { currentUser } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -151,7 +85,9 @@ const DishListsMenu = ({
     }
 
     // Check if user has permission
-    const dishList = dishLists.find((dish) => dish.id === localSelectedDishList);
+    const dishList = dishLists.find(
+      (dish) => dish.id === localSelectedDishList
+    );
     if (!dishList || !isOwner(localSelectedDishList)) {
       alert("You can only edit dishlists you own");
       return;
@@ -215,7 +151,9 @@ const DishListsMenu = ({
       return;
     }
 
-    const dishList = dishLists.find((dish) => dish.id === localSelectedDishList);
+    const dishList = dishLists.find(
+      (dish) => dish.id === localSelectedDishList
+    );
 
     if (dishList?.isPinned) {
       unpinDishList({
@@ -255,11 +193,17 @@ const DishListsMenu = ({
   };
 
   // Check if selected dishlist is owned by current user
-  const selectedDishListOwned = localSelectedDishList && 
-    dishLists.some(dish => dish.id === localSelectedDishList && dish.userId === currentUser?.uid);
+  const selectedDishListOwned =
+    localSelectedDishList &&
+    dishLists.some(
+      (dish) =>
+        dish.id === localSelectedDishList && dish.userId === currentUser?.uid
+    );
 
   // Find the selected dishlist
-  const selectedDishListData = dishLists.find(dish => dish.id === localSelectedDishList);
+  const selectedDishListData = dishLists.find(
+    (dish) => dish.id === localSelectedDishList
+  );
 
   return (
     <div className="menu-container">
@@ -277,45 +221,43 @@ const DishListsMenu = ({
       {menuOpen && (
         <div className="menu-options">
           <button onClick={handleAddDishList}>➕ Add DishList</button>
-          
-          <button 
-            onClick={() => toggleSelectionMode(!selectionMode)} 
+
+          <button
+            onClick={() => toggleSelectionMode(!selectionMode)}
             className={selectionMode ? "active" : ""}
           >
             {selectionMode ? "✓ Select Mode (On)" : "⬚ Select DishList"}
           </button>
 
-          <button 
-            onClick={handleEditDishList} 
+          <button
+            onClick={handleEditDishList}
             disabled={!selectedDishListOwned}
             className={!selectedDishListOwned ? "disabled" : ""}
           >
             ✏️ Edit DishList
           </button>
-          
-          <button 
-            onClick={handleDeleteDishList} 
+
+          <button
+            onClick={handleDeleteDishList}
             disabled={!selectedDishListOwned}
             className={!selectedDishListOwned ? "disabled" : ""}
           >
             🗑 Delete DishList
           </button>
-          
+
           <button
             onClick={handleTogglePinDishList}
             disabled={!selectedDishListOwned}
             className={!selectedDishListOwned ? "disabled" : ""}
           >
-            📌{" "}
-            {selectedDishListData?.isPinned
-              ? "Unpin"
-              : "Pin"}{" "}
-            DishList
+            📌 {selectedDishListData?.isPinned ? "Unpin" : "Pin"} DishList
           </button>
-          
+
           {localSelectedDishList && (
             <div className="selected-dish-info">
-              <p>Selected: <strong>{selectedDishListData?.title}</strong></p>
+              <p>
+                Selected: <strong>{selectedDishListData?.title}</strong>
+              </p>
             </div>
           )}
         </div>
