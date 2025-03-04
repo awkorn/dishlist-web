@@ -4,6 +4,7 @@ import SignInPage from "../pages/SignInPage";
 import SignUpPage from "../pages/SignUpPage";
 import NotFound from "../components/NotFound/NotFound";
 import DishListsPage from "../pages/DishListsPage";
+import AddDishListPage from "../pages/AddDishListPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
@@ -17,6 +18,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <DishListsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/create-dishlist"
+        element={
+          <ProtectedRoute>
+            <AddDishListPage />
           </ProtectedRoute>
         }
       />
