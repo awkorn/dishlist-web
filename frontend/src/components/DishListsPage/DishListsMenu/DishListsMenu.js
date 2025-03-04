@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useAuth } from "../../../contexts/AuthProvider";
 import menuIcon from "../../../assets/icons/icon-menu.png";
+import { useNavigate } from "react-router-dom";
 import "./DishListsMenu.css";
 import {
-  ADD_DISHLIST,
   DELETE_DISHLIST,
   EDIT_DISHLIST,
   PIN_DISHLIST,
@@ -22,6 +22,7 @@ const DishListsMenu = ({
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectionMode, setSelectionMode] = useState(false);
   const [localSelectedDishList, setLocalSelectedDishList] = useState(null);
+  const navigate = useNavigate();
 
   // Update local state when prop changes
   useEffect(() => {
@@ -29,10 +30,6 @@ const DishListsMenu = ({
   }, [selectedDishList]);
 
   // GraphQL Mutations
-  const [addDishList] = useMutation(ADD_DISHLIST, {
-    onCompleted: () => refetch(),
-  });
-
   const [deleteDishList] = useMutation(DELETE_DISHLIST, {
     onCompleted: () => refetch(),
   });
@@ -48,34 +45,6 @@ const DishListsMenu = ({
   const [unpinDishList] = useMutation(UNPIN_DISHLIST, {
     onCompleted: () => refetch(),
   });
-
-  const handleAddDishList = () => {
-    const title = prompt("Enter DishList title: ");
-    if (!title) return;
-
-    const description = prompt("Enter a description (optional): ");
-
-    const visibilityOptions =
-      "Select visibility:\n1. Public\n2. Private\n3. Shared";
-    const visibilityChoice = prompt(visibilityOptions, "2");
-
-    let visibility = "private"; // Default
-    if (visibilityChoice === "1") visibility = "public";
-    if (visibilityChoice === "3") visibility = "shared";
-
-    addDishList({
-      variables: {
-        userId: currentUser.uid,
-        title,
-        isPinned: false,
-        description: description || "",
-        visibility,
-      },
-    });
-
-    setMenuOpen(false);
-    toggleSelectionMode(false);
-  };
 
   const handleEditDishList = () => {
     if (!localSelectedDishList) {
@@ -220,7 +189,9 @@ const DishListsMenu = ({
       {/* Dropdown Menu */}
       {menuOpen && (
         <div className="menu-options">
-          <button onClick={handleAddDishList}>➕ Add DishList</button>
+          <button onClick={() => navigate("/create-dishlist")}>
+            ➕ Add DishList
+          </button>
 
           <button
             onClick={() => toggleSelectionMode(!selectionMode)}
