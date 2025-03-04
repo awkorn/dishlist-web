@@ -5,6 +5,10 @@
     margin: 0 auto;
     padding: 20px 0;
   }
+
+  .add-dishlist-form{
+    margin-top: 56px;
+  }
   
   .dishlist-form {
     background-color: white;
@@ -74,7 +78,6 @@
   .visibility-explanation {
     margin-top: 12px;
     padding: 10px;
-    background-color: #f9f9f9;
     border-radius: 8px;
     font-size: 14px;
     color: #666;

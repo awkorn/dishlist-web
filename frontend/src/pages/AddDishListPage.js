@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import TopNav from "../components/TopNav/TopNav";
 import { useMutation } from "@apollo/client";
 import { ADD_DISHLIST } from "../graphql/mutations/dishLists";
+import { FETCH_DISHLISTS } from "../graphql/queries/dishLists";
 import { useAuth } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import PageTitle from "../components/PageTitle/PageTitle";
-import './AddDishListPage.css';
+import "./AddDishListPage.css";
 
 const AddDishListPage = () => {
   const [title, setTitle] = useState("");
@@ -22,6 +23,25 @@ const AddDishListPage = () => {
     },
     onError: (error) => {
       toast.error(`Error creating DishList: ${error.message}`);
+    },
+
+    update: (cache, { data: { addDishList } }) => {
+      // Read the current query data from the cache
+      const existingData = cache.readQuery({
+        query: FETCH_DISHLISTS,
+        variables: { userId: currentUser?.uid },
+      });
+
+      if (existingData) {
+        // Write the updated data back to the cache
+        cache.writeQuery({
+          query: FETCH_DISHLISTS,
+          variables: { userId: currentUser?.uid },
+          data: {
+            getDishLists: [...existingData.getDishLists, addDishList],
+          },
+        });
+      }
     },
   });
 
@@ -81,7 +101,7 @@ const AddDishListPage = () => {
             <div className="visibility-options">
               <button
                 type="button"
-                className={`visiblity-btn ${
+                className={`visibility-btn ${
                   visibility === "public" ? "active" : ""
                 }`}
                 onClick={() => setVisibility("public")}
@@ -91,7 +111,7 @@ const AddDishListPage = () => {
 
               <button
                 type="button"
-                className={`visiblity-btn ${
+                className={`visibility-btn ${
                   visibility === "private" ? "active" : ""
                 }`}
                 onClick={() => setVisibility("private")}
@@ -101,7 +121,7 @@ const AddDishListPage = () => {
 
               <button
                 type="button"
-                className={`visiblity-btn ${
+                className={`visibility-btn ${
                   visibility === "shared" ? "active" : ""
                 }`}
                 onClick={() => setVisibility("shared")}
