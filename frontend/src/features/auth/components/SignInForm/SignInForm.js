@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import GoogleSignInButton from "./GoogleSignInButton";
+import GoogleSignInButton from "../GoogleSignIn/GoogleSignInButton"
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
-import { auth } from "../../services/authService";
+import { auth } from "../../../../services/authService";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthProvider";
+import { useAuth } from "../../../../contexts/AuthProvider";
 import "./SignInForm.css";
 
 const SignInForm = () => {

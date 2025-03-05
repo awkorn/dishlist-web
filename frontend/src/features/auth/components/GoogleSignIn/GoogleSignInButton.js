@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import { auth } from "../../services/authService";
+import { auth } from "../../../../services/authService";
 import { toast } from "react-toastify";
 
 const GoogleSignInButton = () => {

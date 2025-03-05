@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TopNav from "../components/TopNav/TopNav";
+import TopNav from "../../../components/layout/TopNav/TopNav"
 import { useMutation } from "@apollo/client";
-import { ADD_DISHLIST } from "../graphql/mutations/dishLists";
-import { FETCH_DISHLISTS } from "../graphql/queries/dishLists";
-import { useAuth } from "../contexts/AuthProvider";
-import { ToastContainer, toast } from "react-toastify";
-import PageTitle from "../components/PageTitle/PageTitle";
+import { ADD_DISHLIST } from "../../../graphql/mutations/dishLists";
+import { FETCH_DISHLISTS } from "../../../graphql/queries/dishLists";
+import { useAuth } from "../../../contexts/AuthProvider";
+import { toast } from "react-toastify";
+import PageTitle from "../../../components/common/PageTitle/PageTitle";
 import "./AddDishListPage.css";
 
 const AddDishListPage = () => {

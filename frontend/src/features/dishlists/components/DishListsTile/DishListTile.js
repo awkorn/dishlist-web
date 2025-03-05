@@ -1,13 +1,13 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import pinIcon from "../../../assets/icons/pin-drawing.png";
+import pinIcon from "../../../../assets/icons/pin-drawing.png";
 import { Link } from "react-router-dom";
-import "../DishListsPage.css";
+import "../../pages/DishListsPage.css"
 import {
   FOLLOW_DISHLIST,
   UNFOLLOW_DISHLIST,
   REQUEST_TO_FOLLOW,
-} from "../../../graphql";
+} from "../../../../graphql";
 
 const DishListTile = ({
   dishLists,

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Logo from "./Logo";
-import SearchBar from "./SearchBar";
-import NavButtons from "./NavButtons";
-import AuthButtons from "./AuthButtons";
+import Logo from "./components/Logo";
+import SearchBar from "./components/SearchBar";
+import NavButtons from "./components/NavButtons";
+import AuthButtons from "./components/AuthButtons";
 import "./TopNav.css";
 
 const TopNav = ({ pageType, items, onSearch }) => {

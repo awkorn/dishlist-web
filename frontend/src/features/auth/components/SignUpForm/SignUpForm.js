@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../../services/authService";
+import { auth } from "../../../../services/authService";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthProvider";
+import { useAuth } from "../../../../contexts/AuthProvider";
 import "./SignUpForm.css";
 
 const SignUpForm = () => {

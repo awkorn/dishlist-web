@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { useAuth } from "../contexts/AuthProvider";
-import TopNav from "../components/TopNav/TopNav";
-import PageTitle from "../components/PageTitle/PageTitle";
-import DishListTile from "../components/DishListsPage/DishListTile/DishListTile";
-import DishListsMenu from "../components/DishListsPage/DishListsMenu/DishListsMenu";
-import DishListFooter from "../components/DishListsPage/DishListsFooter/DishListFooter";
-import { FETCH_DISHLISTS, ADD_DEFAULT_DISHLIST } from "../graphql";
+import { useAuth } from "../../../contexts/AuthProvider";
+import TopNav from "../../../components/layout/TopNav/TopNav";
+import PageTitle from "../../../components/common/PageTitle/PageTitle"
+import DishListTile from "../components/DishListsTile/DishListTile";
+import DishListsMenu from "../../dishlists/components/DishListsMenu/DishListsMenu";
+import DishListFooter from "../../dishlists/components/DishListsFooter/DishListFooter";
+import { FETCH_DISHLISTS, ADD_DEFAULT_DISHLIST } from "../../../graphql";
 import { useLocation } from "react-router-dom";
 
 const DishListsPage = () => {

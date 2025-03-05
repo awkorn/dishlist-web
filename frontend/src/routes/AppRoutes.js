@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import SignInPage from "../pages/SignInPage";
-import SignUpPage from "../pages/SignUpPage";
-import NotFound from "../components/NotFound/NotFound";
-import DishListsPage from "../pages/DishListsPage";
-import AddDishListPage from "../pages/AddDishListPage";
+import SignInPage from "../features/auth/pages/SignInPage"
+import SignUpPage from "../features/auth/pages/SignUpPage"
+import NotFound from "../components/common/NotFound/NotFound"
+import DishListsPage from "../features/dishlists/pages/DishListsPage"
+import AddDishListPage from "../features/dishlists/pages/AddDishListPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {

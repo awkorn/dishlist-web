@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { useAuth } from "../../../contexts/AuthProvider";
-import menuIcon from "../../../assets/icons/icon-menu.png";
+import { useAuth } from "../../../../contexts/AuthProvider";
+import menuIcon from "../../../../assets/icons/icon-menu.png";
 import { useNavigate } from "react-router-dom";
 import "./DishListsMenu.css";
 import {
@@ -9,7 +9,7 @@ import {
   EDIT_DISHLIST,
   PIN_DISHLIST,
   UNPIN_DISHLIST,
-} from "../../../graphql";
+} from "../../../../graphql";
 
 const DishListsMenu = ({
   dishLists,
