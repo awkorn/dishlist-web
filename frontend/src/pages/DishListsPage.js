@@ -7,8 +7,10 @@ import DishListTile from "../components/DishListsPage/DishListTile/DishListTile"
 import DishListsMenu from "../components/DishListsPage/DishListsMenu/DishListsMenu";
 import DishListFooter from "../components/DishListsPage/DishListsFooter/DishListFooter";
 import { FETCH_DISHLISTS, ADD_DEFAULT_DISHLIST } from "../graphql";
+import { useLocation } from "react-router-dom";
 
 const DishListsPage = () => {
+  const location = useLocation();
   const { currentUser, isOwner, isCollaborator, isFollowing } = useAuth();
   const { loading, error, data, refetch } = useQuery(FETCH_DISHLISTS, {
     variables: { userId: currentUser?.uid },
@@ -103,6 +105,12 @@ const DishListsPage = () => {
   const handleSelectDishList = (dishListId) => {
     setSelectedDishList(dishListId);
   };
+
+  useEffect(() => {
+    if (location.state?.refresh && currentUser) {
+      refetch();
+    }
+  }, [location.state, currentUser, refetch]);
 
   if (!currentUser) return <p>Please log in to view your DishLists.</p>;
   if (loading) return <p>Loading DishLists...</p>;

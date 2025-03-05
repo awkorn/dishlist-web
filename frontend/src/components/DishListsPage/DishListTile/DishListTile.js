@@ -50,10 +50,13 @@ const DishListTile = ({
   };
 
   const handleDishListSelection = (dishListId) => {
-    if (selectionMode && onSelectDishList && isOwner(dishListId)) {
+  if (selectionMode && onSelectDishList) {   
+    // Modified condition to ensure ownership check works
+    if (isOwner(dishListId)) {
       onSelectDishList(dishListId === selectedDishList ? null : dishListId);
     }
-  };
+  }
+};
 
   if (!dishLists || dishLists.length === 0)
     return (

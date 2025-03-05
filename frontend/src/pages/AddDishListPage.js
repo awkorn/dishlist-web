@@ -13,13 +13,19 @@ const AddDishListPage = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [visibility, setVisibility] = useState("private");
-  const { currentUser } = useAuth();
+  const { currentUser, refreshUserData } = useAuth();
   const navigate = useNavigate();
 
   const [addDishList, { loading }] = useMutation(ADD_DISHLIST, {
     onCompleted: () => {
       toast.success("DishList created successfully!");
-      navigate("/dishlists");
+
+      // If refreshUserData is available, call it
+      if (refreshUserData) {
+        refreshUserData();
+      }
+
+      navigate("/dishlists", { state: { refresh: true } });
     },
     onError: (error) => {
       toast.error(`Error creating DishList: ${error.message}`);
