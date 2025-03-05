@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 import { ADD_DISHLIST } from "../graphql/mutations/dishLists";
 import { FETCH_DISHLISTS } from "../graphql/queries/dishLists";
 import { useAuth } from "../contexts/AuthProvider";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import PageTitle from "../components/PageTitle/PageTitle";
 import "./AddDishListPage.css";
 
