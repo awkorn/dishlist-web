@@ -5,6 +5,7 @@ import SignUpPage from "../features/auth/pages/SignUpPage"
 import NotFound from "../components/common/NotFound/NotFound"
 import DishListsPage from "../features/dishlists/pages/DishListsPage"
 import AddDishListPage from "../features/dishlists/pages/AddDishListPage";
+import DishListDetailPage from "../features/dishlist/pages/DishListDetailPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
@@ -18,6 +19,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <DishListsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dishlist/:id"
+        element={
+          <ProtectedRoute>
+            <DishListDetailPage />
           </ProtectedRoute>
         }
       />
