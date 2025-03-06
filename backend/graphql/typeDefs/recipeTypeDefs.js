@@ -41,7 +41,7 @@ const recipeTypeDefs = gql`
   type Query {
     getRecipe(id: ID!): Recipe
     getUserRecipes(userId: String!): [Recipe]
-    getDishListRecipes(dishListId: ID!): [Recipe]
+     getDishListRecipes(dishListId: ID!, userId: String!): [Recipe]
     searchRecipes(searchTerm: String!, limit: Int, userId: String): [Recipe]
   }
 
