@@ -36,7 +36,7 @@ const dishListTypeDefs = gql`
     followDishList(dishListId: ID!, userId: String!): DishList
     shareDishList(dishListId: ID!, visbility: String!): DishList
     inviteCollaborator(dishListId: ID!, userId: String!): DishList
-    updateVisibility(id: ID!, visibility: String!): DishList
+    updateVisibility(id: ID!, visibility: String!, userId: String!): DishList
     addSharedUser(dishListId: ID!, userId: String!): DishList
     removeSharedUser(dishListId: ID!, userId: String!): DishList
     requestToFollow(dishListId: ID!, userId: String!): Boolean
