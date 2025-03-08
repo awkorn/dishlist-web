@@ -1,7 +1,7 @@
 /* ===== TOP NAVIGATION BAR ===== */
 .top-nav {
   display: flex;
-  justify-content: flex-start; /* Changed from space-between to flex-start */
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   padding: 16px 24px;
@@ -29,7 +29,7 @@
 
 .search-container {
   flex-grow: 1;
-  margin: 0 12px 0 20px; /* Reduced margin, especially on the left */
+  margin: 0 12px 0 20px; 
   max-width: 500px;
   position: relative;
 }
@@ -37,13 +37,13 @@
 .search-input {
   width: 100%;
   padding: 12px 16px;
-  padding-left: 40px; /* Space for the search icon */
+  padding-left: 40px;
   border: 1.5px solid #e5e5e5;
   border-radius: 24px;
   height: auto;
   font-size: 15px;
   transition: all 0.2s ease;
-  background-color: #f7f7f7; /* Light gray background */
+  background-color: #f7f7f7; 
   color: #333;
 }
 
@@ -81,7 +81,7 @@
   gap: 16px;
   z-index: 50;
   align-items: center;
-  margin-left: auto; /* Push to the right side */
+  margin-left: auto; 
 }
 
 /* Navigation Buttons */
@@ -275,90 +275,6 @@
   opacity: 1;
   visibility: visible;
 }
-
-/* ===== DARK MODE SUPPORT ===== */
- /*
-@media (prefers-color-scheme: dark) {
-  .top-nav {
-    background-color: #1a1a1a;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .search-input {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #e0e0e0;
-  }
-  
-  .search-input::placeholder {
-    color: #777;
-  }
-  
-  .search-icon {
-    color: #777;
-  }
-  
-  .search-input:focus {
-    border-color: #3a5f8f;
-    box-shadow: 0 0 0 3px rgba(42, 53, 75, 0.2);
-  }
-  
-  .search-input:focus + .search-icon {
-    color: #3a5f8f;
-  }
-  
-  .nav-btn {
-    color: #e0e0e0;
-  }
-  
-  .nav-btn.active {
-    background: #3a5f8f;
-    color: #f0f0f0;
-  }
-  
-  .nav-btn:not(.active):hover {
-    color: #4d7aba;
-    background-color: rgba(77, 122, 186, 0.1);
-  }
-  
-  .nav-btn:not(.active)::after {
-    background-color: #4d7aba;
-  }
-  
-  .auth-btn {
-    border-color: #4d7aba;
-    color: #4d7aba;
-  }
-  
-  .login-btn:hover {
-    background-color: rgba(77, 122, 186, 0.1);
-  }
-  
-  .signup-btn {
-    background-color: #3a5f8f;
-  }
-  
-  .signup-btn:hover {
-    background-color: #2c4a70;
-  }
-  
-  .user-profile:hover {
-    background-color: rgba(77, 122, 186, 0.1);
-  }
-  
-  .profile-pic {
-    border-color: #4d7aba;
-  }
-  
-  .username {
-    color: #e0e0e0;
-  }
-  
-  .hamburger-icon span {
-    background-color: #4d7aba;
-  }
-}
-
 
 /* ===== RESPONSIVE STYLING ===== */
 @media (max-width: 992px) {
