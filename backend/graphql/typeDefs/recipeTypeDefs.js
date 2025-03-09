@@ -41,7 +41,7 @@ const recipeTypeDefs = gql`
   type Query {
     getRecipe(id: ID!): Recipe
     getUserRecipes(userId: String!): [Recipe]
-     getDishListRecipes(dishListId: ID!, userId: String!): [Recipe]
+    getDishListRecipes(dishListId: ID!, userId: String!): [Recipe]
     searchRecipes(searchTerm: String!, limit: Int, userId: String): [Recipe]
   }
 
@@ -57,6 +57,7 @@ const recipeTypeDefs = gql`
       tags: [String]
       image: String
     ): Recipe
+
     updateRecipe(
       id: ID!
       userId: String!
@@ -69,6 +70,7 @@ const recipeTypeDefs = gql`
       tags: [String]
       image: String
     ): Recipe
+
     deleteRecipe(id: ID!, userId: String!): String
     addRecipeToDishList(recipeId: ID!, dishListId: ID!, userId: String!): Recipe
     removeRecipeFromDishList(
@@ -76,12 +78,14 @@ const recipeTypeDefs = gql`
       dishListId: ID!
       userId: String!
     ): Recipe
+
     addComment(
       recipeId: ID!
       userId: String!
       username: String!
       content: String!
     ): Recipe
+
     removeComment(recipeId: ID!, commentId: ID!, userId: String!): Recipe
   }
 `;
