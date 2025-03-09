@@ -1,28 +1,32 @@
 import React from "react";
-import "./IngredientInput.css"
+import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
+import "./IngredientInput.css";
 
-const IngredientInput = ({ ingredientList, setIngredientList }) => {
+const IngredientInput = () => {
+  const { ingredients, setIngredients, errors } = useRecipeForm();
+
   const addIngredient = () => {
-    setIngredientList([...ingredientList, { name: "", amount: "", unit: "" }]);
+    setIngredients([...ingredients, { name: "", amount: "", unit: "" }]);
   };
 
   const removeIngredient = (index) => {
-    const updateIngredients = [...ingredientList];
+    const updateIngredients = [...ingredients];
     updateIngredients.splice(index, 1);
-    setIngredientList(updateIngredients);
+    setIngredients(updateIngredients);
   };
 
   const updateIngredient = (index, field, value) => {
-    const updateIngredients = [...ingredientList];
+    const updateIngredients = [...ingredients];
     updateIngredients[index][field] = value;
-    setIngredientList(updateIngredients);
+    setIngredients(updateIngredients);
   };
 
   return (
     <div className="ingredients-section">
       <h3>Ingredients</h3>
+      {errors.ingredients && <p className="error-message">{errors.ingredients}</p>}
 
-      {ingredientList.map((ingredient, index) => (
+      {ingredients.map((ingredient, index) => (
         <div key={index} className="ingredient-row">
           <input
             type="text"
