@@ -1,4 +1,5 @@
 import React from "react";
+import "./IngredientInput.css"
 
 const IngredientInput = ({ ingredientList, setIngredientList }) => {
   const addIngredient = () => {
