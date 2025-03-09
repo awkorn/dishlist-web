@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { UNFOLLOW_DISHLIST, REQUEST_TO_FOLLOW } from "../../../../graphql/mutations/dishLists";
