@@ -10,9 +10,7 @@ const IngredientInput = () => {
   };
 
   const removeIngredient = (index) => {
-    const updateIngredients = [...ingredients];
-    updateIngredients.splice(index, 1);
-    setIngredients(updateIngredients);
+    setIngredients(ingredients.filter((_, i) => i !== index));
   };
 
   const updateIngredient = (index, field, value) => {
@@ -24,7 +22,9 @@ const IngredientInput = () => {
   return (
     <div className="ingredients-section">
       <h3>Ingredients</h3>
-      {errors.ingredients && <p className="error-message">{errors.ingredients}</p>}
+      {errors.ingredients && (
+        <p className="error-message">{errors.ingredients}</p>
+      )}
 
       {ingredients.map((ingredient, index) => (
         <div key={index} className="ingredient-row">
