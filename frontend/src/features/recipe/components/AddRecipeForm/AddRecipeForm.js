@@ -1,21 +1,15 @@
 import React from "react";
 import { useRecipeForm } from "../../../contexts/RecipeFormContext";
 import IngredientInput from "../IngredientInput/IngredientInput";
-import InstructionSteps from "../InstructionSteps/InstructionSteps"
-import TagInput from "../TagInput/TagInput"
+import InstructionSteps from "../InstructionSteps/InstructionSteps";
+import TimeServingsInput from "../TimeServingsInput/TimeServingsInput";
+import TagInput from "../TagInput/TagInput";
 import "./AddRecipeForm.css";
 
 const AddRecipeForm = ({ createRecipe, loading, userId }) => {
   const {
     title,
     setTitle,
-    servings,
-    setServings,
-    prepTime,
-    setPrepTime,
-    cookTime,
-    setCookTime,
-    ingredients,
     handleSubmit,
     resetForm,
     errors,
@@ -44,6 +38,7 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
         </div>
 
         {/* Time and Serving Inputs */}
+        <TimeServingsInput />
 
         {/* Image Upload Component */}
 
