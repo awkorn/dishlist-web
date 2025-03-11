@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
-import "./TagInput.css";
+import styles from "./TagInput.module.css";
 
 const TagInput = () => {
   const { tags, setTags, errors } = useRecipeForm();
@@ -17,7 +17,7 @@ const TagInput = () => {
 
   // Add tag
   const addTag = (tag) => {
-    if (tag && !tag.includes(tag)) {
+    if (tag && !tags.includes(tag)) {
       setTags([...tags, tag]);
     }
   };
@@ -37,19 +37,19 @@ const TagInput = () => {
   };
 
   return (
-    <div className="tags-section">
+    <div className={styles.tagsSection}>
       <h3>Tags</h3>
-      {errors.tags && <p className="error-message">{errors.tags}</p>}
+      {errors.tags && <p className={styles.errorMessage}>{errors.tags}</p>}
 
-      <div className="tags-input-container">
-        <div className="tags-display">
+      <div className={styles.tagsInputContainer}>
+        <div className={styles.tagsDisplay}>
           {tags.map((tag, index) => (
-            <span key={index} className="tag-pill">
+            <span key={index} className={styles.tagPill}>
               {tag}
               <button
                 type="button"
                 onClick={() => removeTag(index)}
-                className="remove-tag-btn"
+                className={styles.removeTagBtn}
                 aria-label="Remove tag"
               >
                 ×
@@ -58,19 +58,19 @@ const TagInput = () => {
           ))}
         </div>
 
-        <div className="tag-input-row">
+        <div className={styles.tagInputRow}>
           <input
             type="text"
             placeholder="Add a tag (e.g., vegetarian, dessert, quick)"
             value={currentTag}
             onChange={(e) => setCurrentTag(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="tag-input"
+            className={styles.tagInput}
           />
           <button
             type="button"
             onClick={handleAddTag}
-            className="add-tag-btn"
+            className={styles.addTagBtn}
             disabled={!currentTag.trim()}
           >
             Add
@@ -78,7 +78,7 @@ const TagInput = () => {
         </div>
       </div>
 
-      <p className="tag-hint">Press Enter to add a tag</p>
+      <p className={styles.tagHint}>Press Enter to add a tag</p>
     </div>
   );
 };
