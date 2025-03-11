@@ -1,5 +1,6 @@
 import React from "react";
 import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
+import styles from "./TimeServingsInput.module.css";
 
 const TimeServingsInput = () => {
   const {
@@ -99,17 +100,17 @@ const TimeServingsInput = () => {
   };
 
   return (
-    <div className="time-servings-section">
+    <div className={styles.timeServingsSection}>
       <h3>Time & Servings</h3>
 
-      <div className="time-servings-grid">
+      <div className={styles.timeServingsGrid}>
         {/* Prep Time */}
-        <div className="time-serve-input-group">
+        <div className={styles.timeServeInputGroup}>
           <label htmlFor="prep-time">Prep Time</label>
-          <div className="quantity-input">
+          <div className={styles.quantityInput}>
             <button
               type="button"
-              className="decrement-btn"
+              className={styles.decrementBtn}
               onClick={decreasePrepTime}
               aria-label="Decrease prep time"
             >
@@ -121,27 +122,27 @@ const TimeServingsInput = () => {
               value={prepTime}
               onChange={handlePrepTimeChange}
               placeholder="0"
-              className={errors.prepTime ? "input-error" : ""}
+              className={errors.prepTime ? styles.inputError : ""}
             />
             <button
               type="button"
-              className="increment-btn"
+              className={styles.incrementBtn}
               onClick={increasePrepTime}
               aria-label="Increase prep time"
             >
               +
             </button>
-            <span className="unit-label">min</span>
+            <span className={styles.unitLabel}>min</span>
           </div>
         </div>
 
         {/* Cook Time */}
-        <div className="time-serve-input-group">
+        <div className={styles.timeServeInputGroup}>
           <label htmlFor="cook-time">Cook Time</label>
-          <div className="quantity-input">
+          <div className={styles.quantityInput}>
             <button
               type="button"
-              className="decrement-btn"
+              className={styles.decrementBtn}
               onClick={decreaseCookTime}
               aria-label="Decrease cook time"
             >
@@ -153,27 +154,27 @@ const TimeServingsInput = () => {
               value={cookTime}
               onChange={handleCookTimeChange}
               placeholder="0"
-              className={errors.cookTime ? "input-error" : ""}
+              className={errors.cookTime ? styles.inputError : ""}
             />
             <button
               type="button"
-              className="increment-btn"
+              className={styles.incrementBtn}
               onClick={increaseCookTime}
               aria-label="Increase cook time"
             >
               +
             </button>
-            <span className="unit-label">min</span>
+            <span className={styles.unitLabel}>min</span>
           </div>
         </div>
 
         {/* Servings */}
-        <div className="time-serve-input-group">
+        <div className={styles.timeServeInputGroup}>
           <label htmlFor="servings">Servings</label>
-          <div className="quantity-input">
+          <div className={styles.quantityInput}>
             <button
               type="button"
-              className="decrement-btn"
+              className={styles.decrementBtn}
               onClick={decreaseServings}
               aria-label="Decrease servings"
             >
@@ -185,11 +186,11 @@ const TimeServingsInput = () => {
               value={servings}
               onChange={handleServingsChange}
               placeholder="0"
-              className={errors.servings ? "input-error" : ""}
+              className={errors.servings ? styles.inputError : ""}
             />
             <button
               type="button"
-              className="increment-btn"
+              className={styles.incrementBtn}
               onClick={increaseServings}
               aria-label="Increase servings"
             >
@@ -197,10 +198,10 @@ const TimeServingsInput = () => {
             </button>
           </div>
         </div>
-        
-        <div className="total-time">
-          <span className="total-time-label">Total Time:</span>
-          <span className="total-time-value">
+
+        <div className={styles.totalTime}>
+          <span className={styles.totalTimeLabel}>Total Time:</span>
+          <span className={styles.totalTimeValue}>
             {formatTime(calculateTotalTime())}
           </span>
         </div>
