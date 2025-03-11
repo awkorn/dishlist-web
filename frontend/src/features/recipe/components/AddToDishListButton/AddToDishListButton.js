@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
 import { ADD_RECIPE_TO_DISHLIST } from '../../../graphql/mutations/recipe';
 import DishListSelector from './DishListSelector/DishListSelector';
-import './AddToDishListButton.css';
+import styles from './AddToDishListButton.module.css';
 
 const AddToDishListButton = ({ recipeId, currentUserId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,29 +37,29 @@ const AddToDishListButton = ({ recipeId, currentUserId }) => {
   return (
     <>
       <button 
-        className="add-to-dishlist-btn" 
+        className={styles.addToDishlistBtn}
         onClick={() => setIsModalOpen(true)}
       >
         Add to DishList
       </button>
 
       {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="add-to-dishlist-modal">
-            <div className="modal-header">
+        <div className={styles.modalOverlay}>
+          <div className={styles.addToDishlistModal}>
+            <div className={styles.modalHeader}>
               <h3>Add to DishList</h3>
               <button 
-                className="close-modal-btn" 
+                className={styles.closeModalBtn}
                 onClick={() => setIsModalOpen(false)}
               >
                 ×
               </button>
             </div>
             
-            <div className="modal-content">
+            <div className={styles.modalContent}>
               <p>Select a DishList to add this recipe to:</p>
               
-              <div className="dishlist-selection-container">
+              <div className={styles.dishlistSelectionContainer}>
                 <DishListSelector 
                   currentUserId={currentUserId} 
                   onChange={setSelectedDishList}
@@ -67,16 +67,16 @@ const AddToDishListButton = ({ recipeId, currentUserId }) => {
                 />
               </div>
               
-              <div className="modal-actions">
+              <div className={styles.modalActions}>
                 <button 
-                  className="cancel-btn" 
+                  className={styles.cancelBtn}
                   onClick={() => setIsModalOpen(false)}
                   disabled={loading}
                 >
                   Cancel
                 </button>
                 <button 
-                  className="confirm-btn" 
+                  className={styles.confirmBtn}
                   onClick={handleAddToDishList}
                   disabled={loading || !selectedDishList}
                 >
