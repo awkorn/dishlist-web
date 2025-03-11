@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RecipeFormContext = createContext();
 
@@ -7,6 +8,9 @@ export const useRecipeForm = () => useContext(RecipeFormContext);
 
 // Provider component
 export const RecipeFormProvider = ({ children }) => {
+  const navigate = useNavigate();
+  
+  // Form state
   const [title, setTitle] = useState("");
   const [servings, setServings] = useState("");
   const [prepTime, setPrepTime] = useState("");
@@ -24,20 +28,31 @@ export const RecipeFormProvider = ({ children }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!title.trim()) newErrors.title = "Title is required";
-    if (ingredients.length === 0 || !ingredients[0].name)
+    if (!title.trim()) newErrors.title = "Recipe title is required";
+    
+    // Check if at least one ingredient has a name
+    const hasValidIngredient = ingredients.some(ing => ing.name.trim() !== "");
+    if (!hasValidIngredient) {
       newErrors.ingredients = "At least one ingredient is required";
-    if (instructions.length === 0 || !instructions[0])
+    }
+    
+    // Check if at least one instruction is provided
+    const hasValidInstruction = instructions.some(inst => inst.trim() !== "");
+    if (!hasValidInstruction) {
       newErrors.instructions = "At least one instruction is required";
-    if (!selectedDishList) 
+    }
+
+    // Validate that a dishlist is selected
+    if (!selectedDishList) {
       newErrors.dishList = "Please select a DishList";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   // Form submission handler
-  const handleSubmit = async (event, createRecipeMutation) => {
+  const handleSubmit = (event, createRecipeMutation) => {
     event.preventDefault();
 
     if (!validateForm()) return false;
@@ -55,34 +70,17 @@ export const RecipeFormProvider = ({ children }) => {
     // Transform data for mutation 
     const recipeData = {
       title,
-      servings: parseInt(servings) || null,
-      prepTime: parseInt(prepTime) || null,
-      cookTime: parseInt(cookTime) || null,
+      servings: servings ? parseInt(servings) : null,
+      prepTime: prepTime ? parseInt(prepTime) : null,
+      cookTime: cookTime ? parseInt(cookTime) : null,
       ingredients: filteredIngredients,
       instructions: filteredInstructions,
       tags,
       image: image ? image.url : null,
-      dishListId: selectedDishList,
     };
 
     try {
-      await createRecipeMutation({ variables: recipeData });
-      return true;
-    } catch (error) {
-      setErrors({ submit: error.message });
-      return false;
-    }
-  };
-
-  // Add recipe to another DishList (without creating a new recipe)
-  const addToDishList = async (recipeId, dishListId, addRecipeMutation) => {
-    try {
-      await addRecipeMutation({
-        variables: {
-          recipeId,
-          dishListId,
-        }
-      });
+      createRecipeMutation(recipeData);
       return true;
     } catch (error) {
       setErrors({ submit: error.message });
@@ -102,6 +100,25 @@ export const RecipeFormProvider = ({ children }) => {
     setTags([]);
     setSelectedDishList("");
     setErrors({});
+    
+    // Navigate back to dishlists page
+    navigate("/dishlists");
+  };
+
+  // Add recipe to another DishList (without creating a new recipe)
+  const addToDishList = async (recipeId, dishListId, addRecipeMutation) => {
+    try {
+      await addRecipeMutation({
+        variables: {
+          recipeId,
+          dishListId,
+        }
+      });
+      return true;
+    } catch (error) {
+      setErrors({ submit: error.message });
+      return false;
+    }
   };
 
   // Value to be provided to consumers
@@ -141,3 +158,5 @@ export const RecipeFormProvider = ({ children }) => {
     </RecipeFormContext.Provider>
   );
 };
+
+export default RecipeFormContext;

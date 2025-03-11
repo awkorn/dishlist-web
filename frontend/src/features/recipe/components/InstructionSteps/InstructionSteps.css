@@ -1,0 +1,105 @@
+.instructions-section {
+    margin: 24px 0;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .instructions-section h3 {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #274b75;
+  }
+  
+  .instruction-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  
+  .instruction-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+  
+  .instruction-input:focus {
+    border-color: #274b75;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(39, 75, 117, 0.1);
+  }
+  
+  .remove-instruction-btn {
+    background-color: transparent;
+    color: #ff5252;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+  }
+  
+  .remove-instruction-btn:hover {
+    background-color: #ffebee;
+  }
+  
+  .add-instruction-btn {
+    background-color: #f4f2ee;
+    color: #274b75;
+    border: 1.5px dashed #274b75;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+  }
+  
+  .add-instruction-btn:hover {
+    background-color: #e6e4e0;
+  }
+  
+  .error-message {
+    color: #f44336;
+    font-size: 14px;
+    margin: 4px 0 8px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .instructions-section {
+      padding: 12px;
+    }
+    
+    .instruction-input {
+      padding: 8px 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .instructions-section h3 {
+      font-size: 18px;
+    }
+    
+    .instruction-row {
+      gap: 6px;
+    }
+  }

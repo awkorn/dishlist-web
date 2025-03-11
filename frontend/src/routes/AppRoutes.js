@@ -1,11 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import SignInPage from "../features/auth/pages/SignInPage"
-import SignUpPage from "../features/auth/pages/SignUpPage"
-import NotFound from "../components/common/NotFound/NotFound"
-import DishListsPage from "../features/dishlists/pages/DishListsPage"
+import SignInPage from "../features/auth/pages/SignInPage";
+import SignUpPage from "../features/auth/pages/SignUpPage";
+import NotFound from "../components/common/NotFound/NotFound";
+import DishListsPage from "../features/dishlists/pages/DishListsPage";
 import AddDishListPage from "../features/dishlists/pages/AddDishListPage";
 import DishListDetailPage from "../features/dishlist/pages/DishListDetailPage";
+import AddRecipePage from "../features/recipe/pages/AddRecipePage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
@@ -35,6 +36,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <AddDishListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/add-recipe"
+        element={
+          <ProtectedRoute>
+            <AddRecipePage />
           </ProtectedRoute>
         }
       />
