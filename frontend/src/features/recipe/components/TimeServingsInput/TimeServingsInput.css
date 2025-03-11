@@ -1,0 +1,140 @@
+.time-servings-section {
+    margin: 24px 0;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .time-servings-section h3 {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #274b75;
+  }
+  
+  .time-servings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .input-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .quantity-input {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .quantity-input input {
+    width: 70px;
+    text-align: center;
+    padding: 10px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    margin: 0 5px;
+    transition: all 0.2s ease;
+  }
+  
+  .quantity-input input:focus {
+    border-color: #274b75;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(39, 75, 117, 0.1);
+  }
+  
+  .input-error {
+    border-color: #f44336 !important;
+  }
+  
+  .increment-btn, .decrement-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid #e0e0e0;
+    background-color: white;
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .increment-btn:hover, .decrement-btn:hover {
+    background-color: #274b75;
+    color: white;
+    border-color: #274b75;
+  }
+  
+  .unit-label {
+    margin-left: 5px;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .total-time {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    background-color: #e8f4f8;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .total-time-label {
+    font-weight: 600;
+    color: #274b75;
+    font-size: 14px;
+  }
+  
+  .total-time-value {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .time-servings-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    
+    .quantity-input input {
+      width: 60px;
+      padding: 8px;
+    }
+    
+    .increment-btn, .decrement-btn {
+      width: 26px;
+      height: 26px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .time-servings-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    
+    .total-time {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 12px;
+    }
+  }
