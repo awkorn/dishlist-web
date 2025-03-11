@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
-import "./IngredientInput.css";
+import styles from "./IngredientInput.module.css";
 
 const IngredientInput = () => {
   const { ingredients, setIngredients, errors } = useRecipeForm();
@@ -20,26 +20,26 @@ const IngredientInput = () => {
   };
 
   return (
-    <div className="ingredients-section">
+    <div className={styles.ingredientsSection}>
       <h3>Ingredients</h3>
       {errors.ingredients && (
-        <p className="error-message">{errors.ingredients}</p>
+        <p className={styles.errorMessage}>{errors.ingredients}</p>
       )}
 
       {ingredients.map((ingredient, index) => (
-        <div key={index} className="ingredient-row">
+        <div key={index} className={styles.ingredientRow}>
           <input
             type="text"
             placeholder="Amount"
             value={ingredient.amount}
             onChange={(e) => updateIngredient(index, "amount", e.target.value)}
-            className="amount-input"
+            className={styles.amountInput}
           />
 
           <select
             value={ingredient.unit}
             onChange={(e) => updateIngredient(index, "unit", e.target.value)}
-            className="unit-input"
+            className={styles.unitInput}
           >
             <option value="">Unit</option>
             <option value="cup">cup</option>
@@ -56,13 +56,13 @@ const IngredientInput = () => {
             placeholder="Ingredient"
             value={ingredient.name}
             onChange={(e) => updateIngredient(index, "name", e.target.value)}
-            className="ingredient-input"
+            className={styles.ingredientInput}
           />
 
           <button
             type="button"
             onClick={() => removeIngredient(index)}
-            className="remove-ingredient-btn"
+            className={styles.removeIngredientBtn}
             aria-label="Remove ingredient"
           >
             ✕
@@ -73,7 +73,7 @@ const IngredientInput = () => {
       <button
         type="button"
         onClick={addIngredient}
-        className="add-ingredient-btn"
+        className={styles.addIngredientBtn}
       >
         + Add Ingredient
       </button>
