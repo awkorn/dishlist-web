@@ -104,7 +104,7 @@ const TimeServingsInput = () => {
 
       <div className="time-servings-grid">
         {/* Prep Time */}
-        <div className="input-group">
+        <div className="time-serve-input-group">
           <label htmlFor="prep-time">Prep Time</label>
           <div className="quantity-input">
             <button
@@ -136,7 +136,7 @@ const TimeServingsInput = () => {
         </div>
 
         {/* Cook Time */}
-        <div className="input-group">
+        <div className="time-serve-input-group">
           <label htmlFor="cook-time">Cook Time</label>
           <div className="quantity-input">
             <button
@@ -168,7 +168,7 @@ const TimeServingsInput = () => {
         </div>
 
         {/* Servings */}
-        <div className="input-group">
+        <div className="time-serve-input-group">
           <label htmlFor="servings">Servings</label>
           <div className="quantity-input">
             <button

@@ -20,13 +20,13 @@
     gap: 20px;
   }
   
-  .input-group {
+  .time-serve-input-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
   
-  .input-group label {
+  .time-serve-input-group label {
     font-weight: 600;
     font-size: 14px;
     color: #333;
