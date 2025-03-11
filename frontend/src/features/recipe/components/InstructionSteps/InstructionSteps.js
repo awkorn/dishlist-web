@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
-import "./InstructionSteps.css";
+import styles from "./InstructionSteps.module.css";
 
 const InstructionSteps = () => {
   const { instructions, setInstructions, errors } = useRecipeForm();
@@ -23,26 +23,26 @@ const InstructionSteps = () => {
   };
 
   return (
-    <div className="instructions-section">
+    <div className={styles.instructionsSection}>
       <h3>Instructions</h3>
       {errors.instructions && (
-        <p className="error-message">{errors.instructions}</p>
+        <p className={styles.errorMessage}>{errors.instructions}</p>
       )}
 
       {instructions.map((instruction, index) => (
-        <div key={index} className="instruction-row">
+        <div key={index} className={styles.instructionRow}>
           <input
             type="text"
             placeholder={`Step ${index + 1}`}
             value={instruction}
             onChange={(e) => updateInstruction(index, e.target.value)}
-            className="instruction-input"
+            className={styles.instructionInput}
           />
 
           <button
             type="button"
             onClick={() => removeInstruction(index)}
-            className="remove-instruction-btn"
+            className={styles.removeInstructionBtn}
             aria-label="Remove step"
           >
             ✕
@@ -53,7 +53,7 @@ const InstructionSteps = () => {
       <button
         type="button"
         onClick={addInstruction}
-        className="add-instruction-btn"
+        className={styles.addInstructionBtn}
       >
         + Add Instruction
       </button>
