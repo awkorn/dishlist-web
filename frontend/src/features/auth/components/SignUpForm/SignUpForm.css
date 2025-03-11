@@ -242,68 +242,6 @@
   margin-left: 4px;
 }
 
-/* ===== DARK MODE SUPPORT ===== */
-@media (prefers-color-scheme: dark) {
-  .sign-up-form {
-    background-color: #1a1a1a;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  }
-  
-  .form-header h2 {
-    color: #e0e0e0;
-  }
-  
-  .form-header p {
-    color: #aaa;
-  }
-  
-  .input-label {
-    color: #c0c0c0;
-  }
-  
-  .sign-up-input {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #e0e0e0;
-  }
-  
-  .sign-up-input::placeholder {
-    color: #777;
-  }
-  
-  .sign-up-input:focus {
-    background-color: #333;
-    box-shadow: 0 0 0 3px rgba(1, 51, 40, 0.2);
-  }
-  
-  .sign-up-input:hover {
-    background-color: #333;
-  }
-  
-  .password-icon:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .password-strength {
-    background-color: #444;
-  }
-  
-  .input-hint,
-  .terms-agreement,
-  .already-user {
-    color: #aaa;
-  }
-  
-  .terms-agreement a,
-  .already-user a {
-    color: #4CAF50;
-  }
-  
-  .terms-agreement a:hover,
-  .already-user a:hover {
-    color: #66BB6A;
-  }
-}
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {

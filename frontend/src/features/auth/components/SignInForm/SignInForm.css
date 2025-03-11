@@ -110,11 +110,11 @@
   justify-content: center; 
   align-items: center;    
   width: 100%;             
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .signup-link {
-  margin-top: 10%;
+  margin-top: 5%;
   color: #333;
   text-align: center;
   align-self: center;
@@ -157,42 +157,3 @@
   }
 }
 
-/* ===== DARK MODE SUPPORT (Optional) ===== */
-@media (prefers-color-scheme: dark) {
-  .sign-in-form {
-    background-color: #1a1a1a;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .sign-in-input {
-    background-color: #2a2a2a;
-    border-color: #444;
-    color: #e0e0e0;
-  }
-  
-  .sign-in-input::placeholder {
-    color: #888;
-  }
-  
-  .sign-in-input:hover {
-    background-color: #333;
-  }
-  
-  .line {
-    background: linear-gradient(90deg, transparent, #444 15%, #444 85%, transparent);
-  }
-  
-  .divider span,
-  .signup-link {
-    color: #bbb;
-  }
-  
-  .signup-link a {
-    color: #4CAF50;
-  }
-  
-  .signup-link a:hover {
-    color: #81C784;
-    border-bottom-color: #81C784;
-  }
-}
