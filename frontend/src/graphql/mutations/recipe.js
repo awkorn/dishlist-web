@@ -41,3 +41,21 @@ export const CREATE_RECIPE = gql`
     }
   }
 `;
+
+export const ADD_RECIPE_TO_DISHLIST = gql`
+  mutation AddRecipeToDishList(
+    $recipeId: ID!
+    $dishListId: ID!
+    $userId: String!
+  ) {
+    addRecipeToDishList(
+      recipeId: $recipeId
+      dishListId: $dishListId
+      userId: $userId
+    ) {
+      id
+      title
+      dishLists
+    }
+  }
+`;

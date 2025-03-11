@@ -1,22 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRecipeForm } from "../../../contexts/RecipeFormContext";
+import { useLocation } from "react-router-dom";
 import IngredientInput from "../IngredientInput/IngredientInput";
 import InstructionSteps from "../InstructionSteps/InstructionSteps";
 import TimeServingsInput from "../TimeServingsInput/TimeServingsInput";
+import DishListSelector from "../DishListSelector/DishListSelector";
 import TagInput from "../TagInput/TagInput";
 import "./AddRecipeForm.css";
 
 const AddRecipeForm = ({ createRecipe, loading, userId }) => {
-  const {
-    title,
-    setTitle,
-    handleSubmit,
-    resetForm,
-    errors,
-  } = useRecipeForm();
+  const { title, setTitle, handleSubmit, resetForm, errors } = useRecipeForm();
+
+  const location = useLocation();
+  const [dishListParam, setDishListParam] = useState(null);
+
+  // Extract dishListId from URL query parameters if present
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const dishListId = queryParams.get("dishListId");
+    if (dishListId) {
+      setDishListParam(dishListId);
+    }
+  }, [location]);
 
   const onSubmit = (e) => {
-    const success = handleSubmit(e, (variables) => {
+    handleSubmit(e, (variables) => {
       createRecipe({ variables: { ...variables, creatorId: userId } });
     });
   };
@@ -54,6 +62,10 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
         <TagInput />
 
         {/* DishList Selector Component */}
+        <DishListSelector
+          currentUserId={userId}
+          dishListParam={dishListParam}
+        />
 
         {/* Form Submission */}
         <div className="form-action">

@@ -29,16 +29,28 @@ export const RecipeFormProvider = ({ children }) => {
       newErrors.ingredients = "At least one ingredient is required";
     if (instructions.length === 0 || !instructions[0])
       newErrors.instructions = "At least one instruction is required";
+    if (!selectedDishList) 
+      newErrors.dishList = "Please select a DishList";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Form sumbission handler
+  // Form submission handler
   const handleSubmit = async (event, createRecipeMutation) => {
     event.preventDefault();
 
     if (!validateForm()) return false;
+
+    // Filter out empty ingredients
+    const filteredIngredients = ingredients.filter(
+      (item) => item.name.trim() !== ""
+    );
+
+    // Filter out empty instructions
+    const filteredInstructions = instructions.filter(
+      (item) => item.trim() !== ""
+    );
 
     // Transform data for mutation 
     const recipeData = {
@@ -46,8 +58,8 @@ export const RecipeFormProvider = ({ children }) => {
       servings: parseInt(servings) || null,
       prepTime: parseInt(prepTime) || null,
       cookTime: parseInt(cookTime) || null,
-      ingredients,
-      instructions,
+      ingredients: filteredIngredients,
+      instructions: filteredInstructions,
       tags,
       image: image ? image.url : null,
       dishListId: selectedDishList,
@@ -55,6 +67,22 @@ export const RecipeFormProvider = ({ children }) => {
 
     try {
       await createRecipeMutation({ variables: recipeData });
+      return true;
+    } catch (error) {
+      setErrors({ submit: error.message });
+      return false;
+    }
+  };
+
+  // Add recipe to another DishList (without creating a new recipe)
+  const addToDishList = async (recipeId, dishListId, addRecipeMutation) => {
+    try {
+      await addRecipeMutation({
+        variables: {
+          recipeId,
+          dishListId,
+        }
+      });
       return true;
     } catch (error) {
       setErrors({ submit: error.message });
@@ -103,6 +131,7 @@ export const RecipeFormProvider = ({ children }) => {
     // Functions
     validateForm,
     handleSubmit,
+    addToDishList,
     resetForm,
   };
 
