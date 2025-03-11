@@ -6,7 +6,7 @@ import InstructionSteps from "../InstructionSteps/InstructionSteps";
 import TimeServingsInput from "../TimeServingsInput/TimeServingsInput";
 import DishListSelector from "../DishListSelector/DishListSelector";
 import TagInput from "../TagInput/TagInput";
-import "./AddRecipeForm.css";
+import styles from "./AddRecipeForm.module.css";
 
 const AddRecipeForm = ({ createRecipe, loading, userId }) => {
   const { title, setTitle, handleSubmit, resetForm, errors } = useRecipeForm();
@@ -30,10 +30,9 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
   };
 
   return (
-    <form className="add-recipe-form" onSubmit={onSubmit}>
-      {/* Title Section */}
-      <div className="title-section">
-        <div className="form-group">
+    <form className={styles.addRecipeForm} onSubmit={onSubmit}>
+      <div className={styles.titleSection}>
+        <div className={styles.formGroup}>
           <label htmlFor="recipe-title">Recipe Title</label>
           <input
             id="recipe-title"
@@ -41,7 +40,7 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter recipe title"
-            className={errors.title ? "input-error" : ""}
+            className={errors.title ? styles.inputError : ""}
           />
         </div>
 
@@ -68,17 +67,25 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
         />
 
         {/* Form Submission */}
-        <div className="form-action">
-          <button type="button" onClick={resetForm} className="cancel-btn">
+        <div className={styles.formAction}>
+          <button 
+            type="button" 
+            onClick={resetForm} 
+            className={styles.cancelBtn}
+          >
             Cancel
           </button>
-          <button type="submit" className="submit-btn" disabled={loading}>
+          <button 
+            type="submit" 
+            className={styles.submitBtn} 
+            disabled={loading}
+          >
             {loading ? "Saving..." : "Save Recipe"}
           </button>
         </div>
 
         {errors.submit && (
-          <div className="submit-error">
+          <div className={styles.submitError}>
             <p>{errors.submit}</p>
           </div>
         )}
