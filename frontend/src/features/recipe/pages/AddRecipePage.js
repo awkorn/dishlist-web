@@ -57,9 +57,6 @@ const AddRecipePage = () => {
   return (
     <div className={styles.pageContainer}>
       <TopNav pageType="recipe-builder" />
-      <div className={styles.titleMenuContainer}>
-        <PageTitle title="Create New Recipe" />
-      </div>
       <div className={styles.addRecipeContainer}>
         <RecipeFormProvider>
           <AddRecipeForm 
