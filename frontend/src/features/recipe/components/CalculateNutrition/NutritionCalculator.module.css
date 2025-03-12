@@ -1,0 +1,204 @@
+.nutritionSection {
+    margin: 24px 0;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .nutritionSection h3 {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #274b75;
+  }
+  
+  .nutritionControls {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .calculateBtn {
+    align-self: flex-start;
+    background-color: #274b75;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .calculateBtn:hover {
+    background-color: #1c3657;
+    transform: translateY(-2px);
+  }
+  
+  .calculateBtn:disabled {
+    background-color: #a0a0a0;
+    transform: none;
+    cursor: not-allowed;
+  }
+  
+  .errorMessage {
+    color: #f44336;
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .nutritionFacts {
+    background-color: white;
+    border: 1px solid #333;
+    padding: 15px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    max-width: 350px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nutritionFacts h4 {
+    font-size: 24px;
+    font-weight: 900;
+    margin: 0 0 4px;
+    padding-bottom: 8px;
+    border-bottom: 8px solid #000;
+  }
+  
+  .servingInfo {
+    font-size: 14px;
+    font-weight: 400;
+    padding-bottom: 5px;
+    margin: 0 0 10px;
+    border-bottom: 4px solid #000;
+  }
+  
+  .nutrientRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .nutrientName {
+    font-weight: 500;
+  }
+  
+  .nutrientValue {
+    font-weight: 700;
+  }
+  
+  .disclaimer {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+    margin-top: 15px;
+    margin-bottom: 0;
+    line-height: 1.4;
+  }
+  
+  .calculatingMessage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    color: #274b75;
+  }
+  
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(39, 75, 117, 0.2);
+    border-radius: 50%;
+    border-top-color: #274b75;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Macronutrient progress bars */
+  .macroContainer {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .macroHeading {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 10px;
+  }
+  
+  .macroBar {
+    height: 20px;
+    width: 100%;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .macroFill {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    transition: width 0.5s ease;
+  }
+  
+  .proteinFill {
+    background-color: #4CAF50;  /* Green */
+  }
+  
+  .carbsFill {
+    background-color: #2196F3;  /* Blue */
+  }
+  
+  .fatFill {
+    background-color: #FF9800;  /* Orange */
+  }
+  
+  .macroLabel {
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .nutritionFacts {
+      max-width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .nutritionSection {
+      padding: 12px;
+    }
+    
+    .nutritionFacts h4 {
+      font-size: 20px;
+    }
+    
+    .calculateBtn {
+      width: 100%;
+      text-align: center;
+    }
+  }

@@ -5,8 +5,9 @@ import IngredientInput from "../IngredientInput/IngredientInput";
 import InstructionSteps from "../InstructionSteps/InstructionSteps";
 import TimeServingsInput from "../TimeServingsInput/TimeServingsInput";
 import DishListSelector from "../DishListSelector/DishListSelector";
+import NutritionCalculator from "../CalculateNutrition/NutritionCalculator";
 import TagInput from "../TagInput/TagInput";
-import ImageUpload from "../ImageUpload/ImageUpload"
+import ImageUpload from "../ImageUpload/ImageUpload";
 import styles from "./AddRecipeForm.module.css";
 
 const AddRecipeForm = ({ createRecipe, loading, userId }) => {
@@ -45,24 +46,18 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
           />
         </div>
 
-        {/* Time and Serving Inputs */}
         <TimeServingsInput />
 
-        {/* Image Upload Component */}
         <ImageUpload />
 
-        {/* Ingredient Input Component */}
         <IngredientInput />
 
-        {/* Calculate Nutrition Component */}
+        <NutritionCalculator />
 
-        {/* Instruction Steps Component */}
         <InstructionSteps />
 
-        {/* Tag Input Component */}
         <TagInput />
 
-        {/* DishList Selector Component */}
         <DishListSelector
           currentUserId={userId}
           dishListParam={dishListParam}
@@ -70,18 +65,14 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
 
         {/* Form Submission */}
         <div className={styles.formAction}>
-          <button 
-            type="button" 
-            onClick={resetForm} 
+          <button
+            type="button"
+            onClick={resetForm}
             className={styles.cancelBtn}
           >
             Cancel
           </button>
-          <button 
-            type="submit" 
-            className={styles.submitBtn} 
-            disabled={loading}
-          >
+          <button type="submit" className={styles.submitBtn} disabled={loading}>
             {loading ? "Saving..." : "Save Recipe"}
           </button>
         </div>
