@@ -1,12 +1,16 @@
-
-.add-recipe-container {
+.addRecipeContainer {
   max-width: 800px;
   width: 90%;
   margin: 0 auto;
   padding: 0 0 60px;
 }
 
-.unauthorized-message {
+.titleMenuContainer {
+  text-align: center;
+  margin: 10px auto;
+}
+
+.unauthorizedMessage {
   text-align: center;
   padding: 60px 20px;
   margin: 40px auto;
@@ -16,14 +20,14 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.unauthorized-message h2 {
+.unauthorizedMessage h2 {
   font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
   font-size: 24px;
   color: #333;
   margin-bottom: 20px;
 }
 
-.primary-button {
+.primaryButton {
   background-color: #274b75;
   color: white;
   padding: 12px 24px;
@@ -36,7 +40,7 @@
   font-size: 16px;
 }
 
-.primary-button:hover {
+.primaryButton:hover {
   background-color: #1c3657;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -44,14 +48,14 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
-  .add-recipe-container {
+  .addRecipeContainer {
     width: 95%;
     padding: 15px 0 40px;
   }
 }
 
 @media (max-width: 480px) {
-  .add-recipe-container {
+  .addRecipeContainer {
     width: 100%;
     padding: 10px 15px 30px;
   }

@@ -8,7 +8,7 @@ import TopNav from "../../../components/layout/TopNav/TopNav";
 import PageTitle from "../../../components/common/PageTitle/PageTitle";
 import AddRecipeForm from "../components/AddRecipeForm/AddRecipeForm";
 import { RecipeFormProvider } from "../../../contexts/RecipeFormContext";
-import "./AddRecipePage.css";
+import styles from "./AddRecipePage.module.css";
 
 const AddRecipePage = () => {
   const { currentUser } = useAuth();
@@ -39,11 +39,14 @@ const AddRecipePage = () => {
 
   if (!currentUser) {
     return (
-      <div className="page-container">
+      <div className={styles.pageContainer}>
         <TopNav />
-        <div className="unauthorized-message">
+        <div className={styles.unauthorizedMessage}>
           <h2>Please sign in to create recipes</h2>
-          <button onClick={() => navigate("/signin")} className="primary-button">
+          <button 
+            onClick={() => navigate("/signin")} 
+            className={styles.primaryButton}
+          >
             Sign In
           </button>
         </div>
@@ -52,12 +55,12 @@ const AddRecipePage = () => {
   }
 
   return (
-    <div className="page-container">
+    <div className={styles.pageContainer}>
       <TopNav pageType="recipe-builder" />
-      <div className="title-menu-container">
+      <div className={styles.titleMenuContainer}>
         <PageTitle title="Create New Recipe" />
       </div>
-      <div className="add-recipe-container">
+      <div className={styles.addRecipeContainer}>
         <RecipeFormProvider>
           <AddRecipeForm 
             createRecipe={createRecipe} 
