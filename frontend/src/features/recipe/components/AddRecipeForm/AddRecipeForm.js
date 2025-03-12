@@ -6,6 +6,7 @@ import InstructionSteps from "../InstructionSteps/InstructionSteps";
 import TimeServingsInput from "../TimeServingsInput/TimeServingsInput";
 import DishListSelector from "../DishListSelector/DishListSelector";
 import TagInput from "../TagInput/TagInput";
+import ImageUpload from "../ImageUpload/ImageUpload"
 import styles from "./AddRecipeForm.module.css";
 
 const AddRecipeForm = ({ createRecipe, loading, userId }) => {
@@ -48,6 +49,7 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
         <TimeServingsInput />
 
         {/* Image Upload Component */}
+        <ImageUpload />
 
         {/* Ingredient Input Component */}
         <IngredientInput />
