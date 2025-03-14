@@ -4,6 +4,7 @@ import { auth } from "../../../../services/authService";
 import { useAuth } from "../../../../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import styles from "../TopNav.module.css";
 
 const AuthButtons = () => {
   const { currentUser } = useAuth();
@@ -21,7 +22,7 @@ const AuthButtons = () => {
 
   return (
     <button
-      className="auth-btn"
+      className={styles.authBtn}
       onClick={currentUser ? handleSignOut : () => navigate("/signin")}
     >
       {currentUser ? "Sign Out" : "Sign In"}

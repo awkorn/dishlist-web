@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "../TopNav.module.css";
 
 const SearchBar = ({ pageType, items, onSearch }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -20,15 +21,15 @@ const SearchBar = ({ pageType, items, onSearch }) => {
   if (pageType !== "dishlists" && pageType !== "recipes") return null;
 
   return (
-    <div className="search-container">
+    <div className={styles.searchContainer}>
       <input
         type="text"
         placeholder={`Search ${pageType}`}
-        className="search-input"
+        className={styles.searchInput}
         value={searchValue}
         onChange={handleSearchChange}
       />
-      <span className="search-icon">
+      <span className={styles.searchIcon}>
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           width="16" 

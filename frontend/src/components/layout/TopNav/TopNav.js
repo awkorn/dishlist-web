@@ -3,7 +3,7 @@ import Logo from "./components/Logo";
 import SearchBar from "./components/SearchBar";
 import NavButtons from "./components/NavButtons";
 import AuthButtons from "./components/AuthButtons";
-import "./TopNav.css";
+import styles from "./TopNav.module.css";
 
 const TopNav = ({ pageType, items, onSearch }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,18 +12,18 @@ const TopNav = ({ pageType, items, onSearch }) => {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <div className="top-nav">
+    <div className={styles.topNav}>
       <Logo />
       <SearchBar pageType={pageType} items={items} onSearch={onSearch} />
 
       {/*hamburger menu icon (visible on small screens via CSS) */}
-      <div className="mobile-menu" onClick={toggleMenu}>
+      <div className={styles.mobileMenu} onClick={toggleMenu}>
         ☰
       </div>
 
-      {menuOpen && <div className="overlay" onClick={closeMenu}></div>}
+      {menuOpen && <div className={styles.overlay} onClick={closeMenu}></div>}
 
-      <div className={`nav-container ${menuOpen ? "open" : ""}`}>
+      <div className={`${styles.navContainer} ${menuOpen ? styles.navOpen : ""}`}>
         <NavButtons />
         <AuthButtons />
       </div>

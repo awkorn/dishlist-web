@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import styles from "../TopNav.module.css";
 
 const NavButtons = () => {
   const location = useLocation();
@@ -8,23 +9,23 @@ const NavButtons = () => {
   return (
     <div className="nav-buttons">
       <button
-        className={`nav-btn ${
-          location.pathname === "/dishlists" ? "active" : ""
+        className={`${styles.navBtn} ${
+          location.pathname === "/dishlists" ? styles.active : ""
         }`}
         onClick={() => navigate("/dishlists")}
       >
         DishLists
       </button>
       <button
-        className={`nav-btn ${
-          location.pathname === "/recipe-builder" ? "active" : ""
+        className={`${styles.navBtn} ${
+          location.pathname === "/recipe-builder" ? styles.active : ""
         }`}
         onClick={() => navigate("/recipe-builder")}
       >
         Recipe Builder
       </button>
       <button
-        className={`nav-btn ${location.pathname === "/about" ? "active" : ""}`}
+        className={`${styles.navBtn} ${location.pathname === "/about" ? styles.active : ""}`}
         onClick={() => navigate("/about")}
       >
         About
