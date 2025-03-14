@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { auth } from "../../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../contexts/AuthProvider";
-import "./SignInForm.css";
+import styles from "./SignInForm.module.css";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -55,9 +55,9 @@ const SignInForm = () => {
   };
 
   return (
-    <form className="sign-in-form" onSubmit={handleSignIn}>
+    <form className={styles.signInForm} onSubmit={handleSignIn}>
       <input
-        className="sign-in-input"
+        className={styles.signInInput}
         type="email"
         id="email"
         placeholder="Email"
@@ -67,7 +67,7 @@ const SignInForm = () => {
       ></input>
 
       <input
-        className="sign-in-input"
+        className={styles.signInInput}
         type="password"
         id="password"
         placeholder="Password"
@@ -76,21 +76,21 @@ const SignInForm = () => {
         required
       />
 
-      <button type="submit" className="login-button" disabled={loading}>
+      <button type="submit" className={styles.loginButton} disabled={loading}>
         {loading ? "Signing in..." : "Login"}
       </button>
 
-      <div className="divider">
-        <hr className="line" />
+      <div className={styles.divider}>
+        <hr className={styles.line} />
         <span>or continue with</span>
-        <hr className="line" />
+        <hr className={styles.line} />
       </div>
 
-      <div className="google-button-container">
+      <div className={styles.googleButtonContainer}>
         <GoogleSignInButton />
       </div>
 
-      <a href="/signup" className="signup-link">
+      <a href="/signup" className={styles.signupLink}>
         New User? Sign up
       </a>
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar />

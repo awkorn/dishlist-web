@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../contexts/AuthProvider";
-import "./SignUpForm.css";
+import styles from "./SignUpForm.module.css";
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -113,9 +113,9 @@ const SignUpForm = () => {
   };
 
   return (
-    <form className="sign-up-form" onSubmit={handleSignUp}>
+    <form className={styles.signUpForm} onSubmit={handleSignUp}>
       <input
-        className="sign-up-input"
+        className={styles.signUpInput}
         id="firstName"
         type="text"
         value={firstName}
@@ -126,7 +126,7 @@ const SignUpForm = () => {
       />
 
       <input
-        className="sign-up-input"
+        className={styles.signUpInput}
         id="lastName"
         type="text"
         value={lastName}
@@ -137,7 +137,7 @@ const SignUpForm = () => {
       />
 
       <input
-        className="sign-up-input"
+        className={styles.signUpInput}
         id="email"
         type="email"
         value={email}
@@ -147,9 +147,9 @@ const SignUpForm = () => {
         required
       />
 
-      <div className="password-container">
+      <div className={styles.passwordContainer}>
         <input
-          className="sign-up-input"
+          className={styles.signUpInput}
           id="password"
           type={showPassword ? "text" : "password"}
           value={password}
@@ -162,7 +162,7 @@ const SignUpForm = () => {
           }}
         />
         <span
-          className="password-icon"
+          className={styles.passwordIcon}
           onClick={() => setShowPassword(!showPassword)}
           style={{
             position: "absolute",
@@ -176,9 +176,9 @@ const SignUpForm = () => {
         </span>
       </div>
 
-      <div className="password-container">
+      <div className={styles.passwordContainer}>
         <input
-          className="sign-up-input"
+          className={styles.signUpInput}
           id="confirmPassword"
           type={showConfirmPassword ? "text" : "password"}
           value={confirmPassword}
@@ -191,7 +191,7 @@ const SignUpForm = () => {
           }}
         />
         <span
-          className="password-icon"
+          className={styles.passwordIcon}
           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           style={{
             position: "absolute",
@@ -205,7 +205,7 @@ const SignUpForm = () => {
         </span>
       </div>
 
-      <button type="submit" disabled={loading} className="sign-up-button">
+      <button type="submit" disabled={loading} className={styles.signUpButton}>
         {loading ? "Signing up..." : "Sign Up"}
       </button>
 

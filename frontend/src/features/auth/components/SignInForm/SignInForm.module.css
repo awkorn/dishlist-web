@@ -1,5 +1,5 @@
 /* ===== SIGN IN FORM COMPONENT ===== */
-.sign-in-form {
+.signInForm {
   display: flex;
   flex-direction: column;
   max-width: 500px;
@@ -11,7 +11,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); 
 }
 
-.sign-in-input {
+.signInInput {
   width: 100%;
   padding: 14px 18px; 
   border: 1.5px solid #e0e0e0; 
@@ -23,22 +23,22 @@
   transition: all 0.2s ease;
 }
 
-.sign-in-input::placeholder {
+.signInInput::placeholder {
   font-family: 'Bricolage Grotesque', "Franklin Gothic Light", "Arial", sans-serif;
   color: #aaa; 
 }
 
-.sign-in-input:focus {
+.signInInput:focus {
   border-color: #274b75;
   box-shadow: 0 0 0 3px rgba(1, 51, 40, 0.1); 
 }
 
-.sign-in-input:hover {
+.signInInput:hover {
   border-color: #274b75;
   background-color: #f9f9f9;
 }
 
-.login-button {
+.loginButton {
   width: 50%; 
   padding: 14px 20px;
   background-color: #274b75;
@@ -57,18 +57,18 @@
   overflow: hidden;
 }
 
-.login-button:hover {
+.loginButton:hover {
   background-color: #336299;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(1, 51, 40, 0.2);
 }
 
-.login-button:active {
+.loginButton:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px rgba(1, 51, 40, 0.2);
 }
 
-.login-button::after {
+.loginButton::after {
   content: '';
   position: absolute;
   width: 100%;
@@ -81,7 +81,7 @@
   transition: opacity 0.2s ease;
 }
 
-.login-button:hover::after {
+.loginButton:hover::after {
   opacity: 1;
 }
 
@@ -105,7 +105,7 @@
   font-weight: 500;
 }
 
-.google-button-container {
+.googleButtonContainer {
   display: flex;
   justify-content: center; 
   align-items: center;    
@@ -113,7 +113,7 @@
   margin-top: 16px;
 }
 
-.signup-link {
+.signupLink {
   margin-top: 5%;
   color: #333;
   text-align: center;
@@ -123,7 +123,7 @@
   transition: color 0.2s ease;
 }
 
-.signup-link a {
+.signupLink a {
   color: #013328;
   font-weight: 600;
   text-decoration: none;
@@ -132,28 +132,23 @@
   transition: all 0.2s ease;
 }
 
-.signup-link a:hover {
+.signupLink a:hover {
   color: #01654a;
   border-bottom-color: #01654a;
 }
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
-  .logo-banner {
+  .logoContainer {
     min-height: 80px; 
   }
   
-  .logo {
-    max-height: 60px; 
-  }
-  
-  .sign-in-form {
+  .signInForm {
     padding: 20px 15px;
     max-width: 90%;
   }
   
-  .login-button {
+  .loginButton {
     width: 70%;
   }
 }
-

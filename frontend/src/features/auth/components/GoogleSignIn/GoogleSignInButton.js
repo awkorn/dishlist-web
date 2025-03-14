@@ -13,7 +13,7 @@ const GoogleSignInButton = () => {
 
     window.google.accounts.id.renderButton(
       document.getElementById("google-button-container"),
-      { theme: "filled_blue", size: "medium", width: 300, shape: "pill" }
+      { theme: "filled_blue", size: "medium", width: 250, shape: "pill" }
     );
   }, []);
 
@@ -23,7 +23,7 @@ const GoogleSignInButton = () => {
       const credential = GoogleAuthProvider.credential(response.credential);
       const result = await signInWithCredential(auth, credential);
       toast.success("Welcome, " + result.user.displayName);
-      //TODO: Navigate user to home page
+      //Navigation is handled by the parent component's useEffect
     } catch (error) {
       toast.error("Error signing in with Google: " + error.message);
     }

@@ -1,0 +1,26 @@
+/* Page title component styles */
+.pageTitle {
+    font-size: clamp(30px, 5vw, 56px);
+    color: #1E1E1E;
+    font-family: "Bricolage Grotesque", "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: bolder;
+    margin: 0 0 20px 0;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+  }
+  
+  @media (max-width: 768px) {
+    .pageTitle {
+      font-size: clamp(28px, 4.5vw, 48px);
+      margin-bottom: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .pageTitle {
+      font-size: clamp(24px, 4vw, 42px);
+      margin-bottom: 12px;
+    }
+  }

@@ -1,5 +1,5 @@
 /* ===== SIGN-UP FORM COMPONENT ===== */
-.sign-up-form {
+.signUpForm {
   display: flex;
   flex-direction: column;
   max-width: 500px;
@@ -12,12 +12,12 @@
   transition: all 0.3s ease;
 }
 
-.form-header {
+.formHeader {
   text-align: center;
   margin-bottom: 10px;
 }
 
-.form-header h2 {
+.formHeader h2 {
   font-size: 28px;
   font-weight: 700;
   color: #1E1E1E;
@@ -25,13 +25,13 @@
   font-family: 'Bricolage Grotesque', 'Franklin Gothic Medium', sans-serif;
 }
 
-.form-header p {
+.formHeader p {
   color: #666;
   font-size: 16px;
   margin: 0;
 }
 
-.sign-up-input {
+.signUpInput {
   width: 100%;
   padding: 14px 18px;
   border: 1.5px solid #e4e2e2;
@@ -44,30 +44,30 @@
   background-color: #fafafa;
 }
 
-.sign-up-input::placeholder {
+.signUpInput::placeholder {
   font-family: 'Bricolage Grotesque', "Franklin Gothic Light", "Arial", sans-serif;
   color: #a19f9f;
   opacity: 0.8;
 }
 
-.sign-up-input:focus {
+.signUpInput:focus {
   border-color: #274b75;
   background-color: #fff;
   box-shadow: 0 0 0 3px rgba(1, 51, 40, 0.08);
 }
 
-.sign-up-input:hover {
+.signUpInput:hover {
   border-color: #274b75;
   background-color: #f7f7f7;
 }
 
-.input-group {
+.inputGroup {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.input-label {
+.inputLabel {
   font-size: 14px;
   font-weight: 600;
   color: #333;
@@ -75,19 +75,19 @@
   font-family: 'Bricolage Grotesque', "Franklin Gothic Medium", "Arial", sans-serif;
 }
 
-.input-hint {
+.inputHint {
   font-size: 12px;
   color: #777;
   margin-top: 4px;
   margin-left: 4px;
 }
 
-.password-container {
+.passwordContainer {
   position: relative;
   width: 100%;
 }
 
-.password-icon {
+.passwordIcon {
   position: absolute;
   right: 16px;
   top: 50%;
@@ -105,12 +105,12 @@
   padding: 2px;
 }
 
-.password-icon:hover {
+.passwordIcon:hover {
   background-color: rgba(0, 0, 0, 0.05);
   color: #274b75;
 }
 
-.password-strength {
+.passwordStrength {
   display: flex;
   margin-top: 8px;
   height: 4px;
@@ -120,29 +120,29 @@
   overflow: hidden;
 }
 
-.password-strength-meter {
+.passwordStrengthMeter {
   height: 100%;
   width: 0%;
   border-radius: 2px;
   transition: width 0.3s ease, background-color 0.3s ease;
 }
 
-.password-strength-meter.weak {
+.weak {
   width: 33%;
   background-color: #f44336;
 }
 
-.password-strength-meter.medium {
+.medium {
   width: 66%;
   background-color: #ff9800;
 }
 
-.password-strength-meter.strong {
+.strong {
   width: 100%;
   background-color: #4caf50;
 }
 
-.sign-up-button {
+.signUpButton {
   margin-top: 20px;
   width: 50%; /* Slightly wider button */
   padding: 14px 20px;
@@ -163,18 +163,18 @@
   box-shadow: 0 4px 12px rgba(1, 51, 40, 0.1);
 }
 
-.sign-up-button:hover {
+.signUpButton:hover {
   background-color: #014a3a;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(1, 51, 40, 0.2);
 }
 
-.sign-up-button:active {
+.signUpButton:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(1, 51, 40, 0.15);
 }
 
-.sign-up-button::after {
+.signUpButton::after {
   content: '';
   position: absolute;
   width: 100%;
@@ -187,11 +187,11 @@
   transition: opacity 0.2s ease;
 }
 
-.sign-up-button:hover::after {
+.signUpButton:hover::after {
   opacity: 1;
 }
 
-.terms-agreement {
+.termsAgreement {
   font-size: 14px;
   color: #666;
   text-align: center;
@@ -199,74 +199,73 @@
   line-height: 1.4;
 }
 
-.terms-agreement a {
+.termsAgreement a {
   color: #013328;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s ease;
 }
 
-.terms-agreement a:hover {
+.termsAgreement a:hover {
   color: #014a3a;
   text-decoration: underline;
 }
 
-.already-user {
+.alreadyUser {
   margin-top: 24px;
   font-size: 14px;
   color: #666;
   text-align: center;
 }
 
-.already-user a {
+.alreadyUser a {
   color: #274b75;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s ease;
 }
 
-.already-user a:hover {
+.alreadyUser a:hover {
   color: #014a3a;
   text-decoration: underline;
 }
 
 /* Error states */
-.input-error {
+.inputError {
   border-color: #f44336;
 }
 
-.error-message {
+.errorMessage {
   color: #f44336;
   font-size: 12px;
   margin-top: 4px;
   margin-left: 4px;
 }
 
-
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
-  .sign-up-form {
+  .signUpForm {
     padding: 25px 20px;
     gap: 20px;
     max-width: 90%;
   }
   
-  .sign-up-button {
+  .signUpButton {
     width: 70%;
   }
 }
 
 @media (max-width: 480px) {
-  .sign-up-form {
+  .signUpForm {
     padding: 20px 15px;
     gap: 16px;
   }
   
-  .form-header h2 {
+  .formHeader h2 {
     font-size: 24px;
   }
   
-  .sign-up-button {
+  .signUpButton {
     width: 100%;
   }
 }
