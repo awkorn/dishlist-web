@@ -1,0 +1,53 @@
+.tagsSection {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tagsTitle {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #274b75;
+    margin: 0 0 16px 0;
+  }
+  
+  .tagsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .tagPill {
+    background-color: #F4F2EE;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .tagPill:hover {
+    background-color: #e5e3df;
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .tagsSection {
+      padding: 16px;
+    }
+    
+    .tagsTitle {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .tagPill {
+      font-size: 13px;
+      padding: 5px 10px;
+    }
+  }

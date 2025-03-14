@@ -2,8 +2,8 @@ import React from "react";
 import styles from "./RecipeCard.module.css";
 import placeholderImage from '../../../../assets/images/placeholder.png';
 
-const RecipeCard = ({ recipe, isExpanded, onClick, onRemove, isUserCreator }) => {
-  const { title, cookTime, prepTime, servings, image, ingredients, instructions, tags, creatorId } = recipe;
+const RecipeCard = ({ recipe, onClick, onRemove, isUserCreator }) => {
+  const { title, cookTime, prepTime, servings, image, tags } = recipe;
   
   // Format time (convert minutes to hours and minutes if needed)
   const formatTime = (timeInMinutes) => {
@@ -27,7 +27,7 @@ const RecipeCard = ({ recipe, isExpanded, onClick, onRemove, isUserCreator }) =>
   const recipeImage = image || placeholderImage;
   
   return (
-    <div className={`${styles.recipeCard} ${isExpanded ? styles.expanded : ""}`}>
+    <div className={styles.recipeCard}>
       <div className={styles.recipeCardHeader} onClick={onClick}>
         <div className={styles.recipeImageContainer}>
           <img src={recipeImage} alt={title} className={styles.recipeImage} />
@@ -41,9 +41,10 @@ const RecipeCard = ({ recipe, isExpanded, onClick, onRemove, isUserCreator }) =>
           </div>
           {tags && tags.length > 0 && (
             <div className={styles.recipeTags}>
-              {tags.map((tag, index) => (
+              {tags.slice(0, 3).map((tag, index) => (
                 <span key={index} className={styles.tag}>{tag}</span>
               ))}
+              {tags.length > 3 && <span className={styles.tag}>+{tags.length - 3}</span>}
             </div>
           )}
         </div>
@@ -60,45 +61,6 @@ const RecipeCard = ({ recipe, isExpanded, onClick, onRemove, isUserCreator }) =>
           </button>
         )}
       </div>
-      
-      {isExpanded && (
-        <div className={styles.recipeDetails}>
-          {ingredients && ingredients.length > 0 && (
-            <div className={styles.ingredientsSection}>
-              <h4>Ingredients</h4>
-              <ul className={styles.ingredientsList}>
-                {ingredients.map((ingredient, index) => (
-                  <li key={index} className={styles.ingredientItem}>
-                    {ingredient.amount && ingredient.unit 
-                      ? `${ingredient.amount} ${ingredient.unit} ${ingredient.name}`
-                      : ingredient.amount 
-                        ? `${ingredient.amount} ${ingredient.name}`
-                        : ingredient.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          
-          {instructions && instructions.length > 0 && (
-            <div className={styles.instructionsSection}>
-              <h4>Instructions</h4>
-              <ol className={styles.instructionsList}>
-                {instructions.map((instruction, index) => (
-                  <li key={index} className={styles.instructionItem}>{instruction}</li>
-                ))}
-              </ol>
-            </div>
-          )}
-          
-          <div className={styles.recipeActions}>
-            <button className={styles.viewFullRecipe}>View Full Recipe</button>
-            {isUserCreator && (
-              <button className={styles.editRecipe}>Edit Recipe</button>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

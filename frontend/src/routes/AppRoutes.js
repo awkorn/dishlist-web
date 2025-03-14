@@ -7,6 +7,7 @@ import DishListsPage from "../features/dishlists/pages/DishListsPage";
 import AddDishListPage from "../features/dishlists/pages/AddDishListPage";
 import DishListDetailPage from "../features/dishlist/pages/DishListDetailPage";
 import AddRecipePage from "../features/recipe/pages/AddRecipePage";
+import RecipeDetailPage from "../features/recipe/pages/RecipeDetailPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
@@ -44,6 +45,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <AddRecipePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/recipe/:id"
+        element={
+          <ProtectedRoute>
+            <RecipeDetailPage />
           </ProtectedRoute>
         }
       />

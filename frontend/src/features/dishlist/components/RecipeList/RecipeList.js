@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import { REMOVE_RECIPE_FROM_DISHLIST } from "../../../../graphql/mutations/dishListDetail";
@@ -11,9 +12,10 @@ const RecipeList = ({
   dishListId, 
   userRole, 
   currentUserId, 
-  onRecipeClick,
   emptyStateContent 
 }) => {
+  const navigate = useNavigate();
+  
   const [removeRecipe, { loading: removeLoading }] = useMutation(REMOVE_RECIPE_FROM_DISHLIST, {
     onCompleted: () => {
       toast.success("Recipe removed from DishList");
@@ -59,6 +61,11 @@ const RecipeList = ({
     }
   };
   
+  const handleRecipeClick = (recipeId) => {
+    // Navigate directly to recipe page
+    navigate(`/recipe/${recipeId}`);
+  };
+  
   if (!recipes || recipes.length === 0) {
     return (
       <div className="recipes-container">
@@ -79,12 +86,9 @@ const RecipeList = ({
           <RecipeCard
             key={recipe.id}
             recipe={recipe}
-            canRemove={
-              userRole === "owner" ||
-              (userRole === "collaborator" && recipe.creatorId === currentUserId)
-            }
+            onClick={() => handleRecipeClick(recipe.id)}
             onRemove={() => handleRemoveRecipe(recipe.id)}
-            onClick={() => onRecipeClick && onRecipeClick(recipe.id)}
+            isUserCreator={recipe.creatorId === currentUserId}
           />
         ))}
       </div>

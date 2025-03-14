@@ -1,0 +1,102 @@
+.actionsContainer {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .actionButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid;
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  }
+  
+  .actionButton:hover {
+    transform: translateY(-2px);
+  }
+  
+  .saveButton {
+    background-color: white;
+    border-color: #274b75;
+    color: #274b75;
+  }
+  
+  .saveButton:hover {
+    background-color: #f0f7ff;
+  }
+  
+  .savedButton {
+    background-color: #274b75;
+    border-color: #274b75;
+    color: white;
+  }
+  
+  .savedButton:hover {
+    background-color: #1c3657;
+  }
+  
+  .printButton {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    color: #555;
+  }
+  
+  .printButton:hover {
+    background-color: #ebebeb;
+    border-color: #ccc;
+  }
+  
+  .editButton {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+  }
+  
+  .editButton:hover {
+    background-color: #388e3c;
+  }
+  
+  .actionIcon {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .actionsContainer {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .actionButton {
+      padding: 6px 14px;
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .actionsContainer {
+      width: 100%;
+    }
+    
+    .actionButton {
+      flex: 1;
+      justify-content: center;
+    }
+    
+    .actionText {
+      display: none;
+    }
+    
+    .actionIcon {
+      font-size: 18px;
+    }
+  }

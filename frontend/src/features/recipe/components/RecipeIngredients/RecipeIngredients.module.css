@@ -1,0 +1,180 @@
+.ingredientsSection {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    gap: 16px;
+  }
+  
+  .sectionTitle {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #274b75;
+    margin: 0;
+  }
+  
+  .servingsAdjuster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .servingsLabel {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .servingsControls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    padding: 2px;
+  }
+  
+  .servingsButton {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background-color: #274b75;
+    color: white;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .servingsButton:hover:not(:disabled) {
+    background-color: #1c3657;
+  }
+  
+  .servingsButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .servingsValue {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .ingredientsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .ingredientItem {
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #e0e0e0;
+  }
+  
+  .ingredientItem:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .checkboxContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .checkbox {
+    margin-top: 5px;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #274b75;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .checkbox:checked {
+    background-color: #274b75;
+  }
+  
+  .checkbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
+  .ingredientText {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .checkbox:checked + .ingredientText {
+    text-decoration: line-through;
+    color: #888;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .ingredientsSection {
+      padding: 20px;
+    }
+    
+    .sectionTitle {
+      font-size: 22px;
+    }
+    
+    .servingsAdjuster {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .ingredientsSection {
+      padding: 16px;
+    }
+    
+    .sectionHeader {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    
+    .servingsAdjuster {
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .ingredientText {
+      font-size: 15px;
+    }
+  }

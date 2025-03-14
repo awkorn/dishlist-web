@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
-import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
 import styles from "./DishListSelector.module.css";
 
 // Fetch user's owned and collaborated dishlists
@@ -26,29 +25,21 @@ const DishListSelector = ({
   value,
   onChange,
 }) => {
-  // Use either controlled props or context, allowing the component to be more versatile
-  const recipeFormContext = useRecipeForm();
-  const contextSelectedDishList = recipeFormContext?.selectedDishList;
-  const setContextSelectedDishList = recipeFormContext?.setSelectedDishList;
-  const errors = recipeFormContext?.errors;
-
   const [internalSelectedDishList, setInternalSelectedDishList] = useState(
     value || ""
   );
 
-  // Determine which value and setter to use (props vs context)
-  const selectedDishList =
-    value !== undefined ? value : contextSelectedDishList;
+  // Determine which value and setter to use (props vs internal)
+  const selectedDishList = value !== undefined ? value : internalSelectedDishList;
 
   const handleDishListChange = (newValue) => {
     if (onChange) {
       onChange(newValue); // Controlled component using props
-    } else if (setContextSelectedDishList) {
-      setContextSelectedDishList(newValue); // Using context
     }
 
     setInternalSelectedDishList(newValue); // Internal state for uncontrolled usage
   };
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDishLists, setFilteredDishLists] = useState([]);
   const [allDishLists, setAllDishLists] = useState([]);
@@ -156,8 +147,8 @@ const DishListSelector = ({
   return (
     <div className={styles.dishlistSelectorSection}>
       <h3>Select DishList</h3>
-      {errors.dishList && (
-        <p className={styles.errorMessage}>{errors.dishList}</p>
+      {value === "" && (
+        <p className={styles.errorMessage}>Please select a DishList</p>
       )}
 
       <div id="dishlist-selector" className={styles.dishlistSelector}>

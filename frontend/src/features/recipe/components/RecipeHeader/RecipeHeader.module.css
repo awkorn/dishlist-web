@@ -1,0 +1,116 @@
+.recipeHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .recipeImageContainer {
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recipeImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .recipeInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .recipeTitle {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #274b75;
+    margin: 0;
+    line-height: 1.2;
+  }
+  
+  .recipeMetaInfo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 8px;
+  }
+  
+  .metaItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .metaIcon {
+    font-size: 20px;
+    color: #274b75;
+  }
+  
+  .metaText {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .metaLabel {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .metaValue {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .creationDate {
+    font-size: 14px;
+    color: #888;
+    margin-top: 4px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .recipeImageContainer {
+      height: 300px;
+    }
+    
+    .recipeTitle {
+      font-size: 28px;
+    }
+    
+    .metaItem {
+      gap: 6px;
+    }
+    
+    .metaIcon {
+      font-size: 18px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .recipeHeader {
+      gap: 16px;
+    }
+    
+    .recipeImageContainer {
+      height: 200px;
+    }
+    
+    .recipeTitle {
+      font-size: 24px;
+    }
+    
+    .recipeMetaInfo {
+      gap: 16px;
+    }
+  }

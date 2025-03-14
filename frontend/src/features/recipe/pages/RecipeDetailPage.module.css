@@ -1,0 +1,141 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    background-color: #F4F2EE;
+  }
+  
+  .recipeContainer {
+    max-width: 1200px;
+    width: 90%;
+    margin: 40px auto;
+    padding: 0 0 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .recipeActionsBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 10px 0 20px;
+  }
+  
+  .recipeContent {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+  }
+  
+  .mainContent {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .sideContent {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .primaryButton {
+    background-color: #274b75;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 16px;
+  }
+  
+  .primaryButton:hover {
+    background-color: #1c3657;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Loading & Error States */
+  .loadingContainer, .errorContainer, .unauthorizedMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    margin: 40px auto;
+    background-color: white;
+    border-radius: 12px;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loadingSpinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(39, 75, 117, 0.2);
+    border-radius: 50%;
+    border-top-color: #274b75;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .errorContainer h2, .unauthorizedMessage h2 {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .errorContainer p {
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .recipeContainer {
+      width: 95%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .recipeContent {
+      grid-template-columns: 1fr;
+    }
+    
+    .sideContent {
+      order: 1;
+    }
+    
+    .mainContent {
+      order: 2;
+    }
+    
+    .recipeActionsBar {
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .recipeContainer {
+      margin: 20px auto;
+      width: 100%;
+      padding: 0 15px 40px;
+    }
+  }

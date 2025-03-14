@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
-import { ADD_RECIPE_TO_DISHLIST } from '../../../graphql/mutations/recipe';
-import { GET_DISHLIST_RECIPES } from '../../../graphql/queries/dishListDetail';
+import { ADD_RECIPE_TO_DISHLIST } from '../../../../graphql/mutations/recipe';
+import { GET_DISHLIST_RECIPES } from '../../../../graphql/queries/dishListDetail';
 import DishListSelector from '../DishListSelector/DishListSelector';
 import styles from './AddToDishListButton.module.css';
 
