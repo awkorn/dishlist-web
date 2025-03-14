@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { CREATE_RECIPE } from "../../../graphql/mutations/recipe";
 import TopNav from "../../../components/layout/TopNav/TopNav";
-import PageTitle from "../../../components/common/PageTitle/PageTitle";
 import AddRecipeForm from "../components/AddRecipeForm/AddRecipeForm";
 import { RecipeFormProvider } from "../../../contexts/RecipeFormContext";
 import styles from "./AddRecipePage.module.css";

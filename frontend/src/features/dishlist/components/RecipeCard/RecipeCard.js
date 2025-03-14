@@ -1,5 +1,6 @@
 import React from "react";
-import "./RecipeCard.css";
+import styles from "./RecipeCard.module.css";
+import placeholderImage from '../../../../assets/images/placeholder.png';
 
 const RecipeCard = ({ recipe, isExpanded, onClick, onRemove, isUserCreator }) => {
   const { title, cookTime, prepTime, servings, image, ingredients, instructions, tags, creatorId } = recipe;
@@ -23,32 +24,32 @@ const RecipeCard = ({ recipe, isExpanded, onClick, onRemove, isUserCreator }) =>
   };
   
   // Get placeholder image if no image is provided
-  const recipeImage = image || "/api/placeholder/400/300";
+  const recipeImage = image || placeholderImage;
   
   return (
-    <div className={`recipe-card ${isExpanded ? "expanded" : ""}`}>
-      <div className="recipe-card-header" onClick={onClick}>
-        <div className="recipe-image-container">
-          <img src={recipeImage} alt={title} className="recipe-image" />
+    <div className={`${styles.recipeCard} ${isExpanded ? styles.expanded : ""}`}>
+      <div className={styles.recipeCardHeader} onClick={onClick}>
+        <div className={styles.recipeImageContainer}>
+          <img src={recipeImage} alt={title} className={styles.recipeImage} />
         </div>
-        <div className="recipe-card-info">
-          <h3 className="recipe-title">{title}</h3>
-          <div className="recipe-meta">
-            {prepTime && <span className="prep-time">Prep: {formatTime(prepTime)}</span>}
-            {cookTime && <span className="cook-time">Cook: {formatTime(cookTime)}</span>}
-            {servings && <span className="servings">Serves: {servings}</span>}
+        <div className={styles.recipeCardInfo}>
+          <h3 className={styles.recipeTitle}>{title}</h3>
+          <div className={styles.recipeMeta}>
+            {prepTime && <span className={styles.prepTime}>Prep: {formatTime(prepTime)}</span>}
+            {cookTime && <span className={styles.cookTime}>Cook: {formatTime(cookTime)}</span>}
+            {servings && <span className={styles.servings}>Serves: {servings}</span>}
           </div>
           {tags && tags.length > 0 && (
-            <div className="recipe-tags">
+            <div className={styles.recipeTags}>
               {tags.map((tag, index) => (
-                <span key={index} className="tag">{tag}</span>
+                <span key={index} className={styles.tag}>{tag}</span>
               ))}
             </div>
           )}
         </div>
         {onRemove && (
           <button 
-            className="remove-recipe-btn" 
+            className={styles.removeRecipeBtn} 
             onClick={(e) => {
               e.stopPropagation();
               onRemove();
@@ -61,13 +62,13 @@ const RecipeCard = ({ recipe, isExpanded, onClick, onRemove, isUserCreator }) =>
       </div>
       
       {isExpanded && (
-        <div className="recipe-details">
+        <div className={styles.recipeDetails}>
           {ingredients && ingredients.length > 0 && (
-            <div className="ingredients-section">
+            <div className={styles.ingredientsSection}>
               <h4>Ingredients</h4>
-              <ul className="ingredients-list">
+              <ul className={styles.ingredientsList}>
                 {ingredients.map((ingredient, index) => (
-                  <li key={index} className="ingredient-item">
+                  <li key={index} className={styles.ingredientItem}>
                     {ingredient.amount && ingredient.unit 
                       ? `${ingredient.amount} ${ingredient.unit} ${ingredient.name}`
                       : ingredient.amount 
@@ -80,20 +81,20 @@ const RecipeCard = ({ recipe, isExpanded, onClick, onRemove, isUserCreator }) =>
           )}
           
           {instructions && instructions.length > 0 && (
-            <div className="instructions-section">
+            <div className={styles.instructionsSection}>
               <h4>Instructions</h4>
-              <ol className="instructions-list">
+              <ol className={styles.instructionsList}>
                 {instructions.map((instruction, index) => (
-                  <li key={index} className="instruction-item">{instruction}</li>
+                  <li key={index} className={styles.instructionItem}>{instruction}</li>
                 ))}
               </ol>
             </div>
           )}
           
-          <div className="recipe-actions">
-            <button className="view-full-recipe">View Full Recipe</button>
+          <div className={styles.recipeActions}>
+            <button className={styles.viewFullRecipe}>View Full Recipe</button>
             {isUserCreator && (
-              <button className="edit-recipe">Edit Recipe</button>
+              <button className={styles.editRecipe}>Edit Recipe</button>
             )}
           </div>
         </div>
