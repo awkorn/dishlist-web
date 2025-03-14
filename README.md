@@ -97,7 +97,7 @@ DishList is a comprehensive **recipe management and collaboration platform**. It
 ---
 
 ## **Future Enhancements**
-- Meal planning calendar
+- Import recipes from socials
 - Grocery list generation
 - Explore recipes page
 - Mobile apps for iOS and Android
