@@ -37,6 +37,7 @@ export const CREATE_RECIPE = gql`
       tags
       image
       creatorId
+      dishLists
       createdAt
     }
   }
@@ -55,7 +56,21 @@ export const ADD_RECIPE_TO_DISHLIST = gql`
     ) {
       id
       title
+      ingredients {
+        name
+        amount
+        unit
+      }
+      instructions
+      cookTime
+      prepTime
+      servings
+      tags
+      image
+      creatorId
       dishLists
+      createdAt
+      updatedAt
     }
   }
 `;

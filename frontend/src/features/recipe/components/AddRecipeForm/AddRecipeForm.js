@@ -9,9 +9,10 @@ import NutritionCalculator from "../CalculateNutrition/NutritionCalculator";
 import TagInput from "../TagInput/TagInput";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import styles from "./AddRecipeForm.module.css";
+import { GET_DISHLIST_RECIPES } from "../../../../graphql/queries/dishListDetail";
 
 const AddRecipeForm = ({ createRecipe, loading, userId }) => {
-  const { title, setTitle, handleSubmit, resetForm, errors } = useRecipeForm();
+  const { title, setTitle, handleSubmit, resetForm, errors, selectedDishList } = useRecipeForm();
 
   const location = useLocation();
   const [dishListParam, setDishListParam] = useState(null);
@@ -27,7 +28,40 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
 
   const onSubmit = (e) => {
     handleSubmit(e, (variables) => {
-      createRecipe({ variables: { ...variables, creatorId: userId } });
+      createRecipe({ 
+        variables: { ...variables, creatorId: userId },
+        update: (cache, { data: { createRecipe } }) => {
+          // Try to read the current recipes from the cache
+          try {
+            const existingData = cache.readQuery({
+              query: GET_DISHLIST_RECIPES,
+              variables: { 
+                dishListId: selectedDishList, 
+                userId 
+              }
+            });
+
+            // If we have existing data, update the cache with new recipe
+            if (existingData) {
+              cache.writeQuery({
+                query: GET_DISHLIST_RECIPES,
+                variables: { 
+                  dishListId: selectedDishList, 
+                  userId 
+                },
+                data: {
+                  getDishListRecipes: [
+                    createRecipe,
+                    ...existingData.getDishListRecipes
+                  ]
+                }
+              });
+            }
+          } catch (e) {
+            console.log("Cache update error or first recipe in this DishList:", e);
+          }
+        }
+      });
     });
   };
 

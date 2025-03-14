@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { CREATE_RECIPE } from "../../../graphql/mutations/recipe";
+import { GET_DISHLIST_RECIPES } from "../../../graphql/queries/dishListDetail";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import AddRecipeForm from "../components/AddRecipeForm/AddRecipeForm";
 import { RecipeFormProvider } from "../../../contexts/RecipeFormContext";
@@ -24,7 +25,7 @@ const AddRecipePage = () => {
       
       // Navigate to the dishlist page that was specified in the URL query or default
       if (dishListId) {
-        navigate(`/dishlist/${dishListId}`, { state: { refresh: true } });
+        navigate(`/dishlist/${dishListId}`);
       } else if (data.createRecipe.dishLists && data.createRecipe.dishLists.length > 0) {
         navigate(`/dishlist/${data.createRecipe.dishLists[0]}`);
       } else {
@@ -33,6 +34,40 @@ const AddRecipePage = () => {
     },
     onError: (error) => {
       toast.error(`Error creating recipe: ${error.message}`);
+    },
+    update: (cache, { data: { createRecipe } }) => {
+      // Only update cache if we have a dishListId
+      if (dishListId) {
+        try {
+          // Try to read existing recipes from cache
+          const existingData = cache.readQuery({
+            query: GET_DISHLIST_RECIPES,
+            variables: { 
+              dishListId, 
+              userId: currentUser?.uid 
+            }
+          });
+
+          // If we have existing data, update the cache with the new recipe
+          if (existingData) {
+            cache.writeQuery({
+              query: GET_DISHLIST_RECIPES,
+              variables: { 
+                dishListId, 
+                userId: currentUser?.uid 
+              },
+              data: {
+                getDishListRecipes: [
+                  createRecipe,
+                  ...existingData.getDishListRecipes
+                ]
+              }
+            });
+          }
+        } catch (e) {
+          console.log("Cache update error or first recipe in this DishList:", e);
+        }
+      }
     }
   });
 

@@ -6,14 +6,13 @@ import {
   GET_DISHLIST_RECIPES,
 } from "../../../graphql/queries/dishListDetail";
 import {
-  REMOVE_RECIPE_FROM_DISHLIST,
   LEAVE_COLLABORATION,
   INVITE_COLLABORATOR,
   UPDATE_VISIBILITY,
 } from "../../../graphql/mutations/dishListDetail";
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
-import RecipeCard from "../components/RecipeCard/RecipeCard";
+import RecipeList from "../components/RecipeList/RecipeList";
 import { toast } from "react-toastify";
 import SearchUserModal from "../components/SearchUserModal/SearchUserModal";
 import VisibilitySelector from "../components/VisibilitySelector/VisibilitySelector";
@@ -38,6 +37,7 @@ const DishListDetailPage = () => {
   } = useQuery(GET_DISHLIST_DETAIL, {
     variables: { id, userId: currentUser?.uid },
     skip: !currentUser?.uid,
+    fetchPolicy: "cache-and-network",
   });
 
   // Fetch recipes in this dishlist
@@ -45,14 +45,14 @@ const DishListDetailPage = () => {
     loading: recipesLoading,
     error: recipesError,
     data: recipesData,
-    refetch: refetchRecipes,
   } = useQuery(GET_DISHLIST_RECIPES, {
     variables: { dishListId: id, userId: currentUser?.uid },
     skip: !currentUser?.uid,
+    fetchPolicy: "cache-and-network",
+    notifyOnNetworkStatusChange: true,
   });
 
   // Mutations
-  const [removeRecipe] = useMutation(REMOVE_RECIPE_FROM_DISHLIST);
   const [leaveCollaboration] = useMutation(LEAVE_COLLABORATION);
   const [inviteCollaborator] = useMutation(INVITE_COLLABORATOR);
   const [updateVisibility] = useMutation(UPDATE_VISIBILITY);
@@ -76,25 +76,6 @@ const DishListDetailPage = () => {
       setFilteredRecipes(recipes);
     }
   }, [searchTerm, recipes]);
-
-  // Handle removing a recipe from the dishlist
-  const handleRemoveRecipe = async (recipeId) => {
-    try {
-      await removeRecipe({
-        variables: {
-          recipeId,
-          dishListId: id,
-          userId: currentUser?.uid,
-        },
-      });
-
-      // Update local state to remove the recipe
-      setRecipes((prev) => prev.filter((recipe) => recipe.id !== recipeId));
-      toast.success("Recipe removed from dishlist");
-    } catch (error) {
-      toast.error("Failed to remove recipe: " + error.message);
-    }
-  };
 
   // Handle leaving collaboration
   const handleLeaveCollaboration = async () => {
@@ -211,6 +192,14 @@ const DishListDetailPage = () => {
   const userIsCollaborator = dishlist.collaborators.includes(currentUser?.uid);
   const userIsFollower = dishlist.followers.includes(currentUser?.uid);
 
+  const userRole = userIsOwner
+    ? "owner"
+    : userIsCollaborator
+    ? "collaborator"
+    : userIsFollower
+    ? "follower"
+    : "visitor";
+
   return (
     <div className="dishlist-detail-container">
       <TopNav
@@ -300,41 +289,34 @@ const DishListDetailPage = () => {
       )}
 
       {/* Recipes grid */}
-      <div className="recipes-container">
-        {filteredRecipes.length > 0 ? (
-          <div className="recipes-grid">
-            {filteredRecipes.map((recipe) => (
-              <RecipeCard
-                key={recipe.id}
-                recipe={recipe}
-                canRemove={
-                  userIsOwner ||
-                  (userIsCollaborator && recipe.creatorId === currentUser?.uid)
-                }
-                onRemove={() => handleRemoveRecipe(recipe.id)}
-                onClick={() => navigate(`/recipe/${recipe.id}`)}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="empty-state">
-            <h3>No recipes found</h3>
-            {searchTerm ? (
+      <RecipeList
+        recipes={filteredRecipes}
+        dishListId={id}
+        userRole={userRole}
+        currentUserId={currentUser?.uid}
+        onRecipeClick={(recipeId) => navigate(`/recipe/${recipeId}`)}
+        emptyStateContent={
+          searchTerm ? (
+            <div className="empty-state">
+              <h3>No recipes found</h3>
               <p>No recipes match your search. Try a different term.</p>
-            ) : (
+            </div>
+          ) : (
+            <div className="empty-state">
+              <h3>No recipes found</h3>
               <p>This dishlist doesn't have any recipes yet.</p>
-            )}
-            {(userIsOwner || userIsCollaborator) && (
-              <button
-                className="primary-button"
-                onClick={() => navigate(`/add-recipe?dishListId=${id}`)}
-              >
-                Add First Recipe
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+              {(userIsOwner || userIsCollaborator) && (
+                <button
+                  className="primary-button"
+                  onClick={() => navigate(`/add-recipe?dishListId=${id}`)}
+                >
+                  Add First Recipe
+                </button>
+              )}
+            </div>
+          )
+        }
+      />
 
       {/* Search modal for inviting collaborators */}
       {searchModalOpen && (
