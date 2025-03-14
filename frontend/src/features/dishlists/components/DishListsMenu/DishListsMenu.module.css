@@ -1,4 +1,16 @@
-.header-menu {
+.menuContainer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; 
+  right: 5%; 
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  margin: 0;
+}
+
+.headerMenu {
   width: 40px; 
   height: 40px;
   cursor: pointer;
@@ -6,12 +18,11 @@
   padding: 4px;
 }
 
-.header-menu:hover {
+.headerMenu:hover {
   transform: scale(1.1);
-  background-color: rgba(39, 75, 117, 0.08);
 }
 
-.menu-options {
+.menuOptions {
   position: absolute;
   top: 45px;
   right: 0;
@@ -25,11 +36,11 @@
   z-index: 20;
   min-width: 220px;
   padding: 12px;
-  animation: slide-down 0.25s ease;
+  animation: slideDown 0.25s ease;
   overflow: hidden;
 }
 
-@keyframes slide-down {
+@keyframes slideDown {
   0% {
     opacity: 0;
     transform: translateY(-10px);
@@ -40,7 +51,7 @@
   }
 }
 
-.menu-options::before {
+.menuOptions::before {
   content: '';
   position: absolute;
   top: -6px;
@@ -52,7 +63,7 @@
   border-radius: 2px;
 }
 
-.menu-options button {
+.menuOptions button {
   background: none;
   border: none;
   cursor: pointer;
@@ -71,7 +82,7 @@
   overflow: hidden;
 }
 
-.menu-options button::after {
+.menuOptions button::after {
   content: '';
   position: absolute;
   width: 100%;
@@ -87,33 +98,33 @@
   transition: transform 0.3s, opacity 0.5s;
 }
 
-.menu-options button:active::after {
+.menuOptions button:active::after {
   transform: scale(0, 0);
   opacity: 0.3;
   transition: 0s;
 }
 
-.menu-options button:hover {
+.menuOptions button:hover {
   background-color: #f5f5f5;
   color: #274b75;
 }
 
-.menu-options button.active {
+.activeOption {
   background-color: #e6f7ff;
   color: #274b75;
   font-weight: 600;
 }
 
-.menu-options button.disabled {
+.disabledOption {
   color: #ccc;
   cursor: not-allowed;
 }
 
-.menu-options button.disabled:hover {
+.disabledOption:hover {
   background-color: transparent;
 }
 
-.menu-options select {
+.menuOptions select {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #ddd;
@@ -129,105 +140,35 @@
   transition: all 0.2s ease;
 }
 
-.menu-options select:focus {
+.menuOptions select:focus {
   border-color: #274b75;
   outline: none;
   box-shadow: 0 0 0 3px rgba(39, 75, 117, 0.1);
 }
 
 /* Selected dish info styles */
-.selected-dish-info {
+.selectedDishInfo {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid #eee;
   font-size: 14px;
 }
 
-.selected-dish-info p {
+.selectedDishInfo p {
   margin: 0;
   color: #666;
   text-align: center;
 }
 
-.selected-dish-info strong {
+.selectedDishInfo strong {
   color: #274b75;
   font-weight: 600;
 }
 
 /* Menu divider */
-.menu-divider {
+.menuDivider {
   height: 1px;
   background-color: #eee;
   margin: 5px 0;
   border: none;
 }
-
-/* Dark mode support */
-/* @media (prefers-color-scheme: dark) {
-  .menu-options {
-    background: #222;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  }
-  
-  .menu-options::before {
-    background-color: #222;
-  }
-  
-  .menu-options button {
-    color: #e0e0e0;
-  }
-  
-  .menu-options button:hover {
-    background-color: #333;
-    color: #89CFF0;
-  }
-  
-  .menu-options button.active {
-    background-color: #1c3657;
-    color: #89CFF0;
-  }
-  
-  .menu-options button.disabled {
-    color: #666;
-  }
-  
-  .menu-options select {
-    background-color: #333;
-    border-color: #444;
-    color: #e0e0e0;
-  }
-  
-  .selected-dish-info {
-    border-top-color: #444;
-  }
-  
-  .selected-dish-info p {
-    color: #aaa;
-  }
-  
-  .selected-dish-info strong {
-    color: #89CFF0;
-  }
-  
-  .menu-divider {
-    background-color: #444;
-  }
-}
-
-@media (max-width: 480px) {
-  .header-menu {
-    width: 32px; 
-    height: 32px;
-  }
-  
-  .menu-options {
-    width: 200px;
-    right: 0;
-    padding: 10px;
-  }
-  
-  .menu-options button {
-    padding: 8px 12px;
-    font-size: 14px;
-  }
-} */

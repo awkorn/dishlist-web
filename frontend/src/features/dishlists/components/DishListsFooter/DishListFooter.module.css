@@ -1,4 +1,4 @@
-.footer-container {
+.footerContainer {
   width: 100%;
   height: 125px;
   background-repeat: no-repeat;
@@ -11,13 +11,13 @@
 }
 
 @media (max-width: 768px) {
-  .footer-container {
+  .footerContainer {
     height: 100px; 
   }
 }
 
 @media (max-width: 480px) {
-  .footer-container {
+  .footerContainer {
     height: 75px; 
     background-position: 95% center; 
   }

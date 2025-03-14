@@ -1,8 +1,8 @@
 import React from "react";
-import "./DishListFooter.css";
+import styles from "./DishListFooter.module.css";
 
 const DishListFooter = () => {
-  return <div className="footer-container"></div>;
+  return <div className={styles.footerContainer}></div>;
 };
 
 export default DishListFooter;

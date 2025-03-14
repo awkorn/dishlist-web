@@ -2,7 +2,7 @@ import React from "react";
 import { useMutation } from "@apollo/client";
 import pinIcon from "../../../../assets/icons/pin-drawing.png";
 import { Link } from "react-router-dom";
-import "../../pages/DishListsPage.css"
+import styles from "../../pages/DishListsPage.module.css";
 import {
   FOLLOW_DISHLIST,
   UNFOLLOW_DISHLIST,
@@ -50,17 +50,17 @@ const DishListTile = ({
   };
 
   const handleDishListSelection = (dishListId) => {
-  if (selectionMode && onSelectDishList) {   
-    // Modified condition to ensure ownership check works
-    if (isOwner(dishListId)) {
-      onSelectDishList(dishListId === selectedDishList ? null : dishListId);
+    if (selectionMode && onSelectDishList) {   
+      // Modified condition to ensure ownership check works
+      if (isOwner(dishListId)) {
+        onSelectDishList(dishListId === selectedDishList ? null : dishListId);
+      }
     }
-  }
-};
+  };
 
   if (!dishLists || dishLists.length === 0)
     return (
-      <div className="no-dishlists-container">
+      <div className={styles.noDishlistsContainer}>
         <div className="empty-state-icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -74,12 +74,12 @@ const DishListTile = ({
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
-        <h3 className="no-dishlists-message">No DishLists Found</h3>
+        <h3 className={styles.noDishlistsMessage}>No DishLists Found</h3>
       </div>
     );
 
   return (
-    <div className="dish-tiles">
+    <div className={styles.dishTiles}>
       {dishLists.map((dishlist) => {
         const userIsOwner = dishlist.userId === currentUserId;
         const userIsCollaborator =
@@ -90,16 +90,20 @@ const DishListTile = ({
         const isSelected = selectedDishList === dishlist.id;
         const canSelect = selectionMode && userIsOwner;
 
+        const tileClasses = [
+          styles.dishTile,
+          isSelected ? styles.selectedTile : "",
+          canSelect ? styles.selectableTile : "",
+        ].filter(Boolean).join(" ");
+
         return (
           <div
             key={dishlist.id}
-            className={`dish-tile ${isSelected ? "selected" : ""} ${
-              canSelect ? "selectable" : ""
-            }`}
+            className={tileClasses}
             onClick={() => handleDishListSelection(dishlist.id)}
           >
             {isSelected && (
-              <div className="selection-indicator">
+              <div className={styles.selectionIndicator}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -114,8 +118,8 @@ const DishListTile = ({
               </div>
             )}
 
-            <div className="dish-tile-header">
-              <h3 className="list-title">
+            <div className={styles.dishTileHeader}>
+              <h3 className={styles.listTitle}>
                 {selectionMode ? (
                   <span>{dishlist.title}</span>
                 ) : (
@@ -123,22 +127,22 @@ const DishListTile = ({
                 )}
               </h3>
               {dishlist.isPinned && (
-                <img src={pinIcon} alt="pin" className="pin" />
+                <img src={pinIcon} alt="pin" className={styles.pin} />
               )}
             </div>
 
-            <div className="status-badges">
-              {userIsOwner && <span className="badge owner-badge">Owner</span>}
+            <div className={styles.statusBadges}>
+              {userIsOwner && <span className={`${styles.badge} ${styles.ownerBadge}`}>Owner</span>}
               {userIsCollaborator && (
-                <span className="badge collab-badge">Collaborator</span>
+                <span className={`${styles.badge} ${styles.collabBadge}`}>Collaborator</span>
               )}
               {userIsFollower && (
-                <span className="badge follower-badge">Following</span>
+                <span className={`${styles.badge} ${styles.followerBadge}`}>Following</span>
               )}
               {userHasPendingRequest && (
-                <span className="badge pending-badge">Pending</span>
+                <span className={`${styles.badge} ${styles.pendingBadge}`}>Pending</span>
               )}
-              <span className={`badge visibility-badge ${dishlist.visibility}`}>
+              <span className={`${styles.badge} ${styles.visibilityBadge} ${styles[dishlist.visibility + 'Badge']}`}>
                 {dishlist.visibility.charAt(0).toUpperCase() +
                   dishlist.visibility.slice(1)}
               </span>
@@ -146,10 +150,10 @@ const DishListTile = ({
 
             {/* Only show follow/unfollow for non-owners and non-collaborators when not in selection mode */}
             {!selectionMode && !userIsOwner && !userIsCollaborator && (
-              <div className="follow-action">
+              <div className={styles.followAction}>
                 {userIsFollower ? (
                   <button
-                    className="unfollow-btn"
+                    className={styles.unfollowBtn}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleUnfollow(dishlist.id);
@@ -159,7 +163,7 @@ const DishListTile = ({
                   </button>
                 ) : dishlist.visibility === "public" ? (
                   <button
-                    className="follow-btn"
+                    className={styles.followBtn}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleFollow(dishlist.id);
@@ -170,7 +174,7 @@ const DishListTile = ({
                 ) : (
                   !userHasPendingRequest && (
                     <button
-                      className="request-follow-btn"
+                      className={styles.requestFollowBtn}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleRequestFollow(dishlist.id);

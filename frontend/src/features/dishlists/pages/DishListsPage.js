@@ -4,10 +4,11 @@ import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import PageTitle from "../../../components/common/PageTitle/PageTitle"
 import DishListTile from "../components/DishListsTile/DishListTile";
-import DishListsMenu from "../../dishlists/components/DishListsMenu/DishListsMenu";
-import DishListFooter from "../../dishlists/components/DishListsFooter/DishListFooter";
+import DishListsMenu from "../components/DishListsMenu/DishListsMenu";
+import DishListFooter from "../components/DishListsFooter/DishListFooter";
 import { FETCH_DISHLISTS, ADD_DEFAULT_DISHLIST } from "../../../graphql";
 import { useLocation } from "react-router-dom";
+import styles from "./DishListsPage.module.css";
 
 const DishListsPage = () => {
   const location = useLocation();
@@ -117,38 +118,36 @@ const DishListsPage = () => {
   if (error) return <p>Error loading DishLists!</p>;
 
   return (
-    <div className="page-container">
+    <div className={styles.pageContainer}>
       <TopNav
         pageType="dishlists"
         items={allDishLists}
         onSearch={(items) => filterDishListsByMode(items, viewMode)}
       />
 
-      <div className="title-menu-container">
+      <div className={styles.titleMenuContainer}>
         <PageTitle title="DishLists" />
-        <div className="view-controls">
+        <div className={styles.viewControls}>
           <button
-            className={`view-btn ${viewMode === "all" ? "active" : ""}`}
+            className={`${styles.viewBtn} ${viewMode === "all" ? styles.activeViewBtn : ""}`}
             onClick={() => handleViewModeChange("all")}
           >
             All
           </button>
           <button
-            className={`view-btn ${viewMode === "owned" ? "active" : ""}`}
+            className={`${styles.viewBtn} ${viewMode === "owned" ? styles.activeViewBtn : ""}`}
             onClick={() => handleViewModeChange("owned")}
           >
             My DishLists
           </button>
           <button
-            className={`view-btn ${
-              viewMode === "collaborated" ? "active" : ""
-            }`}
+            className={`${styles.viewBtn} ${viewMode === "collaborated" ? styles.activeViewBtn : ""}`}
             onClick={() => handleViewModeChange("collaborated")}
           >
             Collaborations
           </button>
           <button
-            className={`view-btn ${viewMode === "followed" ? "active" : ""}`}
+            className={`${styles.viewBtn} ${viewMode === "followed" ? styles.activeViewBtn : ""}`}
             onClick={() => handleViewModeChange("followed")}
           >
             Following
@@ -164,7 +163,7 @@ const DishListsPage = () => {
         />
 
         {selectionMode && (
-          <div className="selection-mode-indicator">
+          <div className={styles.selectionModeIndicator}>
             <p>Select a DishList to edit, delete, or pin</p>
           </div>
         )}

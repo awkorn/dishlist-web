@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { useAuth } from "../../../../contexts/AuthProvider";
 import menuIcon from "../../../../assets/icons/icon-menu.png";
 import { useNavigate } from "react-router-dom";
-import "./DishListsMenu.css";
+import styles from "./DishListsMenu.module.css";
 import {
   DELETE_DISHLIST,
   EDIT_DISHLIST,
@@ -175,12 +175,12 @@ const DishListsMenu = ({
   );
 
   return (
-    <div className="menu-container">
+    <div className={styles.menuContainer}>
       {/* Menu Icon */}
       <img
         src={menuIcon}
         alt="menu"
-        className="header-menu"
+        className={styles.headerMenu}
         onClick={() => setMenuOpen(!menuOpen)}
       />
 
@@ -188,14 +188,14 @@ const DishListsMenu = ({
 
       {/* Dropdown Menu */}
       {menuOpen && (
-        <div className="menu-options">
+        <div className={styles.menuOptions}>
           <button onClick={() => navigate("/create-dishlist")}>
             ➕ Add DishList
           </button>
 
           <button
             onClick={() => toggleSelectionMode(!selectionMode)}
-            className={selectionMode ? "active" : ""}
+            className={selectionMode ? styles.activeOption : ""}
           >
             {selectionMode ? "✓ Select Mode (On)" : "⬚ Select DishList"}
           </button>
@@ -203,7 +203,7 @@ const DishListsMenu = ({
           <button
             onClick={handleEditDishList}
             disabled={!selectedDishListOwned}
-            className={!selectedDishListOwned ? "disabled" : ""}
+            className={!selectedDishListOwned ? styles.disabledOption : ""}
           >
             ✏️ Edit DishList
           </button>
@@ -211,7 +211,7 @@ const DishListsMenu = ({
           <button
             onClick={handleDeleteDishList}
             disabled={!selectedDishListOwned}
-            className={!selectedDishListOwned ? "disabled" : ""}
+            className={!selectedDishListOwned ? styles.disabledOption : ""}
           >
             🗑 Delete DishList
           </button>
@@ -219,13 +219,13 @@ const DishListsMenu = ({
           <button
             onClick={handleTogglePinDishList}
             disabled={!selectedDishListOwned}
-            className={!selectedDishListOwned ? "disabled" : ""}
+            className={!selectedDishListOwned ? styles.disabledOption : ""}
           >
             📌 {selectedDishListData?.isPinned ? "Unpin" : "Pin"} DishList
           </button>
 
           {localSelectedDishList && (
-            <div className="selected-dish-info">
+            <div className={styles.selectedDishInfo}>
               <p>
                 Selected: <strong>{selectedDishListData?.title}</strong>
               </p>

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TopNav from "../../../components/layout/TopNav/TopNav"
+import TopNav from "../../../components/layout/TopNav/TopNav";
 import { useMutation } from "@apollo/client";
 import { ADD_DISHLIST } from "../../../graphql/mutations/dishLists";
 import { FETCH_DISHLISTS } from "../../../graphql/queries/dishLists";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import PageTitle from "../../../components/common/PageTitle/PageTitle";
-import "./AddDishListPage.css";
+import styles from "./AddDishListPage.module.css";
 
 const AddDishListPage = () => {
   const [title, setTitle] = useState("");
@@ -71,17 +71,17 @@ const AddDishListPage = () => {
   };
 
   return (
-    <div className="page-container">
+    <div className={styles.pageContainer}>
       <TopNav pageType={"add-dishlist"} />
-      <div className="create-dishlist-container">
+      <div className={styles.createDishlistContainer}>
         <PageTitle title="Create new DishList" />
 
-        <form className="add-dishlist-form" onSubmit={handleAddDishList}>
-          <div className="form-group">
+        <form className={styles.addDishlistForm} onSubmit={handleAddDishList}>
+          <div className={styles.formGroup}>
             <label htmlFor="dishlist-title">Title</label>
             <input
               id="dishlist-title"
-              className="form-input"
+              className={styles.formInput}
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -90,11 +90,11 @@ const AddDishListPage = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label htmlFor="dishlist-description">Description (optional)</label>
             <textarea
               id="dishlist-description"
-              className="form-textarea"
+              className={styles.formTextarea}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Add a description for your DishList"
@@ -102,13 +102,13 @@ const AddDishListPage = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Visibility</label>
-            <div className="visibility-options">
+            <div className={styles.visibilityOptions}>
               <button
                 type="button"
-                className={`visibility-btn ${
-                  visibility === "public" ? "active" : ""
+                className={`${styles.visibilityBtn} ${
+                  visibility === "public" ? styles.activeVisibility : ""
                 }`}
                 onClick={() => setVisibility("public")}
               >
@@ -117,8 +117,8 @@ const AddDishListPage = () => {
 
               <button
                 type="button"
-                className={`visibility-btn ${
-                  visibility === "private" ? "active" : ""
+                className={`${styles.visibilityBtn} ${
+                  visibility === "private" ? styles.activeVisibility : ""
                 }`}
                 onClick={() => setVisibility("private")}
               >
@@ -127,8 +127,8 @@ const AddDishListPage = () => {
 
               <button
                 type="button"
-                className={`visibility-btn ${
-                  visibility === "shared" ? "active" : ""
+                className={`${styles.visibilityBtn} ${
+                  visibility === "shared" ? styles.activeVisibility : ""
                 }`}
                 onClick={() => setVisibility("shared")}
               >
@@ -136,7 +136,7 @@ const AddDishListPage = () => {
               </button>
             </div>
 
-            <div className="visibility-explanation">
+            <div className={styles.visibilityExplanation}>
               {visibility === "public" && (
                 <p>
                   Anyone can view, follow, and copy recipes from this DishList.
@@ -151,15 +151,15 @@ const AddDishListPage = () => {
             </div>
           </div>
 
-          <div className="form-actions">
+          <div className={styles.formActions}>
             <button
               type="button"
-              className="cancel-btn"
+              className={styles.cancelBtn}
               onClick={() => navigate("/dishlists")}
             >
               Cancel
             </button>
-            <button type="submit" className="create-btn" disabled={loading}>
+            <button type="submit" className={styles.createBtn} disabled={loading}>
               {loading ? "Creating..." : "Create DishList"}
             </button>
           </div>
