@@ -1,16 +1,16 @@
 import React from "react";
-import logo from "../../../assets/images/logo-color.png"
-import "./PageHeader.css";
+import logo from "../../../assets/images/logo-color.png";
+import styles from "./PageHeader.module.css";
 
-/* Page header used on sign in and sing up page */ 
+/* Page header used on sign-in and sign-up page */
 const PageHeader = ({ title }) => {
   return (
     <>
-      <header className="logo-banner">
-        <img src={logo} alt="DishList Logo" className="logo" />
+      <header className={styles.logoBanner}>
+        <img src={logo} alt="DishList Logo" className={styles.logo} />
       </header>
 
-      <header className="page-header">
+      <header className={styles.pageHeader}>
         <h1>{title}</h1>
       </header>
     </>

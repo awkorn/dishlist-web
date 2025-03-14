@@ -1,5 +1,5 @@
 /* ===== PAGE HEADER COMPONENT ===== */
-.page-header {
+.pageHeader {
   font-size: clamp(24px, 5vw, 32px); 
   color: #1E1E1E;
   font-family: 'Bricolage Grotesque', 'Poppins', sans-serif; 
@@ -11,7 +11,7 @@
   position: relative;
 }
 
-.logo-banner {
+.logoBanner {
   background-color: #274b75;  
   width: 100%;
   min-height: 100px; 
@@ -22,7 +22,7 @@
   position: relative;
 }
 
-.logo-banner::before {
+.logoBanner::before {
   content: '';
   position: absolute;
   bottom: 0;
@@ -33,7 +33,7 @@
 }
 
 .logo {
-  max-height: 110px; 
+  max-height: 90px; 
   width: auto;
   transition: all 0.3s ease;
 }
