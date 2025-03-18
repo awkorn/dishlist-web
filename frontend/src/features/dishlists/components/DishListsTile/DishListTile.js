@@ -1,6 +1,6 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import pinIcon from "../../../../assets/icons/pin-drawing.png";
+import pinIcon from "../../../../assets/icons/pin-icon.png";
 import { Link } from "react-router-dom";
 import styles from "../../pages/DishListsPage.module.css";
 import {
