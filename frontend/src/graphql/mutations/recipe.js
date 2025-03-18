@@ -74,3 +74,49 @@ export const ADD_RECIPE_TO_DISHLIST = gql`
     }
   }
 `;
+
+export const UPDATE_RECIPE = gql`
+  mutation UpdateRecipe(
+    $id: ID!
+    $userId: String!
+    $title: String
+    $ingredients: [IngredientInput]
+    $instructions: [String]
+    $cookTime: Int
+    $prepTime: Int
+    $servings: Int
+    $tags: [String]
+    $image: String
+  ) {
+    updateRecipe(
+      id: $id
+      userId: $userId
+      title: $title
+      ingredients: $ingredients
+      instructions: $instructions
+      cookTime: $cookTime
+      prepTime: $prepTime
+      servings: $servings
+      tags: $tags
+      image: $image
+    ) {
+      id
+      title
+      ingredients {
+        name
+        amount
+        unit
+      }
+      instructions
+      cookTime
+      prepTime
+      servings
+      tags
+      image
+      creatorId
+      dishLists
+      createdAt
+      updatedAt
+    }
+  }
+`;
