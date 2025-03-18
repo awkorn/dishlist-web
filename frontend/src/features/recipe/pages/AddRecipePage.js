@@ -83,7 +83,7 @@ const AddRecipePage = () => {
 
   // Add the update recipe mutation
   const [updateRecipe, { loading: updateLoading }] = useMutation(UPDATE_RECIPE, {
-    onCompleted: () => {
+    onCompleted: (data) => {
       toast.success("Recipe updated successfully!");
       navigate(`/recipe/${recipeId}`);
     },
@@ -146,62 +146,17 @@ const AddRecipePage = () => {
       <TopNav pageType="recipe-builder" />
       <div className={styles.addRecipeContainer}>
         <RecipeFormProvider>
-          <AddRecipeFormWrapper
+          <AddRecipeForm
+            createRecipe={isEditMode ? updateRecipe : createRecipe}
             isEditMode={isEditMode}
             recipeData={recipeData?.getRecipe}
-            dishListId={dishListId}
-            recipeId={recipeId}
-            createRecipe={createRecipe}
-            updateRecipe={updateRecipe}
             loading={loading}
             userId={currentUser.uid}
+            dishListParam={dishListId}
           />
         </RecipeFormProvider>
       </div>
     </div>
-  );
-};
-
-// Wrapper component to handle the recipe form context
-const AddRecipeFormWrapper = ({
-  isEditMode,
-  recipeData,
-  dishListId,
-  recipeId,
-  createRecipe,
-  updateRecipe,
-  loading,
-  userId
-}) => {
-  // Use the correct mutation based on mode
-  const mutationToUse = isEditMode ? 
-    (formData) => {
-      return updateRecipe({
-        variables: {
-          id: recipeId,
-          userId,
-          ...formData
-        }
-      });
-    } : 
-    (formData) => {
-      return createRecipe({
-        variables: {
-          creatorId: userId,
-          ...formData
-        }
-      });
-    };
-
-  return (
-    <AddRecipeForm
-      createRecipe={mutationToUse}
-      isEditMode={isEditMode}
-      recipeData={recipeData}
-      loading={loading}
-      userId={userId}
-      dishListParam={dishListId}
-    />
   );
 };
 

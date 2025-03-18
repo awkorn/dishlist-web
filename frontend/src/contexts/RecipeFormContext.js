@@ -42,50 +42,8 @@ export const RecipeFormProvider = ({ children }) => {
       newErrors.instructions = "At least one instruction is required";
     }
 
-    // Validate that a dishlist is selected
-    if (!selectedDishList) {
-      newErrors.dishList = "Please select a DishList";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  // Form submission handler
-  const handleSubmit = (event, createRecipeMutation) => {
-    event.preventDefault();
-
-    if (!validateForm()) return false;
-
-    // Filter out empty ingredients
-    const filteredIngredients = ingredients.filter(
-      (item) => item.name.trim() !== ""
-    );
-
-    // Filter out empty instructions
-    const filteredInstructions = instructions.filter(
-      (item) => item.trim() !== ""
-    );
-
-    // Transform data for mutation 
-    const recipeData = {
-      title,
-      servings: servings ? parseInt(servings) : null,
-      prepTime: prepTime ? parseInt(prepTime) : null,
-      cookTime: cookTime ? parseInt(cookTime) : null,
-      ingredients: filteredIngredients,
-      instructions: filteredInstructions,
-      tags,
-      image: image ? image.url : null,
-    };
-
-    try {
-      createRecipeMutation(recipeData);
-      return true;
-    } catch (error) {
-      setErrors({ submit: error.message });
-      return false;
-    }
   };
 
   // Reset form function
@@ -103,22 +61,6 @@ export const RecipeFormProvider = ({ children }) => {
     
     // Navigate back to dishlists page
     navigate("/dishlists");
-  };
-
-  // Add recipe to another DishList (without creating a new recipe)
-  const addToDishList = async (recipeId, dishListId, addRecipeMutation) => {
-    try {
-      await addRecipeMutation({
-        variables: {
-          recipeId,
-          dishListId,
-        }
-      });
-      return true;
-    } catch (error) {
-      setErrors({ submit: error.message });
-      return false;
-    }
   };
 
   // Value to be provided to consumers
@@ -147,8 +89,6 @@ export const RecipeFormProvider = ({ children }) => {
 
     // Functions
     validateForm,
-    handleSubmit,
-    addToDishList,
     resetForm,
   };
 

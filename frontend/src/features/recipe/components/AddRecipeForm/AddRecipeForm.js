@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import IngredientInput from "../IngredientInput/IngredientInput";
 import InstructionSteps from "../InstructionSteps/InstructionSteps";
 import TimeServingsInput from "../TimeServingsInput/TimeServingsInput";
@@ -21,10 +22,15 @@ const AddRecipeForm = ({
   const { 
     title, 
     setTitle, 
-    handleSubmit, 
+    ingredients,
+    instructions,
+    servings,
+    cookTime,
+    prepTime,
+    tags,
+    image, 
     resetForm, 
     errors, 
-    selectedDishList,
     setIngredients,
     setInstructions,
     setTags,
@@ -32,7 +38,8 @@ const AddRecipeForm = ({
     setPrepTime,
     setServings,
     setImage,
-    setSelectedDishList
+    setSelectedDishList,
+    validateForm
   } = useRecipeForm();
 
   const location = useLocation();
@@ -44,19 +51,20 @@ const AddRecipeForm = ({
     const dishListId = queryParams.get("dishListId");
     if (dishListId) {
       setDishListFromUrl(dishListId);
+      setSelectedDishList(dishListId);
     }
-  }, [location]);
+  }, [location, setSelectedDishList]);
 
   // Populate form with existing recipe data if in edit mode
   useEffect(() => {
     if (isEditMode && recipeData) {
-      setTitle(recipeData.title);
-      setIngredients(recipeData.ingredients);
-      setInstructions(recipeData.instructions);
+      setTitle(recipeData.title || "");
+      setIngredients(recipeData.ingredients || [{ name: "", amount: "", unit: "" }]);
+      setInstructions(recipeData.instructions || [""]);
       setTags(recipeData.tags || []);
-      setCookTime(recipeData.cookTime);
-      setPrepTime(recipeData.prepTime);
-      setServings(recipeData.servings);
+      setCookTime(recipeData.cookTime || "");
+      setPrepTime(recipeData.prepTime || "");
+      setServings(recipeData.servings || "");
       
       if (recipeData.image) {
         setImage({ url: recipeData.image });
@@ -71,20 +79,59 @@ const AddRecipeForm = ({
       setCookTime, setPrepTime, setServings, setImage, setSelectedDishList]);
 
   const onSubmit = (e) => {
-    handleSubmit(e, (formData) => {
-      createRecipe({
-        variables: isEditMode 
-          ? { 
-              id: recipeData.id,
-              userId: userId,
-              ...formData
-            }
-          : { 
-              creatorId: userId,
-              ...formData
-            }
-      });
-    });
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    // Filter out empty ingredients and instructions
+    const filteredIngredients = ingredients
+      .filter(ing => ing.name.trim() !== "")
+      .map(ing => ({
+        name: ing.name,
+        amount: ing.amount,
+        unit: ing.unit
+      })); // Clean the ingredients objects to remove __typename
+    
+    const filteredInstructions = instructions.filter(inst => inst.trim() !== "");
+    
+    try {
+      if (isEditMode) {
+        // Update existing recipe
+        createRecipe({
+          variables: {
+            id: recipeData.id,
+            userId: userId,
+            title,
+            ingredients: filteredIngredients,
+            instructions: filteredInstructions,
+            cookTime: cookTime ? parseInt(cookTime) : null,
+            prepTime: prepTime ? parseInt(prepTime) : null,
+            servings: servings ? parseInt(servings) : null,
+            tags,
+            image: image ? image.url : null
+          }
+        });
+      } else {
+        // Create new recipe
+        createRecipe({
+          variables: {
+            creatorId: userId,
+            title,
+            ingredients: filteredIngredients,
+            instructions: filteredInstructions,
+            cookTime: cookTime ? parseInt(cookTime) : null,
+            prepTime: prepTime ? parseInt(prepTime) : null,
+            servings: servings ? parseInt(servings) : null,
+            tags,
+            image: image ? image.url : null
+          }
+        });
+      }
+    } catch (error) {
+      toast.error(`Error ${isEditMode ? 'updating' : 'creating'} recipe: ${error.message}`);
+    }
   };
 
   return (
@@ -100,6 +147,7 @@ const AddRecipeForm = ({
             placeholder="Enter recipe title"
             className={errors.title ? styles.inputError : ""}
           />
+          {errors.title && <p className={styles.errorMessage}>{errors.title}</p>}
         </div>
 
         <TimeServingsInput />
