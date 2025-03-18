@@ -215,7 +215,7 @@ const RecipeDetailPage = () => {
             isCreator={isCreator}
             isSaved={isSaved}
             onSaveToggle={handleSaveToggle}
-            onEdit={() => navigate(`/edit-recipe/${id}`)}
+            onEdit={() => navigate(`/add-recipe?edit=true&recipeId=${id}`)}
           />
           
           <AddToDishListButton 
