@@ -9,58 +9,80 @@ import NutritionCalculator from "../CalculateNutrition/NutritionCalculator";
 import TagInput from "../TagInput/TagInput";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import styles from "./AddRecipeForm.module.css";
-import { GET_DISHLIST_RECIPES } from "../../../../graphql/queries/dishListDetail";
 
-const AddRecipeForm = ({ createRecipe, loading, userId }) => {
-  const { title, setTitle, handleSubmit, resetForm, errors, selectedDishList } = useRecipeForm();
+const AddRecipeForm = ({ 
+  createRecipe, 
+  loading, 
+  userId, 
+  isEditMode = false,
+  recipeData,
+  dishListParam 
+}) => {
+  const { 
+    title, 
+    setTitle, 
+    handleSubmit, 
+    resetForm, 
+    errors, 
+    selectedDishList,
+    setIngredients,
+    setInstructions,
+    setTags,
+    setCookTime,
+    setPrepTime,
+    setServings,
+    setImage,
+    setSelectedDishList
+  } = useRecipeForm();
 
   const location = useLocation();
-  const [dishListParam, setDishListParam] = useState(null);
+  const [dishListFromUrl, setDishListFromUrl] = useState(null);
 
   // Extract dishListId from URL query parameters if present
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const dishListId = queryParams.get("dishListId");
     if (dishListId) {
-      setDishListParam(dishListId);
+      setDishListFromUrl(dishListId);
     }
   }, [location]);
 
-  const onSubmit = (e) => {
-    handleSubmit(e, (variables) => {
-      createRecipe({ 
-        variables: { ...variables, creatorId: userId },
-        update: (cache, { data: { createRecipe } }) => {
-          // Try to read the current recipes from the cache
-          try {
-            const existingData = cache.readQuery({
-              query: GET_DISHLIST_RECIPES,
-              variables: { 
-                dishListId: selectedDishList, 
-                userId 
-              }
-            });
+  // Populate form with existing recipe data if in edit mode
+  useEffect(() => {
+    if (isEditMode && recipeData) {
+      setTitle(recipeData.title);
+      setIngredients(recipeData.ingredients);
+      setInstructions(recipeData.instructions);
+      setTags(recipeData.tags || []);
+      setCookTime(recipeData.cookTime);
+      setPrepTime(recipeData.prepTime);
+      setServings(recipeData.servings);
+      
+      if (recipeData.image) {
+        setImage({ url: recipeData.image });
+      }
+      
+      // If the recipe is in any dishlists, use the first one as the selected dishlist
+      if (recipeData.dishLists && recipeData.dishLists.length > 0) {
+        setSelectedDishList(recipeData.dishLists[0]);
+      }
+    }
+  }, [isEditMode, recipeData, setTitle, setIngredients, setInstructions, setTags, 
+      setCookTime, setPrepTime, setServings, setImage, setSelectedDishList]);
 
-            // If we have existing data, update the cache with new recipe
-            if (existingData) {
-              cache.writeQuery({
-                query: GET_DISHLIST_RECIPES,
-                variables: { 
-                  dishListId: selectedDishList, 
-                  userId 
-                },
-                data: {
-                  getDishListRecipes: [
-                    createRecipe,
-                    ...existingData.getDishListRecipes
-                  ]
-                }
-              });
+  const onSubmit = (e) => {
+    handleSubmit(e, (formData) => {
+      createRecipe({
+        variables: isEditMode 
+          ? { 
+              id: recipeData.id,
+              userId: userId,
+              ...formData
             }
-          } catch (e) {
-            console.log("Cache update error or first recipe in this DishList:", e);
-          }
-        }
+          : { 
+              creatorId: userId,
+              ...formData
+            }
       });
     });
   };
@@ -92,10 +114,12 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
 
         <TagInput />
 
-        <DishListSelector
-          currentUserId={userId}
-          dishListParam={dishListParam}
-        />
+        {!isEditMode && (
+          <DishListSelector
+            currentUserId={userId}
+            dishListParam={dishListFromUrl || dishListParam}
+          />
+        )}
 
         {/* Form Submission */}
         <div className={styles.formAction}>
@@ -107,7 +131,7 @@ const AddRecipeForm = ({ createRecipe, loading, userId }) => {
             Cancel
           </button>
           <button type="submit" className={styles.submitBtn} disabled={loading}>
-            {loading ? "Saving..." : "Save Recipe"}
+            {loading ? "Saving..." : isEditMode ? "Update Recipe" : "Save Recipe"}
           </button>
         </div>
 

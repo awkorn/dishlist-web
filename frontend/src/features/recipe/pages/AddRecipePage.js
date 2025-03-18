@@ -1,9 +1,11 @@
+// frontend/src/features/recipe/pages/AddRecipePage.js
 import React from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthProvider";
-import { CREATE_RECIPE } from "../../../graphql/mutations/recipe";
+import { CREATE_RECIPE, UPDATE_RECIPE } from "../../../graphql/mutations/recipe";
+import { GET_RECIPE } from "../../../graphql/queries/recipe"; 
 import { GET_DISHLIST_RECIPES } from "../../../graphql/queries/dishListDetail";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import AddRecipeForm from "../components/AddRecipeForm/AddRecipeForm";
@@ -15,11 +17,20 @@ const AddRecipePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Extract dishListId from URL query if present
+  // Parse query parameters to check if we're in edit mode
   const queryParams = new URLSearchParams(location.search);
+  const isEditMode = queryParams.get("edit") === "true";
+  const recipeId = queryParams.get("recipeId");
   const dishListId = queryParams.get("dishListId");
 
-  const [createRecipe, { loading }] = useMutation(CREATE_RECIPE, {
+  // Fetch existing recipe data if in edit mode
+  const { loading: recipeLoading, error: recipeError, data: recipeData } = useQuery(GET_RECIPE, {
+    variables: { id: recipeId, userId: currentUser?.uid },
+    skip: !isEditMode || !recipeId || !currentUser,
+    fetchPolicy: "network-only"
+  });
+
+  const [createRecipe, { loading: createLoading }] = useMutation(CREATE_RECIPE, {
     onCompleted: (data) => {
       toast.success("Recipe created successfully!");
       
@@ -71,12 +82,25 @@ const AddRecipePage = () => {
     }
   });
 
+  // Add the update recipe mutation
+  const [updateRecipe, { loading: updateLoading }] = useMutation(UPDATE_RECIPE, {
+    onCompleted: () => {
+      toast.success("Recipe updated successfully!");
+      navigate(`/recipe/${recipeId}`);
+    },
+    onError: (error) => {
+      toast.error(`Error updating recipe: ${error.message}`);
+    }
+  });
+
+  const loading = createLoading || updateLoading || recipeLoading;
+
   if (!currentUser) {
     return (
       <div className={styles.pageContainer}>
         <TopNav />
         <div className={styles.unauthorizedMessage}>
-          <h2>Please sign in to create recipes</h2>
+          <h2>Please sign in to {isEditMode ? "edit" : "create"} recipes</h2>
           <button 
             onClick={() => navigate("/signin")} 
             className={styles.primaryButton}
@@ -88,20 +112,97 @@ const AddRecipePage = () => {
     );
   }
 
+  if (isEditMode && recipeLoading) {
+    return (
+      <div className={styles.pageContainer}>
+        <TopNav />
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner}></div>
+          <p>Loading recipe data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isEditMode && recipeError) {
+    return (
+      <div className={styles.pageContainer}>
+        <TopNav />
+        <div className={styles.errorContainer}>
+          <h2>Error</h2>
+          <p>{recipeError.message}</p>
+          <button 
+            onClick={() => navigate("/dishlists")} 
+            className={styles.primaryButton}
+          >
+            Back to DishLists
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.pageContainer}>
       <TopNav pageType="recipe-builder" />
       <div className={styles.addRecipeContainer}>
         <RecipeFormProvider>
-          <AddRecipeForm 
-            createRecipe={createRecipe} 
-            loading={loading} 
-            userId={currentUser.uid} 
-            dishListParam={dishListId}
+          <AddRecipeFormWrapper
+            isEditMode={isEditMode}
+            recipeData={recipeData?.getRecipe}
+            dishListId={dishListId}
+            recipeId={recipeId}
+            createRecipe={createRecipe}
+            updateRecipe={updateRecipe}
+            loading={loading}
+            userId={currentUser.uid}
           />
         </RecipeFormProvider>
       </div>
     </div>
+  );
+};
+
+// Wrapper component to handle the recipe form context
+const AddRecipeFormWrapper = ({
+  isEditMode,
+  recipeData,
+  dishListId,
+  recipeId,
+  createRecipe,
+  updateRecipe,
+  loading,
+  userId
+}) => {
+  // Pass the proper mutation based on mode
+  const handleMutation = (variables) => {
+    if (isEditMode) {
+      return updateRecipe({
+        variables: {
+          id: recipeId,
+          userId,
+          ...variables
+        }
+      });
+    } else {
+      return createRecipe({
+        variables: {
+          creatorId: userId,
+          ...variables
+        }
+      });
+    }
+  };
+
+  return (
+    <AddRecipeForm
+      createRecipe={handleMutation}
+      isEditMode={isEditMode}
+      recipeData={recipeData}
+      loading={loading}
+      userId={userId}
+      dishListParam={dishListId}
+    />
   );
 };
 
