@@ -1,4 +1,3 @@
-// frontend/src/features/recipe/pages/AddRecipePage.js
 import React from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
@@ -174,29 +173,29 @@ const AddRecipeFormWrapper = ({
   loading,
   userId
 }) => {
-  // Pass the proper mutation based on mode
-  const handleMutation = (variables) => {
-    if (isEditMode) {
+  // Use the correct mutation based on mode
+  const mutationToUse = isEditMode ? 
+    (formData) => {
       return updateRecipe({
         variables: {
           id: recipeId,
           userId,
-          ...variables
+          ...formData
         }
       });
-    } else {
+    } : 
+    (formData) => {
       return createRecipe({
         variables: {
           creatorId: userId,
-          ...variables
+          ...formData
         }
       });
-    }
-  };
+    };
 
   return (
     <AddRecipeForm
-      createRecipe={handleMutation}
+      createRecipe={mutationToUse}
       isEditMode={isEditMode}
       recipeData={recipeData}
       loading={loading}
