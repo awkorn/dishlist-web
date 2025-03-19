@@ -7,8 +7,7 @@
   gap: 24px; 
   padding: 30px;
   border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); 
+  background-color: #F4F2EE;
 }
 
 .signInInput {
@@ -39,7 +38,7 @@
 }
 
 .loginButton {
-  width: 50%; 
+  width: 40%; 
   padding: 14px 20px;
   background-color: #274b75;
   color: white;

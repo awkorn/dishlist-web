@@ -1,6 +1,6 @@
 /* ===== PAGE HEADER COMPONENT ===== */
 .pageHeader {
-  font-size: clamp(24px, 5vw, 32px); 
+  font-size: clamp(24px, 5vw, 28px); 
   color: #1E1E1E;
   font-family: 'Bricolage Grotesque', 'Poppins', sans-serif; 
   margin-top: clamp(15px, 6vw, 40px); 

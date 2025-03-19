@@ -93,7 +93,7 @@ const SignInForm = () => {
       <a href="/signup" className={styles.signupLink}>
         New User? Sign up
       </a>
-      <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
     </form>
   );
 };
