@@ -10,7 +10,7 @@ export const CREATE_RECIPE = gql`
     $prepTime: Int
     $servings: Int
     $tags: [String]
-    $image: String
+    $image: ImageDataInput
   ) {
     createRecipe(
       creatorId: $creatorId
@@ -35,7 +35,10 @@ export const CREATE_RECIPE = gql`
       prepTime
       servings
       tags
-      image
+      image {
+        url
+        rotation
+      }
       creatorId
       dishLists
       createdAt
@@ -66,7 +69,10 @@ export const ADD_RECIPE_TO_DISHLIST = gql`
       prepTime
       servings
       tags
-      image
+      image {
+        url
+        rotation
+      }
       creatorId
       dishLists
       createdAt
@@ -86,7 +92,7 @@ export const UPDATE_RECIPE = gql`
     $prepTime: Int
     $servings: Int
     $tags: [String]
-    $image: String
+    $image: ImageDataInput
   ) {
     updateRecipe(
       id: $id
@@ -112,7 +118,10 @@ export const UPDATE_RECIPE = gql`
       prepTime
       servings
       tags
-      image
+      image {
+        url
+        rotation
+      }
       creatorId
       dishLists
       createdAt

@@ -26,8 +26,8 @@ const RecipeSchema = new mongoose.Schema(
       },
     ],
     image: {
-      url: { type: String },
-      rotation: { type: Number, default: 0 },
+      url: { type: String, required: false },
+      rotation: { type: Number, default: 0 }
     },
   },
   { timestamps: true }

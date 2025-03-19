@@ -33,7 +33,10 @@ export const GET_DISHLIST_RECIPES = gql`
       prepTime
       servings
       tags
-      image
+      image {
+        url
+        rotation
+      }
       comments {
         id
         userId

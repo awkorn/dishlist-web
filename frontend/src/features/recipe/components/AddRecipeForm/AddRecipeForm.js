@@ -69,7 +69,7 @@ const AddRecipeForm = ({
       setServings(recipeData.servings || "");
 
       if (recipeData.image) {
-        setImage({ url: recipeData.image });
+        setImage(recipeData.image);
       }
 
       // If the recipe is in any dishlists, use the first one as the selected dishlist
@@ -111,10 +111,22 @@ const AddRecipeForm = ({
       (inst) => inst.trim() !== ""
     );
 
-    const imageData = image ? {
-      url: image.url,
-      rotation: image.rotation || 0
-    } : null;
+    // Format image data for GraphQL mutation
+    let imageInput = null;
+    if (image) {
+      if (typeof image === "object" && image.url) {
+        imageInput = {
+          url: image.url,
+          rotation: image.rotation || 0,
+        };
+      } else if (typeof image === "string") {
+        //handle legacy format 
+        imageInput = {
+          url: image,
+          rotation: 0,
+        };
+      }
+    }
 
     try {
       if (isEditMode) {
@@ -130,7 +142,7 @@ const AddRecipeForm = ({
             prepTime: prepTime ? parseInt(prepTime) : null,
             servings: servings ? parseInt(servings) : null,
             tags,
-            image: imageData
+            image: imageInput,
           },
         });
       } else {
@@ -145,7 +157,7 @@ const AddRecipeForm = ({
             prepTime: prepTime ? parseInt(prepTime) : null,
             servings: servings ? parseInt(servings) : null,
             tags,
-            image: imageData
+            image: imageInput,
           },
         });
       }

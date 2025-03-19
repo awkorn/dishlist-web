@@ -8,7 +8,7 @@ const recipeTypeDefs = gql`
   }
 
   type ImageData {
-    url: String!
+    url: String
     rotation: Int
   }
 
@@ -38,7 +38,7 @@ const recipeTypeDefs = gql`
   }
 
   input ImageDataInput {
-    url: String!
+    url: String
     rotation: Int
   }
 

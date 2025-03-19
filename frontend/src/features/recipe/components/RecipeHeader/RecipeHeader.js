@@ -35,14 +35,34 @@ const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt })
   
   // Calculate total time
   const totalTime = (cookTime || 0) + (prepTime || 0);
+
+    
+  // Get image style with rotation if present
+  const getImageStyle = () => {
+    if (image && typeof image === 'object' && image.rotation) {
+      return {
+        transform: `rotate(${image.rotation}deg)`,
+        transformOrigin: 'center center'
+      };
+    }
+    return {};
+  };
+  
+  // Get image source
+  const getImageSrc = () => {
+    if (!image) return placeholderImage;
+    if (typeof image === 'string') return image;
+    return image.url || placeholderImage;
+  };
   
   return (
     <div className={styles.recipeHeader}>
       <div className={styles.recipeImageContainer}>
         <img 
-          src={image || placeholderImage} 
+          src={getImageSrc()} 
           alt={title} 
           className={styles.recipeImage} 
+          style={getImageStyle()}
         />
       </div>
       

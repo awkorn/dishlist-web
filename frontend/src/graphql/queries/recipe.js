@@ -16,8 +16,18 @@ export const GET_RECIPE = gql`
       prepTime
       servings
       tags
-      image
+      image {
+        url
+        rotation
+      }
       dishLists
+      comments {
+        id
+        userId
+        username
+        content
+        createdAt
+      }
       createdAt
       updatedAt
     }
