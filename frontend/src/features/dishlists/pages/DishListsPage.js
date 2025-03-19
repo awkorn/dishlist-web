@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
-import PageTitle from "../../../components/common/PageTitle/PageTitle"
+import PageTitle from "../../../components/common/PageTitle/PageTitle";
 import DishListTile from "../components/DishListsTile/DishListTile";
 import DishListsMenu from "../components/DishListsMenu/DishListsMenu";
 import DishListFooter from "../components/DishListsFooter/DishListFooter";
@@ -43,9 +43,16 @@ const DishListsPage = () => {
         const filtered = allDishLists.filter((list) =>
           list.title.toLowerCase().includes(searchString)
         );
-        
-        // Apply view mode filtering to the search results
-        filterDishListsByMode(filtered, viewMode);
+
+        // Create a new array for sorting
+        const sortedFiltered = [...filtered].sort((a, b) => {
+          if (a.isPinned && !b.isPinned) return -1;
+          if (!a.isPinned && b.isPinned) return 1;
+          return a.title.localeCompare(b.title);
+        });
+
+        // Use the sorted array for view mode filtering
+        filterDishListsByMode(sortedFiltered, viewMode);
       } catch (error) {
         console.error("Error during search:", error);
         filterDishListsByMode(allDishLists, viewMode);
@@ -54,7 +61,6 @@ const DishListsPage = () => {
       filterDishListsByMode(allDishLists, viewMode);
     }
   }, [searchTerm, allDishLists, viewMode]);
-  
 
   useEffect(() => {
     if (data?.getDishLists) {
@@ -106,9 +112,20 @@ const DishListsPage = () => {
         );
         break;
       default: // "all"
-        filtered = dishLists;
+        filtered = [...dishLists];
+        break;
     }
-    setFilteredDishLists(filtered);
+
+    // Sort a new copy of the filtered array
+    const sortedFiltered = [...filtered].sort((a, b) => {
+      // First, sort by pinned status
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+
+      return a.title.localeCompare(b.title);
+    });
+
+    setFilteredDishLists(sortedFiltered);
   };
 
   const handleViewModeChange = (mode) => {
@@ -150,25 +167,33 @@ const DishListsPage = () => {
         <PageTitle title="DishLists" />
         <div className={styles.viewControls}>
           <button
-            className={`${styles.viewBtn} ${viewMode === "all" ? styles.activeViewBtn : ""}`}
+            className={`${styles.viewBtn} ${
+              viewMode === "all" ? styles.activeViewBtn : ""
+            }`}
             onClick={() => handleViewModeChange("all")}
           >
             All
           </button>
           <button
-            className={`${styles.viewBtn} ${viewMode === "owned" ? styles.activeViewBtn : ""}`}
+            className={`${styles.viewBtn} ${
+              viewMode === "owned" ? styles.activeViewBtn : ""
+            }`}
             onClick={() => handleViewModeChange("owned")}
           >
             My DishLists
           </button>
           <button
-            className={`${styles.viewBtn} ${viewMode === "collaborated" ? styles.activeViewBtn : ""}`}
+            className={`${styles.viewBtn} ${
+              viewMode === "collaborated" ? styles.activeViewBtn : ""
+            }`}
             onClick={() => handleViewModeChange("collaborated")}
           >
             Collaborations
           </button>
           <button
-            className={`${styles.viewBtn} ${viewMode === "followed" ? styles.activeViewBtn : ""}`}
+            className={`${styles.viewBtn} ${
+              viewMode === "followed" ? styles.activeViewBtn : ""
+            }`}
             onClick={() => handleViewModeChange("followed")}
           >
             Following

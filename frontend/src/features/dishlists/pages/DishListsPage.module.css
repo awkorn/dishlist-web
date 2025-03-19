@@ -164,8 +164,8 @@
 
 .pin {
   position: absolute;
-  height: 32px;
-  width: 32px;
+  height: 24px;
+  width: 24px;
   top: 15px;
   left: 15px;
   filter: brightness(10);

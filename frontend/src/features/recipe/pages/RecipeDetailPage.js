@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
-import { gql } from "@apollo/client";
 import { toast } from "react-toastify";
 import { GET_RECIPE } from "../../../graphql/queries/recipe"; 
 import { SAVE_RECIPE, UNSAVE_RECIPE } from "../../../graphql/mutations/recipe";
