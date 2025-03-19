@@ -1,165 +1,218 @@
 .imageUploadSection {
-    margin: 24px 0;
-    padding: 16px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
+  margin: 24px 0;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.imageUploadSection h3 {
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #274b75;
+}
+
+.uploadContainer {
+  position: relative;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background-color: white;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 20px;
+}
+
+.uploadArea:hover {
+  border-color: #274b75;
+  background-color: #f0f7ff;
+}
+
+.uploadIcon {
+  color: #274b75;
+  margin-bottom: 12px;
+}
+
+.uploadText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.uploadHint {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.fileInput {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.previewContainer {
+  position: relative;
+  width: 100%;
+  max-height: 300px;
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  padding: 20px 0;
+}
+
+.imagePreview {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  /* Add transform-origin to ensure rotation happens from the center */
+  transform-origin: center center;
+}
+
+.removeImageBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.removeImageBtn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Rotation controls styles */
+.rotationControls {
+  position: absolute;
+  bottom: 10px;
+  display: flex;
+  gap: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 8px;
+  border-radius: 20px;
+  z-index: 10;
+}
+
+.rotateButton {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease;
+}
+
+.rotateButton:hover {
+  background-color: white;
+  transform: scale(1.1);
+}
+
+.uploadingStatus {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  color: #274b75;
+  font-size: 14px;
+}
+
+.uploadingSpinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(39, 75, 117, 0.2);
+  border-radius: 50%;
+  border-top-color: #274b75;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  
-  .imageUploadSection h3 {
-    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
-    font-size: 20px;
-    margin-top: 0;
-    margin-bottom: 16px;
-    color: #274b75;
-  }
-  
-  .uploadContainer {
-    position: relative;
-  }
-  
+}
+
+.errorMessage {
+  color: #f44336;
+  font-size: 14px;
+  margin: 8px 0 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .uploadArea {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    background-color: white;
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    padding: 20px;
+    height: 180px;
+    padding: 16px;
   }
-  
-  .uploadArea:hover {
-    border-color: #274b75;
-    background-color: #f0f7ff;
+
+  .uploadIcon svg {
+    width: 36px;
+    height: 36px;
   }
-  
-  .uploadIcon {
-    color: #274b75;
-    margin-bottom: 12px;
-  }
-  
+
   .uploadText {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    margin: 0 0 8px;
+    font-size: 15px;
   }
-  
+
   .uploadHint {
-    font-size: 14px;
-    color: #666;
-    margin: 0;
+    font-size: 13px;
   }
   
-  .fileInput {
-    position: absolute;
-    width: 0;
-    height: 0;
-    opacity: 0;
-  }
-  
-  .previewContainer {
-    position: relative;
-    width: 100%;
-    max-height: 300px;
-    display: flex;
-    justify-content: center;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .imagePreview {
-    width: 100%;
-    max-height: 300px;
-    object-fit: contain;
-  }
-  
-  .removeImageBtn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  .rotateButton {
+    width: 28px;
+    height: 28px;
     font-size: 16px;
-    transition: all 0.2s ease;
+  }
+}
+
+@media (max-width: 480px) {
+  .uploadArea {
+    height: 150px;
+    padding: 12px;
+  }
+
+  .uploadIcon svg {
+    width: 28px;
+    height: 28px;
   }
   
-  .removeImageBtn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+  .rotationControls {
+    padding: 6px;
   }
   
-  .uploadingStatus {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 12px;
-    color: #274b75;
+  .rotateButton {
+    width: 24px;
+    height: 24px;
     font-size: 14px;
   }
-  
-  .uploadingSpinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(39, 75, 117, 0.2);
-    border-radius: 50%;
-    border-top-color: #274b75;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  .errorMessage {
-    color: #f44336;
-    font-size: 14px;
-    margin: 8px 0 0;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .uploadArea {
-      height: 180px;
-      padding: 16px;
-    }
-  
-    .uploadIcon svg {
-      width: 36px;
-      height: 36px;
-    }
-  
-    .uploadText {
-      font-size: 15px;
-    }
-  
-    .uploadHint {
-      font-size: 13px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .uploadArea {
-      height: 150px;
-      padding: 12px;
-    }
-  
-    .uploadIcon svg {
-      width: 28px;
-      height: 28px;
-    }
-  }
+}
