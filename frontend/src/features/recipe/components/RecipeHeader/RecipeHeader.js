@@ -25,12 +25,26 @@ const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt })
   const formatDate = (dateString) => {
     if (!dateString) return "";
     
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    try {
+      // Convert string timestamp to number before creating Date object
+      const timestamp = parseInt(dateString, 10);
+      const date = new Date(timestamp);
+      
+      // Check if date is valid before formatting
+      if (isNaN(date.getTime())) {
+        console.error("Invalid date from timestamp:", dateString);
+        return ""; 
+      }
+      
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      console.error("Error formatting date:", error, dateString);
+      return ""; 
+    }
   };
   
   // Calculate total time
