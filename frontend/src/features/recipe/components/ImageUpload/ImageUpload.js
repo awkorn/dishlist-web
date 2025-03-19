@@ -7,6 +7,7 @@ const ImageUpload = () => {
   const { image, setImage, errors } = useRecipeForm();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
+  const [rotation, setRotation] = useState(0);
   const fileInputRef = useRef(null);
 
   const handleImageSelect = async (e) => {
@@ -30,6 +31,7 @@ const ImageUpload = () => {
     try {
       setIsUploading(true);
       setUploadError(null);
+      setRotation(0); // Reset rotation for new images
 
       // Create a preview URL for the selected image
       const previewUrl = URL.createObjectURL(file);
@@ -37,22 +39,25 @@ const ImageUpload = () => {
       // Upload to Firebase Storage
       const storage = getStorage();
       const timestamp = new Date().getTime();
-      const storageRef = ref(storage, `recipe-images/${timestamp}_${file.name}`);
-      
+      const storageRef = ref(
+        storage,
+        `recipe-images/${timestamp}_${file.name}`
+      );
+
       // Upload the file
       await uploadBytes(storageRef, file);
-      
+
       // Get the download URL
       const downloadUrl = await getDownloadURL(storageRef);
-      
+
       // Update form context with image data
       setImage({
         preview: previewUrl,
         url: downloadUrl,
         name: file.name,
-        path: storageRef.fullPath
+        path: storageRef.fullPath,
+        rotation: 0,
       });
-      
     } catch (error) {
       console.error("Error uploading image:", error);
       setUploadError("Failed to upload image. Please try again.");
@@ -74,18 +79,69 @@ const ImageUpload = () => {
     }
   };
 
+  const rotateImage = (direction) => {
+    const newRotation =
+      direction === "clockwise"
+        ? (rotation + 90) % 360
+        : (rotation - 90 + 360) % 360;
+
+    setRotation(newRotation);
+
+    // Update the image object with new rotation
+    if (image) {
+      setImage({
+        ...image,
+        rotation: newRotation,
+      });
+    }
+  };
+
+  // Get the correct transform style based on current rotation
+  const getRotationStyle = () => {
+    return {
+      transform: `rotate(${rotation}deg)`,
+      transition: "transform 0.3s ease",
+    };
+  };
+
   return (
     <div className={styles.imageUploadSection}>
       <h3>Recipe Image</h3>
       {errors.image && <p className={styles.errorMessage}>{errors.image}</p>}
-      
+
       <div className={styles.uploadContainer}>
         {image && image.preview ? (
           <div className={styles.previewContainer}>
-            <img src={image.preview} alt="Recipe preview" className={styles.imagePreview} />
-            <button 
-              type="button" 
-              onClick={handleRemoveImage} 
+            <img
+              src={image.preview}
+              alt="Recipe preview"
+              className={styles.imagePreview}
+              style={getRotationStyle()}
+            />
+
+            {/* Rotation controls */}
+            <div className={styles.rotationControls}>
+              <button
+                type="button"
+                onClick={() => rotateImage("counter-clockwise")}
+                className={styles.rotateButton}
+                aria-label="Rotate counter-clockwise"
+              >
+                ↺
+              </button>
+              <button
+                type="button"
+                onClick={() => rotateImage("clockwise")}
+                className={styles.rotateButton}
+                aria-label="Rotate clockwise"
+              >
+                ↻
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleRemoveImage}
               className={styles.removeImageBtn}
               aria-label="Remove image"
             >
@@ -93,19 +149,16 @@ const ImageUpload = () => {
             </button>
           </div>
         ) : (
-          <div 
-            className={styles.uploadArea}
-            onClick={triggerFileInput}
-          >
+          <div className={styles.uploadArea} onClick={triggerFileInput}>
             <div className={styles.uploadIcon}>
-              <svg 
-                width="48" 
-                height="48" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
               >
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -117,7 +170,7 @@ const ImageUpload = () => {
             <p className={styles.uploadHint}>JPEG or PNG, max 5MB</p>
           </div>
         )}
-        
+
         <input
           type="file"
           ref={fileInputRef}
@@ -134,9 +187,7 @@ const ImageUpload = () => {
         </div>
       )}
 
-      {uploadError && (
-        <p className={styles.errorMessage}>{uploadError}</p>
-      )}
+      {uploadError && <p className={styles.errorMessage}>{uploadError}</p>}
     </div>
   );
 };
