@@ -7,16 +7,9 @@ const SearchBar = ({ pageType, items, onSearch }) => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchValue(value);
-
-    if (value.trim() === "") {
-      onSearch(items);
-    } else {
-      const filteredItems = items.filter((item) =>
-        item.title.toLowerCase().includes(value.toLowerCase())
-      );
-      onSearch(filteredItems);
-    }
+    onSearch(value);
   };
+
 
   if (pageType !== "dishlists" && pageType !== "recipes") return null;
 

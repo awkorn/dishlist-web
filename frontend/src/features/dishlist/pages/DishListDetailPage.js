@@ -68,10 +68,16 @@ const DishListDetailPage = () => {
   // Handle recipe search/filtering
   useEffect(() => {
     if (recipes.length > 0 && searchTerm) {
-      const filtered = recipes.filter((recipe) =>
-        recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredRecipes(filtered);
+      try {
+        const searchString = String(searchTerm).toLowerCase();
+        const filtered = recipes.filter((recipe) =>
+          recipe.title.toLowerCase().includes(searchString)
+        );
+        setFilteredRecipes(filtered);
+      } catch (error) {
+        console.error("Error filtering recipes:", error);
+        setFilteredRecipes(recipes);
+      }
     } else {
       setFilteredRecipes(recipes);
     }

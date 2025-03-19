@@ -23,6 +23,7 @@ const DishListsPage = () => {
   const [viewMode, setViewMode] = useState("all"); // "all", "owned", "collaborated", "followed"
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedDishList, setSelectedDishList] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [addDishList] = useMutation(ADD_DEFAULT_DISHLIST, {
     onCompleted: (data) => {
@@ -34,6 +35,26 @@ const DishListsPage = () => {
       filterDishListsByMode(updatedAllDishLists, viewMode);
     },
   });
+
+  useEffect(() => {
+    if (allDishLists.length > 0 && searchTerm) {
+      try {
+        const searchString = String(searchTerm).toLowerCase();
+        const filtered = allDishLists.filter((list) =>
+          list.title.toLowerCase().includes(searchString)
+        );
+        
+        // Apply view mode filtering to the search results
+        filterDishListsByMode(filtered, viewMode);
+      } catch (error) {
+        console.error("Error during search:", error);
+        filterDishListsByMode(allDishLists, viewMode);
+      }
+    } else {
+      filterDishListsByMode(allDishLists, viewMode);
+    }
+  }, [searchTerm, allDishLists, viewMode]);
+  
 
   useEffect(() => {
     if (data?.getDishLists) {
@@ -122,7 +143,7 @@ const DishListsPage = () => {
       <TopNav
         pageType="dishlists"
         items={allDishLists}
-        onSearch={(items) => filterDishListsByMode(items, viewMode)}
+        onSearch={(term) => setSearchTerm(term)}
       />
 
       <div className={styles.titleMenuContainer}>
