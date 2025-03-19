@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { toast } from "react-toastify";
+import { GET_RECIPE } from "../../../graphql/queries/recipe"; 
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import RecipeHeader from "../components/RecipeHeader/RecipeHeader";
@@ -13,41 +14,6 @@ import RecipeTags from "../components/RecipeTags/RecipeTags";
 import NutritionInfo from "../components/NutritionInfo/NutritionInfo";
 import AddToDishListButton from "../components/AddToDishListButton/AddToDishListButton";
 import styles from "./RecipeDetailPage.module.css";
-
-// GraphQL query to get recipe details
-const GET_RECIPE = gql`
-  query GetRecipe($id: ID!, $userId: String!) {
-    getRecipe(id: $id, userId: $userId) {
-      id
-      title
-      creatorId
-      ingredients {
-        name
-        amount
-        unit
-      }
-      instructions
-      cookTime
-      prepTime
-      servings
-      tags
-      image {
-        url
-        rotation
-      }
-      dishLists
-      comments {
-        id
-        userId
-        username
-        content
-        createdAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
 
 // GraphQL mutation to save/unsave recipe
 const SAVE_RECIPE = gql`
