@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { toast } from "react-toastify";
 import { GET_RECIPE } from "../../../graphql/queries/recipe"; 
+import { SAVE_RECIPE, UNSAVE_RECIPE } from "../../../graphql/mutations/recipe";
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import RecipeHeader from "../components/RecipeHeader/RecipeHeader";
@@ -14,25 +15,6 @@ import RecipeTags from "../components/RecipeTags/RecipeTags";
 import NutritionInfo from "../components/NutritionInfo/NutritionInfo";
 import AddToDishListButton from "../components/AddToDishListButton/AddToDishListButton";
 import styles from "./RecipeDetailPage.module.css";
-
-// GraphQL mutation to save/unsave recipe
-const SAVE_RECIPE = gql`
-  mutation SaveRecipe($userId: ID!, $recipeId: ID!) {
-    saveRecipe(userId: $userId, recipeId: $recipeId) {
-      id
-      savedRecipes
-    }
-  }
-`;
-
-const UNSAVE_RECIPE = gql`
-  mutation UnsaveRecipe($userId: ID!, $recipeId: ID!) {
-    unsaveRecipe(userId: $userId, recipeId: $recipeId) {
-      id
-      savedRecipes
-    }
-  }
-`;
 
 const RecipeDetailPage = () => {
   const { id } = useParams();

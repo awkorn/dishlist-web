@@ -129,3 +129,22 @@ export const UPDATE_RECIPE = gql`
     }
   }
 `;
+
+
+export const SAVE_RECIPE = gql`
+  mutation SaveRecipe($userId: ID!, $recipeId: ID!) {
+    saveRecipe(userId: $userId, recipeId: $recipeId) {
+      id
+      savedRecipes
+    }
+  }
+`;
+
+export const UNSAVE_RECIPE = gql`
+  mutation UnsaveRecipe($userId: ID!, $recipeId: ID!) {
+    unsaveRecipe(userId: $userId, recipeId: $recipeId) {
+      id
+      savedRecipes
+    }
+  }
+`;
