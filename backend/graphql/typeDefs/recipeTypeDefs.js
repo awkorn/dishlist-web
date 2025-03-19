@@ -7,6 +7,11 @@ const recipeTypeDefs = gql`
     unit: String
   }
 
+  type ImageData {
+    url: String!
+    rotation: Int
+  }
+
   type Comment {
     id: ID!
     userId: String!
@@ -27,9 +32,14 @@ const recipeTypeDefs = gql`
     tags: [String]
     dishLists: [ID]
     comments: [Comment]
-    image: String
+    image: ImageData
     createdAt: String!
     updatedAt: String!
+  }
+
+  input ImageDataInput {
+    url: String!
+    rotation: Int
   }
 
   input IngredientInput {
@@ -55,7 +65,7 @@ const recipeTypeDefs = gql`
       prepTime: Int
       servings: Int
       tags: [String]
-      image: String
+      image: ImageDataInput
     ): Recipe
 
     updateRecipe(
@@ -68,11 +78,13 @@ const recipeTypeDefs = gql`
       prepTime: Int
       servings: Int
       tags: [String]
-      image: String
+      image: ImageDataInput
     ): Recipe
 
     deleteRecipe(id: ID!, userId: String!): String
+    
     addRecipeToDishList(recipeId: ID!, dishListId: ID!, userId: String!): Recipe
+
     removeRecipeFromDishList(
       recipeId: ID!
       dishListId: ID!
