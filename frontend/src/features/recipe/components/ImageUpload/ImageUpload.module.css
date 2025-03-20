@@ -156,6 +156,31 @@
   animation: spin 1s linear infinite;
 }
 
+.cancelCropBtn {
+  margin-top: 16px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelCropBtn:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+
+/* If you need to add this style class */
+.uploadHint {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 12px 0;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
