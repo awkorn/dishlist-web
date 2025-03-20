@@ -3,19 +3,16 @@
   display: flex;
   align-items: center;
   justify-content: flex-end; 
-  right: 5%; 
-  top: 50%;
+  right: 15%; 
+  top: 60%;
   transform: translateY(-50%);
   z-index: 20;
   margin: 0;
 }
 
 .headerMenu {
-  width: 40px; 
-  height: 40px;
   cursor: pointer;
   transition: transform 0.2s ease;
-  padding: 4px;
 }
 
 .headerMenu:hover {

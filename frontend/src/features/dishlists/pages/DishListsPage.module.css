@@ -31,29 +31,6 @@
   z-index: 10;
 }
 
-.branchDrawing {
-  position: absolute;
-  left: 5%;
-  top: 0;
-  height: 200px;
-  transform: rotate(15deg);
-  transform-origin: bottom left;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.menuContainer {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; /* Align to the right */
-  right: 5%; /* Position from right edge */
-  top: 50%; /* Vertically center */
-  transform: translateY(-50%);
-  z-index: 20;
-  margin: 0;
-}
-
 .listMessage {
   display: flex;
   align-items: center;
