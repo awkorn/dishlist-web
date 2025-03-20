@@ -146,6 +146,12 @@
   box-shadow: 0 0 0 3px rgba(39, 75, 117, 0.1);
 }
 
+.buttonIcon {
+  margin-right: 8px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
 /* Selected dish info styles */
 .selectedDishInfo {
   margin-top: 10px;

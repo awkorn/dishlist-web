@@ -4,6 +4,7 @@ import { useAuth } from "../../../../contexts/AuthProvider";
 import menuIcon from "../../../../assets/icons/icon-menu.png";
 import { useNavigate } from "react-router-dom";
 import styles from "./DishListsMenu.module.css";
+import { CirclePlus, SquareMousePointer, Check, FilePenLine, BookX, Pin } from 'lucide-react';
 import {
   DELETE_DISHLIST,
   EDIT_DISHLIST,
@@ -190,14 +191,22 @@ const DishListsMenu = ({
       {menuOpen && (
         <div className={styles.menuOptions}>
           <button onClick={() => navigate("/create-dishlist")}>
-            ➕ Add DishList
+          <CirclePlus size={18} className={styles.buttonIcon} /> Add DishList
           </button>
 
           <button
             onClick={() => toggleSelectionMode(!selectionMode)}
             className={selectionMode ? styles.activeOption : ""}
           >
-            {selectionMode ? "✓ Select Mode (On)" : "⬚ Select DishList"}
+            {selectionMode ? (
+              <>
+                <Check size={18} className={styles.buttonIcon} /> Select Mode (On)
+              </>
+            ) : (
+              <>
+                <SquareMousePointer size={18} className={styles.buttonIcon} /> Select DishList
+              </>
+            )}
           </button>
 
           <button
@@ -205,7 +214,7 @@ const DishListsMenu = ({
             disabled={!selectedDishListOwned}
             className={!selectedDishListOwned ? styles.disabledOption : ""}
           >
-            ✏️ Edit DishList
+           <FilePenLine size={18} className={styles.buttonIcon} /> Edit DishList
           </button>
 
           <button
@@ -213,7 +222,7 @@ const DishListsMenu = ({
             disabled={!selectedDishListOwned}
             className={!selectedDishListOwned ? styles.disabledOption : ""}
           >
-            🗑 Delete DishList
+           <BookX size={18} className={styles.buttonIcon} /> Delete DishList
           </button>
 
           <button
@@ -221,7 +230,7 @@ const DishListsMenu = ({
             disabled={!selectedDishListOwned}
             className={!selectedDishListOwned ? styles.disabledOption : ""}
           >
-            📌 {selectedDishListData?.isPinned ? "Unpin" : "Pin"} DishList
+          <Pin size={18} className={styles.buttonIcon} /> {selectedDishListData?.isPinned ? "Unpin" : "Pin"} DishList
           </button>
 
           {localSelectedDishList && (

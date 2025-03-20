@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./RecipeActions.module.css";
+import { Pencil, Printer, Heart } from "lucide-react";
 
 const RecipeActions = ({ isCreator, isSaved, onSaveToggle, onEdit, onPrint }) => {
   // Function to handle printing
@@ -19,7 +20,7 @@ const RecipeActions = ({ isCreator, isSaved, onSaveToggle, onEdit, onPrint }) =>
         aria-label={isSaved ? "Remove from favorites" : "Save to favorites"}
       >
         <span className={styles.actionIcon}>
-          {isSaved ? "❤️" : "♡"}
+          {isSaved ? <Heart size={18} fill="red" stroke="none"/> : <Heart size={18} />}
         </span>
         <span className={styles.actionText}>
           {isSaved ? "Saved" : "Save"}
@@ -32,7 +33,7 @@ const RecipeActions = ({ isCreator, isSaved, onSaveToggle, onEdit, onPrint }) =>
         aria-label="Print recipe"
       >
         <span className={styles.actionIcon}>
-          🖨️
+        <Printer size={18} />
         </span>
         <span className={styles.actionText}>
           Print
@@ -46,7 +47,7 @@ const RecipeActions = ({ isCreator, isSaved, onSaveToggle, onEdit, onPrint }) =>
           aria-label="Edit recipe"
         >
           <span className={styles.actionIcon}>
-            ✏️
+          <Pencil size={18} />
           </span>
           <span className={styles.actionText}>
             Edit

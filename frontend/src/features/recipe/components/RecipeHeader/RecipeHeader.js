@@ -1,6 +1,7 @@
 import React from "react";
 import placeholderImage from "../../../../assets/images/placeholder.png";
 import styles from "./RecipeHeader.module.css";
+import { CookingPot, ChefHat, Timer, Users } from 'lucide-react';
 
 const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt }) => {
   // Format time (convert minutes to hours and minutes if needed)
@@ -85,7 +86,9 @@ const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt })
         
         <div className={styles.recipeMetaInfo}>
           <div className={styles.metaItem}>
-            <div className={styles.metaIcon}>⏱️</div>
+            <div className={styles.metaIcon}>
+            <ChefHat size={20} />
+            </div>
             <div className={styles.metaText}>
               <span className={styles.metaLabel}>Prep Time</span>
               <span className={styles.metaValue}>{formatTime(prepTime)}</span>
@@ -93,7 +96,9 @@ const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt })
           </div>
           
           <div className={styles.metaItem}>
-            <div className={styles.metaIcon}>🔥</div>
+            <div className={styles.metaIcon}>
+            <CookingPot size={20} />
+            </div>
             <div className={styles.metaText}>
               <span className={styles.metaLabel}>Cook Time</span>
               <span className={styles.metaValue}>{formatTime(cookTime)}</span>
@@ -101,7 +106,9 @@ const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt })
           </div>
           
           <div className={styles.metaItem}>
-            <div className={styles.metaIcon}>⏲️</div>
+            <div className={styles.metaIcon}>
+            <Timer size={20} />
+            </div>
             <div className={styles.metaText}>
               <span className={styles.metaLabel}>Total Time</span>
               <span className={styles.metaValue}>{formatTime(totalTime)}</span>
@@ -109,7 +116,9 @@ const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt })
           </div>
           
           <div className={styles.metaItem}>
-            <div className={styles.metaIcon}>👥</div>
+            <div className={styles.metaIcon}>
+            <Users size={20} />
+            </div>
             <div className={styles.metaText}>
               <span className={styles.metaLabel}>Servings</span>
               <span className={styles.metaValue}>{servings || "N/A"}</span>

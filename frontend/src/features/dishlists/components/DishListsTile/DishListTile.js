@@ -1,6 +1,6 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import pinIcon from "../../../../assets/icons/pin-icon.png";
+import { Pin } from 'lucide-react';
 import { Link } from "react-router-dom";
 import styles from "../../pages/DishListsPage.module.css";
 import {
@@ -127,7 +127,7 @@ const DishListTile = ({
                 )}
               </h3>
               {dishlist.isPinned && (
-                <img src={pinIcon} alt="pin" className={styles.pin} />
+                <Pin size={20} className={styles.pin} />
               )}
             </div>
 
