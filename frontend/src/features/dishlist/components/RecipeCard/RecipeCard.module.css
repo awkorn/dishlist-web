@@ -33,10 +33,6 @@
   transition: transform 0.3s ease;
 }
 
-.recipeCard:hover .recipeImage {
-  transform: scale(1.05);
-}
-
 .recipeCardInfo {
   padding: 16px;
   overflow: hidden; 

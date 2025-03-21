@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
-import { GET_RECIPE } from "../../../graphql/queries/recipe"; 
+import { GET_RECIPE } from "../../../graphql/queries/recipe";
 import { SAVE_RECIPE, UNSAVE_RECIPE } from "../../../graphql/mutations/recipe";
 import { useAuth } from "../../../contexts/AuthProvider";
+import { ArrowLeft } from "lucide-react";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import RecipeHeader from "../components/RecipeHeader/RecipeHeader";
 import RecipeIngredients from "../components/RecipeIngredients/RecipeIngredients";
@@ -13,14 +14,26 @@ import RecipeActions from "../components/RecipeActions/RecipeActions";
 import RecipeTags from "../components/RecipeTags/RecipeTags";
 import NutritionInfo from "../components/NutritionInfo/NutritionInfo";
 import AddToDishListButton from "../components/AddToDishListButton/AddToDishListButton";
-import RecipeGallery from '../components/RecipeGallery/RecipeGallery';
+import RecipeGallery from "../components/RecipeGallery/RecipeGallery";
 import styles from "./RecipeDetailPage.module.css";
 
 const RecipeDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentUser, hasSavedRecipe, refreshUserData } = useAuth();
   const [isSaved, setIsSaved] = useState(false);
+
+  const [referringDishListId, setReferringDishListId] = useState(null);
+
+  useEffect(() => {
+    // Extract dishListId from query parameters
+    const queryParams = new URLSearchParams(location.search);
+    const dishListId = queryParams.get("from");
+    if (dishListId) {
+      setReferringDishListId(dishListId);
+    }
+  }, [location]);
 
   // Fetch recipe details
   const { loading, error, data } = useQuery(GET_RECIPE, {
@@ -75,6 +88,19 @@ const RecipeDetailPage = () => {
           recipeId: id,
         },
       });
+    }
+  };
+
+  const handleBackClick = () => {
+    if (referringDishListId) {
+      navigate(`/dishlist/${referringDishListId}`);
+    } else {
+      // If no referring dishlist, check if the recipe exists in any dishlists
+      if (data?.getRecipe?.dishLists?.length > 0) {
+        navigate(`/dishlist/${data.getRecipe.dishLists[0]}`);
+      } else {
+        navigate("/dishlists");
+      }
     }
   };
 
@@ -155,6 +181,10 @@ const RecipeDetailPage = () => {
       <TopNav />
 
       <div className={styles.recipeContainer}>
+        <button className={styles.backButton} onClick={handleBackClick}>
+          <ArrowLeft size={18} /> Back to DishList
+        </button>
+
         <RecipeHeader
           title={recipe.title}
           image={recipe.image}

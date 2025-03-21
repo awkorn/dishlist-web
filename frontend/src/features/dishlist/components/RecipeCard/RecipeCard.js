@@ -2,7 +2,13 @@ import React from "react";
 import styles from "./RecipeCard.module.css";
 import placeholderImage from "../../../../assets/images/placeholder.png";
 
-const RecipeCard = ({ recipe, onClick, onRemove, isUserCreator }) => {
+const RecipeCard = ({
+  recipe,
+  onClick,
+  onRemove,
+  isUserCreator,
+  dishListId,
+}) => {
   const { title, cookTime, prepTime, servings, image, tags } = recipe;
 
   // Format time (convert minutes to hours and minutes if needed)
@@ -41,9 +47,16 @@ const RecipeCard = ({ recipe, onClick, onRemove, isUserCreator }) => {
     return {};
   };
 
+  const handleCardClick = () => {
+    if (onClick) {
+      // Call the original onClick handler with optional dishListId parameter
+      onClick(dishListId);
+    }
+  };
+
   return (
     <div className={styles.recipeCard}>
-      <div className={styles.recipeCardHeader} onClick={onClick}>
+      <div className={styles.recipeCardHeader} onClick={handleCardClick}>
         <div className={styles.recipeImageContainer}>
           <img
             src={getImageSrc()}

@@ -69,7 +69,7 @@ const RecipeList = ({
   };
 
   const handleRecipeClick = (recipeId) => {
-    navigate(`/recipe/${recipeId}`);
+    navigate(`/recipe/${recipeId}?from=${dishListId}`);
   };
 
   if (!recipes || recipes.length === 0) {
