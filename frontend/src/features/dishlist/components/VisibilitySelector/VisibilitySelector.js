@@ -1,32 +1,35 @@
-import React, { useState, useRef, useEffect } from 'react';
-import './VisibilitySelector.css';
+import React, { useState, useRef, useEffect } from "react";
+import styles from "./VisibilitySelector.module.css";
+import { ChevronDown } from 'lucide-react';
 
 const VisibilitySelector = ({ currentVisibility, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectorRef = useRef(null);
-  
+
   // Options for visibility with icons and descriptions
   const visibilityOptions = [
     {
-      value: 'public',
-      label: 'Public',
-      description: 'Anyone can view and follow this dishlist',
+      value: "public",
+      label: "Public",
+      description: "Anyone can view and follow this dishlist",
     },
     {
-      value: 'private',
-      label: 'Private',
-      description: 'Only you and collaborators can see this dishlist',
+      value: "private",
+      label: "Private",
+      description: "Only you and collaborators can see this dishlist",
     },
     {
-      value: 'shared',
-      label: 'Shared',
-      description: 'Only specific people you invite can view this dishlist',
-    }
+      value: "shared",
+      label: "Shared",
+      description: "Only specific people you invite can view this dishlist",
+    },
   ];
-  
+
   // Find the current selected option
-  const selectedOption = visibilityOptions.find(option => option.value === currentVisibility) || visibilityOptions[1];
-  
+  const selectedOption =
+    visibilityOptions.find((option) => option.value === currentVisibility) ||
+    visibilityOptions[1];
+
   // Handle selecting a new visibility option
   const handleSelect = (value) => {
     if (value !== currentVisibility) {
@@ -34,7 +37,7 @@ const VisibilitySelector = ({ currentVisibility, onChange }) => {
     }
     setIsOpen(false);
   };
-  
+
   // Handle clicking outside to close the dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -42,41 +45,45 @@ const VisibilitySelector = ({ currentVisibility, onChange }) => {
         setIsOpen(false);
       }
     };
-    
-    document.addEventListener('mousedown', handleClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
   return (
-    <div className="visibility-selector" ref={selectorRef}>
-      <button 
-        className="visibility-button" 
+    <div className={styles.visibilitySelector} ref={selectorRef}>
+      <button
+        className={styles.visibilityButton}
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <span className="visibility-label">{selectedOption.label}</span>
-        <span className="dropdown-arrow">▼</span>
+        <span className={styles.visibilityLabel}>{selectedOption.label}</span>
+        <ChevronDown size={16} className={styles.dropdownArrow} />
       </button>
-      
+
       {isOpen && (
-        <div className="visibility-dropdown">
-          {visibilityOptions.map(option => (
-            <div 
+        <div className={styles.visibilityDropdown}>
+          {visibilityOptions.map((option) => (
+            <div
               key={option.value}
-              className={`dropdown-item ${option.value === currentVisibility ? 'selected' : ''}`}
+              className={`${styles.dropdownItem} ${
+                option.value === currentVisibility
+                  ? styles.dropdownItemSelected
+                  : ""
+              }`}
               onClick={() => handleSelect(option.value)}
             >
-              <div className="option-header">
-                <span className="option-icon">{option.icon}</span>
-                <span className="option-label">{option.label}</span>
+              <div className={styles.optionHeader}>
+                <span className={styles.optionIcon}>{option.icon}</span>
+                <span className={styles.optionLabel}>{option.label}</span>
                 {option.value === currentVisibility && (
-                  <span className="selected-check">✓</span>
+                  <span className={styles.selectedCheck}>✓</span>
                 )}
               </div>
-              <p className="option-description">{option.description}</p>
+              <p className={styles.optionDescription}>{option.description}</p>
             </div>
           ))}
         </div>

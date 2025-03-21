@@ -1,0 +1,99 @@
+.visibilitySelector {
+  position: relative;
+  display: inline-block;
+}
+
+.visibilityButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.visibilityButton:hover {
+  background-color: #e9e9e9;
+}
+
+.visibilityIcon {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin-right: 4px;
+}
+
+.dropdownArrow {
+  font-size: 10px;
+  color: #4b4b4b;
+}
+
+.visibilityDropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  width: 250px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.dropdownItem {
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.dropdownItem:hover {
+  background-color: #f5f7fa;
+}
+
+.dropdownItemSelected {
+  background-color: #f0f7ff;
+}
+
+.optionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.optionIcon {
+  font-size: 16px;
+}
+
+.optionLabel {
+  font-weight: 600;
+  color: #333;
+}
+
+.selectedCheck {
+  margin-left: auto;
+  color: #274b75;
+  font-weight: bold;
+}
+
+.optionDescription {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+  padding-left: 10px;
+}
