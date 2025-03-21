@@ -1,4 +1,5 @@
-.dishlist-detail-container {
+/* DishListDetailPage.module.css */
+.dishlistDetailContainer {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -7,38 +8,22 @@
 }
 
 /* Header styles */
-.dishlist-header {
+.dishlistHeader {
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin: 40px 30px 30px;
   padding-bottom: 20px;
-
 }
 
-@media (min-width: 768px) {
-  .dishlist-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin: 40px 50px 30px;
-  }
-}
-
-.dishlist-title-section {
+.dishlistTitleSection {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-@media (min-width: 768px) {
-  .dishlist-title-section {
-    align-items: flex-start;
-  }
-}
-
-.dishlist-title {
+.dishlistTitle {
   font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
   font-size: 46px;
   margin: 0 0 15px;
@@ -46,13 +31,7 @@
   text-align: center;
 }
 
-@media (min-width: 768px) {
-  .dishlist-title {
-    text-align: left;
-  }
-}
-
-.dishlist-description {
+.dishlistDescription {
   font-size: 16px;
   color: #555;
   margin: 0 0 15px;
@@ -60,13 +39,7 @@
   text-align: center;
 }
 
-@media (min-width: 768px) {
-  .dishlist-description {
-    text-align: left;
-  }
-}
-
-.dishlist-meta {
+.dishlistMeta {
   display: flex;
   gap: 15px;
   font-size: 14px;
@@ -74,44 +47,38 @@
   justify-content: center;
 }
 
-@media (min-width: 768px) {
-  .dishlist-meta {
-    justify-content: flex-start;
-  }
-}
-
-.dishlist-visibility {
+.dishlistVisibility {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.visibility-icon {
+.visibilityIcon {
   display: inline-block;
   width: 12px;
   height: 12px;
   border-radius: 50%;
 }
 
-.visibility-icon.public {
+.public {
   background-color: #4CAF50;
 }
 
-.visibility-icon.private {
+.private {
   background-color: #F44336;
 }
 
-.visibility-icon.shared {
+.shared {
   background-color: #2196F3;
 }
 
-.recipe-count {
+.recipeCount {
   display: flex;
   align-items: center;
 }
 
 /* Action buttons */
-.dishlist-actions {
+.dishlistActions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -120,15 +87,7 @@
   margin-top: 20px;
 }
 
-@media (min-width: 768px) {
-  .dishlist-actions {
-    justify-content: flex-end;
-    margin-top: 0;
-    padding-right: 20px;
-  }
-}
-
-.action-button {
+.actionButton {
   padding: 8px 16px;
   border-radius: 20px;
   font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
@@ -140,51 +99,50 @@
   white-space: nowrap;
 }
 
-.invite-button {
+.inviteButton {
   background-color: #274b75;
   color: white;
 }
 
-.invite-button:hover {
+.inviteButton:hover {
   background-color: #1c3657;
   transform: translateY(-2px);
 }
 
-.edit-button {
+.editButton {
   background-color: #f5f5f5;
   color: #333;
   border: 1px solid #ddd;
 }
 
-.edit-button:hover {
+.editButton:hover {
   background-color: #e9e9e9;
   transform: translateY(-2px);
 }
 
-.leave-button {
+.leaveButton {
   background-color: #f5f5f5;
   color: #d32f2f;
   border: 1px solid #ddd;
 }
 
-.leave-button:hover {
+.leaveButton:hover {
   background-color: #ffebee;
   transform: translateY(-2px);
 }
 
-.add-recipe-button {
+.addRecipeButton {
   background-color: #4CAF50;
   color: white;
 }
 
-.add-recipe-button:hover {
+.addRecipeButton:hover {
   background-color: #43a047;
   transform: translateY(-2px);
 }
 
-
 /* Empty state */
-.empty-state {
+.emptyState {
   text-align: center;
   padding: 60px 20px;
   background-color: #f9f9f9;
@@ -192,19 +150,19 @@
   margin: 30px;
 }
 
-.empty-state h3 {
+.emptyState h3 {
   font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
   font-size: 20px;
   margin-bottom: 10px;
   color: #333;
 }
 
-.empty-state p {
+.emptyState p {
   color: #666;
   margin-bottom: 20px;
 }
 
-.primary-button {
+.primaryButton {
   background-color: #274b75;
   color: white;
   padding: 10px 20px;
@@ -216,34 +174,19 @@
   transition: all 0.2s ease;
 }
 
-.primary-button:hover {
+.primaryButton:hover {
   background-color: #1c3657;
   transform: translateY(-2px);
 }
 
-/* Collaborators list */
-.collaborators-section {
-  margin: 0 30px 30px;
-  padding: 15px 20px;
-  background-color: #f5f7fa;
-  border-radius: 12px;
-}
-
-.collaborators-section h3 {
-  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
-  font-size: 18px;
-  margin-bottom: 15px;
-  color: #274b75;
-}
-
 /* Loading & Error states */
-.loading-container, .error-container {
+.loadingContainer, .errorContainer {
   text-align: center;
   padding: 60px 20px;
   margin: 40px 30px;
 }
 
-.loading-spinner {
+.loadingSpinner {
   display: inline-block;
   width: 40px;
   height: 40px;
@@ -260,14 +203,46 @@
   }
 }
 
-.error-container h2 {
+.errorContainer h2 {
   font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
   font-size: 24px;
   color: #d32f2f;
   margin-bottom: 10px;
 }
 
-.error-container p {
+.errorContainer p {
   color: #666;
   margin-bottom: 20px;
+}
+
+/* Responsive styles */
+@media (min-width: 768px) {
+  .dishlistHeader {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 40px 50px 30px;
+  }
+  
+  .dishlistTitleSection {
+    align-items: flex-start;
+  }
+  
+  .dishlistTitle {
+    text-align: left;
+  }
+  
+  .dishlistDescription {
+    text-align: left;
+  }
+  
+  .dishlistMeta {
+    justify-content: flex-start;
+  }
+  
+  .dishlistActions {
+    justify-content: flex-end;
+    margin-top: 0;
+    padding-right: 20px;
+  }
 }

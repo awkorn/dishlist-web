@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import SearchUserModal from "../components/SearchUserModal/SearchUserModal";
 import VisibilitySelector from "../components/VisibilitySelector/VisibilitySelector";
 import CollaboratorsList from "../components/CollaboratorList/CollaboratorList";
-import "./DishListDetailPage.css";
+import styles from "./DishListDetailPage.module.css";
 
 const DishListDetailPage = () => {
   const { id } = useParams();
@@ -140,10 +140,10 @@ const DishListDetailPage = () => {
   // Loading state
   if (dishlistLoading || recipesLoading) {
     return (
-      <div className="dishlist-detail-container">
+      <div className={styles.dishlistDetailContainer}>
         <TopNav />
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner}></div>
           <p>Loading dishlist...</p>
         </div>
       </div>
@@ -153,13 +153,13 @@ const DishListDetailPage = () => {
   // Error state
   if (dishlistError || recipesError) {
     return (
-      <div className="dishlist-detail-container">
+      <div className={styles.dishlistDetailContainer}>
         <TopNav />
-        <div className="error-container">
+        <div className={styles.errorContainer}>
           <h2>Error</h2>
           <p>{dishlistError?.message || recipesError?.message}</p>
           <button
-            className="primary-button"
+            className={styles.primaryButton}
             onClick={() => navigate("/dishlists")}
           >
             Back to DishLists
@@ -174,16 +174,16 @@ const DishListDetailPage = () => {
   // If dishlist not found or no permissions
   if (!dishlist) {
     return (
-      <div className="dishlist-detail-container">
+      <div className={styles.dishlistDetailContainer}>
         <TopNav />
-        <div className="error-container">
+        <div className={styles.errorContainer}>
           <h2>Dishlist Not Found</h2>
           <p>
             The dishlist you're looking for doesn't exist or you don't have
             permission to view it.
           </p>
           <button
-            className="primary-button"
+            className={styles.primaryButton}
             onClick={() => navigate("/dishlists")}
           >
             Back to DishLists
@@ -207,23 +207,27 @@ const DishListDetailPage = () => {
     : "visitor";
 
   return (
-    <div className="dishlist-detail-container">
+    <div className={styles.dishlistDetailContainer}>
       <TopNav
         pageType="recipes"
         items={recipes}
         onSearch={(term) => setSearchTerm(term)}
       />
 
-      <div className="dishlist-header">
-        <div className="dishlist-title-section">
-          <h1 className="dishlist-title">{dishlist.title}</h1>
+      <div className={styles.dishlistHeader}>
+        <div className={styles.dishlistTitleSection}>
+          <h1 className={styles.dishlistTitle}>{dishlist.title}</h1>
           {dishlist.description && (
-            <p className="dishlist-description">{dishlist.description}</p>
+            <p className={styles.dishlistDescription}>{dishlist.description}</p>
           )}
 
-          <div className="dishlist-meta">
-            <span className="dishlist-visibility">
-              <i className={`visibility-icon ${dishlist.visibility}`}></i>
+          <div className={styles.dishlistMeta}>
+            <span className={styles.dishlistVisibility}>
+              <i
+                className={`${styles.visibilityIcon} ${
+                  styles[dishlist.visibility]
+                }`}
+              ></i>
               {dishlist.visibility === "public"
                 ? "Public"
                 : dishlist.visibility === "private"
@@ -231,14 +235,14 @@ const DishListDetailPage = () => {
                 : "Shared"}
             </span>
 
-            <span className="recipe-count">
+            <span className={styles.recipeCount}>
               {filteredRecipes.length}{" "}
               {filteredRecipes.length === 1 ? "recipe" : "recipes"}
             </span>
           </div>
         </div>
 
-        <div className="dishlist-actions">
+        <div className={styles.dishlistActions}>
           {/* Owner-only actions */}
           {userIsOwner && (
             <>
@@ -248,14 +252,14 @@ const DishListDetailPage = () => {
               />
 
               <button
-                className="action-button invite-button"
+                className={`${styles.actionButton} ${styles.inviteButton}`}
                 onClick={() => setSearchModalOpen(true)}
               >
                 Invite Collaborator
               </button>
 
               <button
-                className="action-button edit-button"
+                className={`${styles.actionButton} ${styles.editButton}`}
                 onClick={() => navigate(`/edit-dishlist/${id}`)}
               >
                 Edit DishList
@@ -266,7 +270,7 @@ const DishListDetailPage = () => {
           {/* Collaborator-only actions */}
           {userIsCollaborator && !userIsOwner && (
             <button
-              className="action-button leave-button"
+              className={`${styles.actionButton} ${styles.leaveButton}`}
               onClick={handleLeaveCollaboration}
             >
               Leave Collaboration
@@ -276,7 +280,7 @@ const DishListDetailPage = () => {
           {/* Add recipe button (for owners and collaborators) */}
           {(userIsOwner || userIsCollaborator) && (
             <button
-              className="action-button add-recipe-button"
+              className={`${styles.actionButton} ${styles.addRecipeButton}`}
               onClick={() => navigate(`/add-recipe?dishListId=${id}`)}
             >
               Add Recipe
@@ -300,20 +304,19 @@ const DishListDetailPage = () => {
         dishListId={id}
         userRole={userRole}
         currentUserId={currentUser?.uid}
-        onRecipeClick={(recipeId) => navigate(`/recipe/${recipeId}`)}
         emptyStateContent={
           searchTerm ? (
-            <div className="empty-state">
+            <div className={styles.emptyState}>
               <h3>No recipes found</h3>
               <p>No recipes match your search. Try a different term.</p>
             </div>
           ) : (
-            <div className="empty-state">
+            <div className={styles.emptyState}>
               <h3>No recipes found</h3>
               <p>This dishlist doesn't have any recipes yet.</p>
               {(userIsOwner || userIsCollaborator) && (
                 <button
-                  className="primary-button"
+                  className={styles.primaryButton}
                   onClick={() => navigate(`/add-recipe?dishListId=${id}`)}
                 >
                   Add First Recipe
