@@ -182,17 +182,6 @@
   transform: translateY(-2px);
 }
 
-/* Recipes grid */
-.recipes-container {
-  margin: 30px;
-  width: calc(100% - 60px);
-}
-
-.recipes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
 
 /* Empty state */
 .empty-state {

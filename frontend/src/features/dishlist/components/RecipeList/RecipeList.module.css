@@ -1,0 +1,32 @@
+.recipesContainer {
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px;
+}
+
+.recipesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  margin: 30px;
+}
+
+.emptyState h3 {
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.emptyState p {
+  color: #666;
+  margin-bottom: 20px;
+}
