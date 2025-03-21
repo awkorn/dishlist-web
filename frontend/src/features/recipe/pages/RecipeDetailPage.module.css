@@ -110,7 +110,7 @@
   .backButton {
     display: flex;
     align-items: center;
-    background-color: #F4F2EE;
+    background-color: transparent;
     width: 200px;
     gap: 8px;
     border: none;

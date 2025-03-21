@@ -18,6 +18,7 @@ import SearchUserModal from "../components/SearchUserModal/SearchUserModal";
 import VisibilitySelector from "../components/VisibilitySelector/VisibilitySelector";
 import CollaboratorsList from "../components/CollaboratorList/CollaboratorList";
 import styles from "./DishListDetailPage.module.css";
+import { ArrowLeft } from "lucide-react";
 
 const DishListDetailPage = () => {
   const { id } = useParams();
@@ -213,6 +214,13 @@ const DishListDetailPage = () => {
         items={recipes}
         onSearch={(term) => setSearchTerm(term)}
       />
+
+      <button
+        className={styles.backButton}
+        onClick={() => navigate("/dishlists")}
+      >
+        <ArrowLeft size={18} /> Back to DishLists
+      </button>
 
       <div className={styles.dishlistHeader}>
         <div className={styles.dishlistTitleSection}>
