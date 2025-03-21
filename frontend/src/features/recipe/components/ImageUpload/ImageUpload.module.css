@@ -1,16 +1,17 @@
 .imageUploadSection {
-  margin: 24px 0;
-  padding: 16px;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #fafafa;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .imageUploadSection h3 {
   font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
-  font-size: 20px;
-  margin-top: 0;
-  margin-bottom: 16px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
   color: #274b75;
 }
 
@@ -23,35 +24,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 200px;
-  background-color: white;
-  border: 2px dashed #ccc;
-  border-radius: 8px;
+  height: 12rem;
+  background-color: #ffffff;
+  border: 2px dashed #d1d5db;
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 20px;
+  transition: all 0.3s ease;
+  padding: 1.5rem;
 }
 
 .uploadArea:hover {
-  border-color: #274b75;
-  background-color: #f0f7ff;
+  border-color: #3b82f6;
+  background-color: #eff6ff;
 }
 
 .uploadIcon {
-  color: #274b75;
-  margin-bottom: 12px;
+  color: #3b82f6;
+  margin-bottom: 0.75rem;
 }
 
 .uploadText {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0 0 0.5rem;
 }
 
 .uploadHint {
-  font-size: 14px;
-  color: #666;
+  font-size: 0.875rem;
+  color: #6b7280;
   margin: 0;
 }
 
@@ -64,121 +65,170 @@
 
 .previewContainer {
   position: relative;
-  width: 100%;
-  max-height: 300px;
+  width: 95%;
+  max-height: 18rem;
   display: flex;
   justify-content: center;
-  border-radius: 8px;
+  align-items: center;
+  border-radius: 0.5rem;
   overflow: hidden;
-  background-color: #f0f0f0;
-  padding: 20px 0;
+  background-color: #f3f4f6;
+  padding: 1rem;
 }
 
 .imagePreview {
   max-width: 100%;
-  max-height: 300px;
+  max-height: 18rem;
   object-fit: contain;
-  /* Add transform-origin to ensure rotation happens from the center */
-  transform-origin: center center;
 }
 
 .removeImageBtn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
   border: none;
-  width: 30px;
-  height: 30px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 16px;
-  transition: all 0.2s ease;
-  z-index: 10;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 .removeImageBtn:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
-/* Rotation controls styles */
 .rotationControls {
-  position: absolute;
-  bottom: 10px;
   display: flex;
-  gap: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 8px;
-  border-radius: 20px;
-  z-index: 10;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .rotateButton {
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #333;
-  border: none;
-  width: 32px;
-  height: 32px;
+  background-color: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 18px;
-  transition: all 0.2s ease;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
 }
 
 .rotateButton:hover {
-  background-color: white;
-  transform: scale(1.1);
+  background-color: #f3f4f6;
+  transform: scale(1.05);
+}
+
+.cropContainer {
+  position: relative;
+  max-height: 30rem;
+  max-width: 100%;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  overflow: visible;
+}
+
+/* Override react-image-crop styles */
+.ReactCrop__crop-selection {
+  border: 2px solid #3b82f6 !important;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6) !important;
+}
+
+.ReactCrop__drag-handle {
+  background-color: #ffffff !important;
+  border: 1px solid #3b82f6 !important;
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  border-radius: 50% !important;
+  z-index: 10 !important;
+}
+
+.cropControls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.cropInstructions {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  text-align: center;
+}
+
+.applyCropBtn {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.applyCropBtn:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.cancelCropBtn {
+  margin-top: 0.5rem;
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelCropBtn:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
 }
 
 .uploadingStatus {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-  color: #274b75;
-  font-size: 14px;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  color: #3b82f6;
+  font-size: 0.875rem;
 }
 
 .uploadingSpinner {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(39, 75, 117, 0.2);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(59, 130, 246, 0.2);
   border-radius: 50%;
-  border-top-color: #274b75;
+  border-top-color: #3b82f6;
   animation: spin 1s linear infinite;
 }
 
-.cancelCropBtn {
-  margin-top: 16px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.cancelCropBtn:hover {
-  background-color: #d32f2f;
-  transform: translateY(-2px);
-}
-
-/* If you need to add this style class */
-.uploadHint {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 12px 0;
+.errorMessage {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin: 0.5rem 0 0;
 }
 
 @keyframes spin {
@@ -187,57 +237,46 @@
   }
 }
 
-.errorMessage {
-  color: #f44336;
-  font-size: 14px;
-  margin: 8px 0 0;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .uploadArea {
-    height: 180px;
-    padding: 16px;
+    height: 10rem;
+    padding: 1rem;
   }
 
   .uploadIcon svg {
-    width: 36px;
-    height: 36px;
+    width: 2.25rem;
+    height: 2.25rem;
   }
 
   .uploadText {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   .uploadHint {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
-  
+
   .rotateButton {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .uploadArea {
-    height: 150px;
-    padding: 12px;
+    height: 9rem;
+    padding: 0.75rem;
   }
 
   .uploadIcon svg {
-    width: 28px;
-    height: 28px;
+    width: 1.75rem;
+    height: 1.75rem;
   }
-  
-  .rotationControls {
-    padding: 6px;
-  }
-  
+
   .rotateButton {
-    width: 24px;
-    height: 24px;
-    font-size: 14px;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.875rem;
   }
 }

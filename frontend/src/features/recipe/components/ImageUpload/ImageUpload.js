@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import ImageCropper from "../ImageCropper/ImageCropper"; // Import the custom cropper
+import ReactCrop from "react-image-crop"; 
+import "react-image-crop/dist/ReactCrop.css"; 
 import styles from "./ImageUpload.module.css";
 
 const ImageUpload = () => {
@@ -11,60 +12,98 @@ const ImageUpload = () => {
   const [rotation, setRotation] = useState(0);
   const [showCropper, setShowCropper] = useState(false);
   const [tempImageUrl, setTempImageUrl] = useState(null);
+  const [crop, setCrop] = useState({ unit: "%", width: 80, aspect: 4 / 3 }); // Initial crop settings
   const fileInputRef = useRef(null);
+  const imageRef = useRef(null);
 
-  // Define the target aspect ratio
-  const TARGET_ASPECT_RATIO = 4 / 3; // You can adjust this as needed
+  const TARGET_ASPECT_RATIO = 4 / 3;
 
   const handleImageSelect = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Validate file type
     const validTypes = ["image/jpeg", "image/png", "image/jpg"];
     if (!validTypes.includes(file.type)) {
       setUploadError("Please select a valid image file (JPEG, PNG)");
       return;
     }
 
-    // Validate file size (limit to 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
       setUploadError("Image size should be less than 5MB");
       return;
     }
 
-    // Create a temporary URL for the cropper
     const previewUrl = URL.createObjectURL(file);
     setTempImageUrl(previewUrl);
-    setShowCropper(true); // Show the cropper
+    setShowCropper(true);
     setUploadError(null);
   };
 
-  const handleCropComplete = async (croppedImageUrl) => {
+  const handleCropComplete = useCallback(async () => {
+    if (!imageRef.current || !crop.width || !crop.height) return;
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = imageRef.current;
+
+    const scaleX = img.naturalWidth / img.width;
+    const scaleY = img.naturalHeight / img.height;
+
+    // Calculate pixel values for the crop area
+    const pixelCrop = {
+      x: (crop.x * scaleX),
+      y: (crop.y * scaleY),
+      width: (crop.width * scaleX),
+      height: (crop.height * scaleY),
+    };
+
+    // Adjust canvas size based on rotation
+    const isRotated = rotation === 90 || rotation === 270;
+    canvas.width = isRotated ? pixelCrop.height : pixelCrop.width;
+    canvas.height = isRotated ? pixelCrop.width : pixelCrop.height;
+
+    // Apply rotation to the canvas context
+    ctx.save();
+    if (rotation !== 0) {
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate((rotation * Math.PI) / 180);
+      ctx.translate(-canvas.width / 2, -canvas.height / 2);
+    }
+
+    // Draw the cropped image
+    ctx.drawImage(
+      img,
+      pixelCrop.x,
+      pixelCrop.y,
+      pixelCrop.width,
+      pixelCrop.height,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.restore();
+
+    const croppedImageUrl = canvas.toDataURL("image/jpeg", 0.9);
+
     try {
       setIsUploading(true);
-      setRotation(0); // Reset rotation for new images
+      setRotation(0);
 
-      // Convert data URL to blob
       const response = await fetch(croppedImageUrl);
       const blob = await response.blob();
 
-      // Generate a file name
       const timestamp = new Date().getTime();
       const fileName = `cropped_image_${timestamp}.jpg`;
 
-      // Upload to Firebase Storage
       const storage = getStorage();
       const storageRef = ref(storage, `recipe-images/${fileName}`);
 
-      // Upload the blob
       await uploadBytes(storageRef, blob);
-
-      // Get the download URL
       const downloadUrl = await getDownloadURL(storageRef);
 
-      // Update form context with image data
       setImage({
         preview: croppedImageUrl,
         url: downloadUrl,
@@ -73,7 +112,6 @@ const ImageUpload = () => {
         rotation: 0,
       });
 
-      // Hide cropper and clean up temp image
       setShowCropper(false);
       setTempImageUrl(null);
     } catch (error) {
@@ -82,7 +120,7 @@ const ImageUpload = () => {
     } finally {
       setIsUploading(false);
     }
-  };
+  }, [crop, rotation, setImage]);
 
   const handleRemoveImage = () => {
     setImage(null);
@@ -102,30 +140,13 @@ const ImageUpload = () => {
       direction === "clockwise"
         ? (rotation + 90) % 360
         : (rotation - 90 + 360) % 360;
-
     setRotation(newRotation);
-
-    // Update the image object with new rotation
-    if (image) {
-      setImage({
-        ...image,
-        rotation: newRotation,
-      });
-    }
   };
 
-  // Get the correct transform style based on current rotation
-  const getRotationStyle = () => {
-    return {
-      transform: `rotate(${rotation}deg)`,
-      transition: "transform 0.3s ease",
-    };
-  };
-
-  // Cancel cropping and go back to the file selection
   const handleCancelCrop = () => {
     setShowCropper(false);
     setTempImageUrl(null);
+    setRotation(0);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -142,19 +163,54 @@ const ImageUpload = () => {
       {errors.image && <p className={styles.errorMessage}>{errors.image}</p>}
 
       {showCropper && tempImageUrl ? (
-        // Show image cropper when we have a temp image
         <div>
-          <ImageCropper
-            imageUrl={tempImageUrl}
-            onCropComplete={handleCropComplete}
-            aspectRatio={TARGET_ASPECT_RATIO}
-          />
-          <button className={styles.cancelCropBtn} onClick={handleCancelCrop}>
-            Cancel Cropping
-          </button>
+          <div className={styles.rotationControls}>
+            <button
+              type="button"
+              onClick={() => rotateImage("counter-clockwise")}
+              className={styles.rotateButton}
+              aria-label="Rotate counter-clockwise"
+            >
+              ↺
+            </button>
+            <button
+              type="button"
+              onClick={() => rotateImage("clockwise")}
+              className={styles.rotateButton}
+              aria-label="Rotate clockwise"
+            >
+              ↻
+            </button>
+          </div>
+          <div className={styles.cropContainer}>
+            <ReactCrop
+              crop={crop}
+              onChange={(newCrop) => setCrop(newCrop)}
+              onComplete={(newCrop) => setCrop(newCrop)}
+              aspect={TARGET_ASPECT_RATIO}
+              style={{ maxHeight: "30rem", maxWidth: "100%" }}
+            >
+              <img
+                ref={imageRef}
+                src={tempImageUrl}
+                alt="Crop preview"
+                style={{ transform: `rotate(${rotation}deg)`, maxWidth: "100%", maxHeight: "30rem" }}
+              />
+            </ReactCrop>
+          </div>
+          <div className={styles.cropControls}>
+            <p className={styles.cropInstructions}>
+              Drag to reposition. Use the handles to resize the crop area.
+            </p>
+            <button className={styles.applyCropBtn} onClick={handleCropComplete}>
+              Apply Crop
+            </button>
+            <button className={styles.cancelCropBtn} onClick={handleCancelCrop}>
+              Cancel Cropping
+            </button>
+          </div>
         </div>
       ) : (
-        // Show regular upload UI or preview when not cropping
         <div className={styles.uploadContainer}>
           {image && image.preview ? (
             <div className={styles.previewContainer}>
@@ -162,29 +218,7 @@ const ImageUpload = () => {
                 src={image.preview}
                 alt="Recipe preview"
                 className={styles.imagePreview}
-                style={getRotationStyle()}
               />
-
-              {/* Rotation controls */}
-              <div className={styles.rotationControls}>
-                <button
-                  type="button"
-                  onClick={() => rotateImage("counter-clockwise")}
-                  className={styles.rotateButton}
-                  aria-label="Rotate counter-clockwise"
-                >
-                  ↺
-                </button>
-                <button
-                  type="button"
-                  onClick={() => rotateImage("clockwise")}
-                  className={styles.rotateButton}
-                  aria-label="Rotate clockwise"
-                >
-                  ↻
-                </button>
-              </div>
-
               <button
                 type="button"
                 onClick={handleRemoveImage}
