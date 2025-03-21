@@ -1,9 +1,8 @@
 import React from "react";
-import placeholderImage from "../../../../assets/images/placeholder.png";
 import styles from "./RecipeHeader.module.css";
 import { CookingPot, ChefHat, Timer, Users } from 'lucide-react';
 
-const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt }) => {
+const RecipeHeader = ({ title, cookTime, prepTime, servings, createdAt }) => {
   // Format time (convert minutes to hours and minutes if needed)
   const formatTime = (timeInMinutes) => {
     if (!timeInMinutes) return "N/A";
@@ -50,36 +49,9 @@ const RecipeHeader = ({ title, image, cookTime, prepTime, servings, createdAt })
   
   // Calculate total time
   const totalTime = (cookTime || 0) + (prepTime || 0);
-
-    
-  // Get image style with rotation if present
-  const getImageStyle = () => {
-    if (image && typeof image === 'object' && image.rotation) {
-      return {
-        transform: `rotate(${image.rotation}deg)`,
-        transformOrigin: 'center center'
-      };
-    }
-    return {};
-  };
-  
-  // Get image source
-  const getImageSrc = () => {
-    if (!image) return placeholderImage;
-    if (typeof image === 'string') return image;
-    return image.url || placeholderImage;
-  };
   
   return (
     <div className={styles.recipeHeader}>
-      <div className={styles.recipeImageContainer}>
-        <img 
-          src={getImageSrc()} 
-          alt={title} 
-          className={styles.recipeImage} 
-          style={getImageStyle()}
-        />
-      </div>
       
       <div className={styles.recipeInfo}>
         <h1 className={styles.recipeTitle}>{title}</h1>

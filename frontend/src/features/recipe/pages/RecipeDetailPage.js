@@ -13,6 +13,7 @@ import RecipeActions from "../components/RecipeActions/RecipeActions";
 import RecipeTags from "../components/RecipeTags/RecipeTags";
 import NutritionInfo from "../components/NutritionInfo/NutritionInfo";
 import AddToDishListButton from "../components/AddToDishListButton/AddToDishListButton";
+import RecipeGallery from '../components/RecipeGallery/RecipeGallery';
 import styles from "./RecipeDetailPage.module.css";
 
 const RecipeDetailPage = () => {
@@ -181,6 +182,7 @@ const RecipeDetailPage = () => {
               servings={recipe.servings}
             />
             <RecipeInstructions instructions={recipe.instructions} />
+            <RecipeGallery images={recipe.image ? [recipe.image] : []} />
           </div>
 
           <div className={styles.sideContent}>
