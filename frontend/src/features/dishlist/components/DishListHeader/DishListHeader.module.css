@@ -1,0 +1,207 @@
+.dishlistHeader {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dishlistTitle {
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #274b75;
+  margin: 0;
+  flex: 1;
+}
+
+.editBtn {
+  background-color: #F4F2EE;
+  border: none;
+  color: #274b75;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.editBtn:hover {
+  background-color: #E6E4E0;
+}
+
+.badges {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.visibilityBadge,
+.roleBadge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.visibilityBadge.public {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+}
+
+.visibilityBadge.private {
+  background-color: #FFEBEE;
+  color: #C62828;
+}
+
+.visibilityBadge.shared {
+  background-color: #E3F2FD;
+  color: #1565C0;
+}
+
+.roleBadge.owner {
+  background-color: #FFF3E0;
+  color: #E65100;
+}
+
+.roleBadge.collaborator {
+  background-color: #E0F7FA;
+  color: #00838F;
+}
+
+.roleBadge.follower {
+  background-color: #F3E5F5;
+  color: #6A1B9A;
+}
+
+.dishlistDescription {
+  color: #555;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputGroup label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+}
+
+.inputGroup input,
+.inputGroup textarea {
+  padding: 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.inputGroup input:focus,
+.inputGroup textarea:focus {
+  outline: none;
+  border-color: #274b75;
+  box-shadow: 0 0 0 2px rgba(39, 75, 117, 0.2);
+}
+
+.editButtons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.cancelBtn,
+.saveBtn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelBtn {
+  background-color: transparent;
+  border: 1.5px solid #ddd;
+  color: #666;
+}
+
+.cancelBtn:hover {
+  background-color: #f0f0f0;
+}
+
+.saveBtn {
+  background-color: #274b75;
+  border: none;
+  color: white;
+}
+
+.saveBtn:hover {
+  background-color: #1c3657;
+}
+
+.saveBtn:disabled,
+.cancelBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .dishlistHeader {
+    padding: 20px;
+  }
+
+  .dishlistTitle {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dishlistHeader {
+    padding: 16px;
+  }
+
+  .headerTop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .editButtons {
+    width: 100%;
+  }
+
+  .cancelBtn,
+  .saveBtn {
+    flex: 1;
+  }
+}

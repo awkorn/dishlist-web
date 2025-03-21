@@ -3,14 +3,14 @@ import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import { EDIT_DISHLIST } from "../../../../graphql/mutations/dishLists";
 import { useAuth } from "../../../../contexts/AuthProvider";
-import "./DishListHeader.css";
+import styles from "./DishListHeader.module.css";
 
 const DishListHeader = ({ dishList, userRole }) => {
   const { currentUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(dishList.title);
   const [description, setDescription] = useState(dishList.description || "");
-  
+
   const [editDishList, { loading }] = useMutation(EDIT_DISHLIST, {
     onCompleted: () => {
       setIsEditing(false);
@@ -18,38 +18,38 @@ const DishListHeader = ({ dishList, userRole }) => {
     },
     onError: (error) => {
       toast.error(`Error updating DishList: ${error.message}`);
-    }
+    },
   });
-  
+
   const handleEdit = () => {
     setIsEditing(true);
   };
-  
+
   const handleCancel = () => {
     setTitle(dishList.title);
     setDescription(dishList.description || "");
     setIsEditing(false);
   };
-  
+
   const handleSave = () => {
     if (!title.trim()) {
       toast.error("Title cannot be empty");
       return;
     }
-    
+
     editDishList({
       variables: {
         id: dishList.id,
         title,
         userId: currentUser.uid,
-        description: description.trim() ? description : null
-      }
+        description: description.trim() ? description : null,
+      },
     });
   };
-  
+
   // Determine visibility badge text and color
   const getVisibilityBadge = () => {
-    switch(dishList.visibility) {
+    switch (dishList.visibility) {
       case "public":
         return { text: "Public", className: "visibility-badge public" };
       case "private":
@@ -60,10 +60,10 @@ const DishListHeader = ({ dishList, userRole }) => {
         return { text: dishList.visibility, className: "visibility-badge" };
     }
   };
-  
+
   // Get badge for user role
   const getRoleBadge = () => {
-    switch(userRole) {
+    switch (userRole) {
       case "owner":
         return { text: "Owner", className: "role-badge owner" };
       case "collaborator":
@@ -74,15 +74,15 @@ const DishListHeader = ({ dishList, userRole }) => {
         return null;
     }
   };
-  
+
   const visibilityBadge = getVisibilityBadge();
   const roleBadge = getRoleBadge();
 
   return (
-    <div className="dishlist-header">
+    <div className={styles.dishlistHeader}>
       {isEditing ? (
-        <div className="edit-form">
-          <div className="input-group">
+        <div className={styles.editForm}>
+          <div className={styles.inputGroup}>
             <label htmlFor="title">Title</label>
             <input
               type="text"
@@ -93,7 +93,7 @@ const DishListHeader = ({ dishList, userRole }) => {
               maxLength="50"
             />
           </div>
-          <div className="input-group">
+          <div className={styles.inputGroup}>
             <label htmlFor="description">Description (optional)</label>
             <textarea
               id="description"
@@ -104,16 +104,16 @@ const DishListHeader = ({ dishList, userRole }) => {
               rows="3"
             />
           </div>
-          <div className="edit-buttons">
-            <button 
-              className="cancel-btn" 
+          <div className={styles.editButtons}>
+            <button
+              className={styles.cancelBtn}
               onClick={handleCancel}
               disabled={loading}
             >
               Cancel
             </button>
-            <button 
-              className="save-btn" 
+            <button
+              className={styles.saveBtn}
               onClick={handleSave}
               disabled={loading}
             >
@@ -122,29 +122,27 @@ const DishListHeader = ({ dishList, userRole }) => {
           </div>
         </div>
       ) : (
-        <div className="header-content">
-          <div className="header-top">
-            <h1 className="dishlist-title">{dishList.title}</h1>
+        <div className={styles.headerContent}>
+          <div className={styles.headerTop}>
+            <h1 className={styles.dishlistTitle}>{dishList.title}</h1>
             {userRole === "owner" && (
-              <button className="edit-btn" onClick={handleEdit}>
+              <button className={styles.editBtn} onClick={handleEdit}>
                 Edit
               </button>
             )}
           </div>
-          
-          <div className="badges">
+
+          <div className={styles.badges}>
             <span className={visibilityBadge.className}>
               {visibilityBadge.text}
             </span>
             {roleBadge && (
-              <span className={roleBadge.className}>
-                {roleBadge.text}
-              </span>
+              <span className={roleBadge.className}>{roleBadge.text}</span>
             )}
           </div>
-          
+
           {dishList.description && (
-            <p className="dishlist-description">{dishList.description}</p>
+            <p className={styles.dishlistDescription}>{dishList.description}</p>
           )}
         </div>
       )}
