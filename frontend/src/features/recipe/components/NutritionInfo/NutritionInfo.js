@@ -14,7 +14,6 @@ const NutritionInfo = ({ ingredients, servings }) => {
     setError(null);
 
     try {
-      // Filter out empty ingredients
       const validIngredients = ingredients.filter(
         (ing) => ing.name.trim() !== ""
       );
@@ -25,18 +24,15 @@ const NutritionInfo = ({ ingredients, servings }) => {
         return;
       }
 
-      // Format ingredients for API
       const formattedIngredients = validIngredients.map((ing) => {
         return `${ing.amount || ""} ${ing.unit || ""} ${ing.name}`.trim();
       });
 
-      // Call nutrition API
       const response = await axios.post("http://localhost:5000/api/nutrition", {
         ingredients: formattedIngredients,
         servingsCount: servings || 1,
       });
 
-      // Just use the data as-is from the API
       const data = response.data.result;
       setNutritionData(data);
       setIsExpanded(true);
@@ -99,50 +95,65 @@ const NutritionInfo = ({ ingredients, servings }) => {
                 </span>
               </div>
 
+              {/* Macronutrient Bar */} 
               <div className={styles.calorieBar}>
                 <div className={styles.macroBar}>
-                  {nutritionData.protein > 0 && (
-                    <div
-                      className={`${styles.macroFill} ${styles.proteinFill}`}
-                      style={{
-                        width: `${(
-                          ((nutritionData.protein * 4) /
-                            nutritionData.calories) *
-                          100
-                        ).toFixed(1)}%`,
-                      }}
-                    >
-                      Protein
-                    </div>
-                  )}
+                  {(() => {
+                    // Calculate calories for each macro
+                    const proteinCal = nutritionData.protein * 4;
+                    const carbsCal = nutritionData.carbs * 4;
+                    const fatCal = nutritionData.fat * 9;
+                    const totalCal = nutritionData.calories;
 
-                  {nutritionData.carbs > 0 && (
-                    <div
-                      className={`${styles.macroFill} ${styles.carbsFill}`}
-                      style={{
-                        width: `${(
-                          ((nutritionData.carbs * 4) / nutritionData.calories) *
-                          100
-                        ).toFixed(1)}%`,
-                      }}
-                    >
-                      Carbs
-                    </div>
-                  )}
+                    // Raw percentages
+                    const proteinRaw = (proteinCal / totalCal) * 100;
+                    const carbsRaw = (carbsCal / totalCal) * 100;
+                    const fatRaw = (fatCal / totalCal) * 100;
 
-                  {nutritionData.fat > 0 && (
-                    <div
-                      className={`${styles.macroFill} ${styles.fatFill}`}
-                      style={{
-                        width: `${(
-                          ((nutritionData.fat * 9) / nutritionData.calories) *
-                          100
-                        ).toFixed(1)}%`,
-                      }}
-                    >
-                      Fat
-                    </div>
-                  )}
+                    // Normalize to 100%
+                    const totalRaw = proteinRaw + carbsRaw + fatRaw;
+                    const proteinWidth = totalRaw ? (proteinRaw / totalRaw) * 100 : 0;
+                    const carbsWidth = totalRaw ? (carbsRaw / totalRaw) * 100 : 0;
+                    const fatWidth = totalRaw ? (fatRaw / totalRaw) * 100 : 0;
+
+                    // Minimum width for visibility
+                    const minWidth = 5;
+
+                    return (
+                      <>
+                        {nutritionData.protein > 0 && (
+                          <div
+                            className={`${styles.macroFill} ${styles.proteinFill}`}
+                            style={{
+                              width: `${Math.max(proteinWidth.toFixed(1), minWidth)}%`,
+                            }}
+                          >
+                            {proteinWidth > 10 && "Protein"}
+                          </div>
+                        )}
+                        {nutritionData.carbs > 0 && (
+                          <div
+                            className={`${styles.macroFill} ${styles.carbsFill}`}
+                            style={{
+                              width: `${Math.max(carbsWidth.toFixed(1), minWidth)}%`,
+                            }}
+                          >
+                            {carbsWidth > 10 && "Carbs"}
+                          </div>
+                        )}
+                        {nutritionData.fat > 0 && (
+                          <div
+                            className={`${styles.macroFill} ${styles.fatFill}`}
+                            style={{
+                              width: `${Math.max(fatWidth.toFixed(1), minWidth)}%`,
+                            }}
+                          >
+                            {fatWidth > 10 && "Fat"}
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
 
