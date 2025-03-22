@@ -7,34 +7,38 @@ const NutritionInfo = ({ ingredients, servings }) => {
   const [isCalculating, setIsCalculating] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [error, setError] = useState(null);
-  
+
   // Calculate nutrition facts
   const calculateNutrition = async () => {
     setIsCalculating(true);
     setError(null);
-    
+
     try {
       // Filter out empty ingredients
-      const validIngredients = ingredients.filter(ing => ing.name.trim() !== "");
-      
+      const validIngredients = ingredients.filter(
+        (ing) => ing.name.trim() !== ""
+      );
+
       if (validIngredients.length === 0) {
         setError("No ingredients to analyze");
         setIsCalculating(false);
         return;
       }
-      
+
       // Format ingredients for API
-      const formattedIngredients = validIngredients.map(ing => {
+      const formattedIngredients = validIngredients.map((ing) => {
         return `${ing.amount || ""} ${ing.unit || ""} ${ing.name}`.trim();
       });
-      
+
       // Call nutrition API
-      const response = await axios.post('http://localhost:5000/api/nutrition', {
+      const response = await axios.post("http://localhost:5000/api/nutrition", {
         ingredients: formattedIngredients,
-        servingsCount: servings || 1
+        servingsCount: servings || 1,
       });
-      
-      setNutritionData(response.data.result);
+
+      // Just use the data as-is from the API
+      const data = response.data.result;
+      setNutritionData(data);
       setIsExpanded(true);
     } catch (err) {
       console.error("Error calculating nutrition:", err);
@@ -43,22 +47,22 @@ const NutritionInfo = ({ ingredients, servings }) => {
       setIsCalculating(false);
     }
   };
-  
+
   // Toggle expanded state
   const toggleExpanded = () => {
-    setIsExpanded(prev => !prev);
+    setIsExpanded((prev) => !prev);
   };
-  
+
   return (
     <div className={styles.nutritionSection}>
       <h3 className={styles.nutritionTitle}>Nutrition Information</h3>
-      
+
       {!nutritionData ? (
         <div className={styles.calculateContainer}>
           <p className={styles.nutritionDescription}>
             Get estimated nutrition facts for this recipe based on ingredients.
           </p>
-          
+
           <button
             className={styles.calculateButton}
             onClick={calculateNutrition}
@@ -66,87 +70,129 @@ const NutritionInfo = ({ ingredients, servings }) => {
           >
             {isCalculating ? "Calculating..." : "Calculate Nutrition"}
           </button>
-          
+
           {error && <p className={styles.errorMessage}>{error}</p>}
         </div>
       ) : (
         <div className={styles.nutritionFacts}>
-          <div 
-            className={styles.nutritionHeader}
-            onClick={toggleExpanded}
-          >
+          <div className={styles.nutritionHeader} onClick={toggleExpanded}>
             <h4 className={styles.nutritionFactsTitle}>Nutrition Facts</h4>
-            <span className={`${styles.expandIcon} ${isExpanded ? styles.expanded : ''}`}>
+            <span
+              className={`${styles.expandIcon} ${
+                isExpanded ? styles.expanded : ""
+              }`}
+            >
               ▼
             </span>
           </div>
-          
-          <p className={styles.servingInfo}>Per serving (serves {servings || 1})</p>
-          
+
+          <p className={styles.servingInfo}>
+            Per serving (serves {servings || 1})
+          </p>
+
           {isExpanded && (
             <>
               <div className={styles.nutrientRow}>
                 <span className={styles.nutrientName}>Calories</span>
-                <span className={styles.nutrientValue}>{nutritionData.calories}</span>
+                <span className={styles.nutrientValue}>
+                  {nutritionData.calories}
+                </span>
               </div>
-              
+
               <div className={styles.calorieBar}>
                 <div className={styles.macroBar}>
-                  <div 
-                    className={`${styles.macroFill} ${styles.proteinFill}`}
-                    style={{ width: `${nutritionData.proteinCaloriePercentage || 25}%` }}
-                  >
-                    Protein
-                  </div>
-                  <div 
-                    className={`${styles.macroFill} ${styles.carbsFill}`}
-                    style={{ width: `${nutritionData.carbsCaloriePercentage || 45}%` }}
-                  >
-                    Carbs
-                  </div>
-                  <div 
-                    className={`${styles.macroFill} ${styles.fatFill}`}
-                    style={{ width: `${nutritionData.fatCaloriePercentage || 30}%` }}
-                  >
-                    Fat
-                  </div>
+                  {nutritionData.protein > 0 && (
+                    <div
+                      className={`${styles.macroFill} ${styles.proteinFill}`}
+                      style={{
+                        width: `${(
+                          ((nutritionData.protein * 4) /
+                            nutritionData.calories) *
+                          100
+                        ).toFixed(1)}%`,
+                      }}
+                    >
+                      Protein
+                    </div>
+                  )}
+
+                  {nutritionData.carbs > 0 && (
+                    <div
+                      className={`${styles.macroFill} ${styles.carbsFill}`}
+                      style={{
+                        width: `${(
+                          ((nutritionData.carbs * 4) / nutritionData.calories) *
+                          100
+                        ).toFixed(1)}%`,
+                      }}
+                    >
+                      Carbs
+                    </div>
+                  )}
+
+                  {nutritionData.fat > 0 && (
+                    <div
+                      className={`${styles.macroFill} ${styles.fatFill}`}
+                      style={{
+                        width: `${(
+                          ((nutritionData.fat * 9) / nutritionData.calories) *
+                          100
+                        ).toFixed(1)}%`,
+                      }}
+                    >
+                      Fat
+                    </div>
+                  )}
                 </div>
               </div>
-              
+
               <div className={styles.nutrientRow}>
                 <span className={styles.nutrientName}>Protein</span>
-                <span className={styles.nutrientValue}>{nutritionData.protein}g</span>
+                <span className={styles.nutrientValue}>
+                  {nutritionData.protein}g
+                </span>
               </div>
-              
+
               <div className={styles.nutrientRow}>
                 <span className={styles.nutrientName}>Carbohydrates</span>
-                <span className={styles.nutrientValue}>{nutritionData.carbs}g</span>
+                <span className={styles.nutrientValue}>
+                  {nutritionData.carbs}g
+                </span>
               </div>
-              
+
               <div className={styles.nutrientRow}>
                 <span className={styles.nutrientName}>Fat</span>
-                <span className={styles.nutrientValue}>{nutritionData.fat}g</span>
+                <span className={styles.nutrientValue}>
+                  {nutritionData.fat}g
+                </span>
               </div>
-              
+
               <div className={styles.nutrientRow}>
                 <span className={styles.nutrientName}>Fiber</span>
-                <span className={styles.nutrientValue}>{nutritionData.fiber}g</span>
+                <span className={styles.nutrientValue}>
+                  {nutritionData.fiber}g
+                </span>
               </div>
-              
+
               <div className={styles.nutrientRow}>
                 <span className={styles.nutrientName}>Sugar</span>
-                <span className={styles.nutrientValue}>{nutritionData.sugar}g</span>
+                <span className={styles.nutrientValue}>
+                  {nutritionData.sugar}g
+                </span>
               </div>
-              
+
               <div className={styles.nutrientRow}>
                 <span className={styles.nutrientName}>Sodium</span>
-                <span className={styles.nutrientValue}>{nutritionData.sodium}mg</span>
+                <span className={styles.nutrientValue}>
+                  {nutritionData.sodium}mg
+                </span>
               </div>
             </>
           )}
-          
+
           <p className={styles.disclaimer}>
-            * Nutrition values are estimates and may vary based on exact ingredients and preparation methods.
+            * Nutrition values are estimates and may vary based on exact
+            ingredients and preparation methods.
           </p>
         </div>
       )}

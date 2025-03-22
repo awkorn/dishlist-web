@@ -53,7 +53,7 @@ async function startApolloServer() {
 
   // Add the new nutrition endpoint
   app.post("/api/nutrition", async (req, res) => {
-    const { ingredients, servingsCount = 1 } = req.body;
+    const { ingredients, servingsCount } = req.body;
     
     try {
       const response = await openai.chat.completions.create({
