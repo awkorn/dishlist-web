@@ -72,10 +72,9 @@
     text-align: center;
     padding: 60px 20px;
     margin: 40px auto;
-    background-color: white;
+    background-color: transparent;
     border-radius: 12px;
     max-width: 600px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
   
   .loadingSpinner {
@@ -84,7 +83,6 @@
     height: 40px;
     border: 4px solid rgba(39, 75, 117, 0.2);
     border-radius: 50%;
-    border-top-color: #274b75;
     animation: spin 1s linear infinite;
     margin-bottom: 15px;
   }
