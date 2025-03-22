@@ -14,9 +14,16 @@ const IngredientInput = () => {
   };
 
   const updateIngredient = (index, field, value) => {
-    const updateIngredients = [...ingredients];
-    updateIngredients[index][field] = value;
-    setIngredients(updateIngredients);
+    const updatedIngredients = ingredients.map((ingredient, i) => {
+      if (i !== index) return ingredient;
+
+      return {
+        ...ingredient,
+        [field]: value,
+      };
+    });
+
+    setIngredients(updatedIngredients);
   };
 
   return (
