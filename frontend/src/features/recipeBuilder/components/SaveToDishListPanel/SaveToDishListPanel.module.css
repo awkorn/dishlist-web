@@ -1,0 +1,234 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .panel {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .header h3 {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 20px;
+    margin: 0;
+    color: #274b75;
+  }
+  
+  .closeBtn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s ease;
+  }
+  
+  .closeBtn:hover {
+    color: #333;
+  }
+  
+  .content {
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .description {
+    margin: 0;
+    color: #666;
+    font-size: 15px;
+  }
+  
+  .searchContainer {
+    margin-bottom: 8px;
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+  
+  .searchInput:focus {
+    border-color: #274b75;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(39, 75, 117, 0.1);
+  }
+  
+  .dishlistsContainer {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+  }
+  
+  .dishlistsList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .dishlistItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+  }
+  
+  .dishlistItem:last-child {
+    border-bottom: none;
+  }
+  
+  .dishlistItem:hover {
+    background-color: #f5f7fa;
+  }
+  
+  .selectedDishlist {
+    background-color: #e8f4f8;
+  }
+  
+  .dishlistTitle {
+    font-size: 15px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .pinnedIndicator {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .collaboratorIndicator {
+    font-size: 12px;
+    background-color: #E0F7FA;
+    color: #00838F;
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+  
+  .selectedCheck {
+    color: #274b75;
+    font-weight: bold;
+  }
+  
+  .noResults {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+  }
+  
+  .loadingMessage, .errorMessage {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .loadingMessage {
+    color: #274b75;
+  }
+  
+  .errorMessage {
+    color: #f44336;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  
+  .cancelBtn, .saveBtn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .cancelBtn {
+    background-color: transparent;
+    border: 1.5px solid #ddd;
+    color: #666;
+  }
+  
+  .cancelBtn:hover:not(:disabled) {
+    background-color: #f0f0f0;
+  }
+  
+  .saveBtn {
+    background-color: #274b75;
+    border: none;
+    color: white;
+  }
+  
+  .saveBtn:hover:not(:disabled) {
+    background-color: #1c3657;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(39, 75, 117, 0.2);
+  }
+  
+  .cancelBtn:disabled, .saveBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .panel {
+      width: 95%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .content {
+      padding: 16px;
+    }
+    
+    .actions {
+      flex-direction: column;
+    }
+    
+    .cancelBtn, .saveBtn {
+      width: 100%;
+    }
+  }
