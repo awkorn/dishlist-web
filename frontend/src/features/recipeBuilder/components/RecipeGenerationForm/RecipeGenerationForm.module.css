@@ -1,0 +1,274 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .formSection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .sectionTitle {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #274b75;
+    margin: 0;
+  }
+  
+  .sectionDescription {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+  
+  /* Ingredients styles */
+  .ingredientsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .ingredientRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .ingredientInput {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+  
+  .ingredientInput:focus {
+    border-color: #274b75;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(39, 75, 117, 0.1);
+  }
+  
+  .removeIngredientBtn {
+    background-color: transparent;
+    color: #ff5252;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+  }
+  
+  .removeIngredientBtn:hover {
+    background-color: #ffebee;
+  }
+  
+  .addIngredientBtn {
+    background-color: #f4f2ee;
+    color: #274b75;
+    border: 1.5px dashed #274b75;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    transition: all 0.2s ease;
+  }
+  
+  .addIngredientBtn:hover {
+    background-color: #e6e4e0;
+  }
+  
+  /* Advanced toggle styles */
+  .advancedToggle {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+  }
+  
+  .advancedToggleBtn {
+    background: none;
+    border: none;
+    color: #274b75;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+  }
+  
+  .advancedToggleBtn:hover {
+    background-color: rgba(39, 75, 117, 0.08);
+  }
+  
+  .toggleArrow {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+  }
+  
+  .expanded {
+    transform: rotate(180deg);
+  }
+  
+  /* Dietary options styles */
+  .dietaryOptions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  
+  .dietaryOption {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .dietaryCheckbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  
+  .dietaryCheckbox:checked {
+    background-color: #274b75;
+    border-color: #274b75;
+  }
+  
+  .dietaryCheckbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
+  .dietaryLabel {
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  /* Macros styles */
+  .macrosGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
+  
+  .macroInput {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .macroInput label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .macroInput input {
+    padding: 12px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+  
+  .macroInput input:focus {
+    border-color: #274b75;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(39, 75, 117, 0.1);
+  }
+  
+  /* Form actions */
+  .formActions {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  
+  .generateBtn {
+    background-color: #274b75;
+    color: white;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+  }
+  
+  .generateBtn:hover:not(:disabled) {
+    background-color: #1c3657;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 75, 117, 0.2);
+  }
+  
+  .generateBtn:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+  }
+  
+  /* Error message */
+  .errorMessage {
+    color: #f44336;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .dietaryOptions {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .macrosGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .form {
+      gap: 24px;
+    }
+    
+    .dietaryOptions {
+      grid-template-columns: 1fr;
+    }
+    
+    .macrosGrid {
+      grid-template-columns: 1fr;
+    }
+    
+    .generateBtn {
+      width: 100%;
+    }
+  }
