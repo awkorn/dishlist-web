@@ -16,3 +16,18 @@ export const FETCH_DISHLISTS = gql`
     }
   }
 `;
+
+export const GET_USER_DISHLISTS = gql`
+  query GetUserDishlists($userId: String!) {
+    getUserOwnedDishLists(userId: $userId) {
+      id
+      title
+      isPinned
+    }
+    getUserCollaboratedDishLists(userId: $userId) {
+      id
+      title
+      userId
+    }
+  }
+`;

@@ -1,0 +1,77 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    background-color: #F4F2EE;
+  }
+  
+  .unauthorizedMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    margin: 40px auto;
+    background-color: white;
+    border-radius: 12px;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .unauthorizedMessage h2 {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 16px;
+  }
+  
+  .unauthorizedMessage p {
+    color: #666;
+    margin-bottom: 24px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .signInButton {
+    background-color: #274b75;
+    color: white;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .signInButton:hover {
+    background-color: #1c3657;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 75, 117, 0.2);
+  }
+  
+  @media (max-width: 768px) {
+    .unauthorizedMessage {
+      margin: 30px auto;
+      padding: 40px 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .unauthorizedMessage {
+      margin: 20px 16px;
+      padding: 30px 20px;
+    }
+    
+    .unauthorizedMessage h2 {
+      font-size: 20px;
+    }
+    
+    .unauthorizedMessage p {
+      font-size: 15px;
+    }
+  }

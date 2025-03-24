@@ -8,6 +8,7 @@ import AddDishListPage from "../features/dishlists/pages/AddDishListPage";
 import DishListDetailPage from "../features/dishlist/pages/DishListDetailPage";
 import AddRecipePage from "../features/recipe/pages/AddRecipePage";
 import RecipeDetailPage from "../features/recipe/pages/RecipeDetailPage";
+import RecipeBuilderPage from "../features/recipeBuilder/pages/RecipeBuilderPage"
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
@@ -53,6 +54,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <RecipeDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/recipe-builder"
+        element={
+          <ProtectedRoute>
+            <RecipeBuilderPage />
           </ProtectedRoute>
         }
       />
