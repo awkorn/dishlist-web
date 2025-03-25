@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const RecipeFormContext = createContext();
 
@@ -9,7 +9,9 @@ export const useRecipeForm = () => useContext(RecipeFormContext);
 // Provider component
 export const RecipeFormProvider = ({ children }) => {
   const navigate = useNavigate();
-  
+  const location = useLocation();
+  const [dishListId, setDishListId] = useState(null);
+
   // Form state
   const [title, setTitle] = useState("");
   const [servings, setServings] = useState("");
@@ -24,20 +26,30 @@ export const RecipeFormProvider = ({ children }) => {
   const [selectedDishList, setSelectedDishList] = useState("");
   const [errors, setErrors] = useState({});
 
+  // Extract dishListId from URL params when component mounts
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const dishListId = queryParams.get("dishListId");
+    if (dishListId) {
+      setDishListId(dishListId);
+      setSelectedDishList(dishListId);
+    }
+  }, [location]);
+
   // Form validation function
   const validateForm = () => {
     const newErrors = {};
 
     if (!title.trim()) newErrors.title = "Recipe title is required";
-    
-    // Check if at least one ingredient has a name
-    const hasValidIngredient = ingredients.some(ing => ing.name.trim() !== "");
+
+    const hasValidIngredient = ingredients.some(
+      (ing) => ing.name.trim() !== ""
+    );
     if (!hasValidIngredient) {
       newErrors.ingredients = "At least one ingredient is required";
     }
-    
-    // Check if at least one instruction is provided
-    const hasValidInstruction = instructions.some(inst => inst.trim() !== "");
+
+    const hasValidInstruction = instructions.some((inst) => inst.trim() !== "");
     if (!hasValidInstruction) {
       newErrors.instructions = "At least one instruction is required";
     }
@@ -58,9 +70,12 @@ export const RecipeFormProvider = ({ children }) => {
     setTags([]);
     setSelectedDishList("");
     setErrors({});
-    
-    // Navigate back to dishlists page
-    navigate("/dishlists");
+
+    if (dishListId) {
+      navigate(`/dishlist/${dishListId}`);
+    } else {
+      navigate("/dishlists");
+    }
   };
 
   // Value to be provided to consumers
