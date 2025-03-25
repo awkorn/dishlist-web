@@ -12,6 +12,11 @@ export const RecipeFormProvider = ({ children }) => {
   const location = useLocation();
   const [dishListId, setDishListId] = useState(null);
 
+  // Parse query parameters to check if we're in edit mode
+  const queryParams = new URLSearchParams(location.search);
+  const isEditMode = queryParams.get("edit") === "true";
+  const recipeId = queryParams.get("recipeId");
+
   // Form state
   const [title, setTitle] = useState("");
   const [servings, setServings] = useState("");
@@ -60,21 +65,25 @@ export const RecipeFormProvider = ({ children }) => {
 
   // Reset form function
   const resetForm = () => {
-    setTitle("");
-    setServings("");
-    setPrepTime("");
-    setCookTime("");
-    setImage(null);
-    setIngredients([{ name: "", amount: "", unit: "" }]);
-    setInstructions([""]);
-    setTags([]);
-    setSelectedDishList("");
-    setErrors({});
-
-    if (dishListId) {
-      navigate(`/dishlist/${dishListId}`);
+    if (isEditMode && recipeId) {
+      navigate(`/recipe/${recipeId}`);
     } else {
-      navigate("/dishlists");
+      setTitle("");
+      setServings("");
+      setPrepTime("");
+      setCookTime("");
+      setImage(null);
+      setIngredients([{ name: "", amount: "", unit: "" }]);
+      setInstructions([""]);
+      setTags([]);
+      setSelectedDishList("");
+      setErrors({});
+
+      if (dishListId) {
+        navigate(`/dishlist/${dishListId}`);
+      } else {
+        navigate("/dishlists");
+      }
     }
   };
 
