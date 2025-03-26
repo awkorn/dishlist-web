@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import {
   DELETE_DISHLIST,
-  EDIT_DISHLIST,
   PIN_DISHLIST,
   UNPIN_DISHLIST,
 } from "../../../../graphql";
@@ -42,10 +41,6 @@ const DishListsMenu = ({
     onCompleted: () => refetch(),
   });
 
-  const [editDishList] = useMutation(EDIT_DISHLIST, {
-    onCompleted: () => refetch(),
-  });
-
   const [pinDishList] = useMutation(PIN_DISHLIST, {
     onCompleted: () => refetch(),
   });
@@ -70,19 +65,8 @@ const DishListsMenu = ({
       return;
     }
 
-    const newTitle = prompt("Enter new title:", dishList.title);
-    if (!newTitle) return;
-
-    const currentDesc = dishList.description || "";
-    const newDescription = prompt("Enter new description:", currentDesc);
-
-    editDishList({
-      variables: {
-        id: localSelectedDishList,
-        title: newTitle,
-        description: newDescription,
-        userId: currentUser.uid,
-      },
+    navigate(`/edit-dishlist/${localSelectedDishList}`, { 
+      state: { dishListId: localSelectedDishList, returnTo: '/dishlists' } 
     });
 
     setMenuOpen(false);
