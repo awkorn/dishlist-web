@@ -122,18 +122,8 @@
   transition: color 0.2s ease;
 }
 
-.signupLink a {
-  color: #013328;
-  font-weight: 600;
-  text-decoration: none;
-  padding-bottom: 2px;
-  border-bottom: 1px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.signupLink a:hover {
-  color: #01654a;
-  border-bottom-color: #01654a;
+.signupLink:hover {
+  color: #336299;
 }
 
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
