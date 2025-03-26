@@ -29,7 +29,7 @@ const dishListTypeDefs = gql`
       description: String
       visibility: String!
     ): DishList
-    editDishList(id: ID!, title: String!, userId: String!, description: String): DishList
+    editDishList(id: ID!, title: String!, userId: String!, description: String, visibility: String!): DishList
     removeDishList(id: ID!, userId: String!): DishList
     pinDishList(id: ID!, userId: String!): DishList
     unpinDishList(id: ID!, userId: String!): DishList

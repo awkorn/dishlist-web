@@ -84,7 +84,7 @@ const dishListResolvers = {
       return savedDishList;
     },
 
-    editDishList: async (_, { id, title, description, userId }) => {
+    editDishList: async (_, { id, title, description, userId, visibility }) => {
       // First, check if user has permission to edit
       const dishList = await DishList.findById(id);
 
@@ -99,6 +99,7 @@ const dishListResolvers = {
       const updates = {};
       if (title) updates.title = title;
       if (description !== undefined) updates.description = description;
+      if (visibility) updates.visibility = visibility;
 
       return await DishList.findByIdAndUpdate(id, updates, { new: true });
     },
