@@ -19,18 +19,6 @@
   margin: 1% 0 1% 0;
 }
 
-.pageTitle {
-  font-size: clamp(30px, 5vw, 56px);
-  color: #1E1E1E;
-  font-family: "Bricolage Grotesque", "Segoe UI", Helvetica, Arial, sans-serif;
-  font-weight: bolder;
-  margin: 0 0 20px 0;
-  text-align: center;
-  width: 100%;
-  position: relative;
-  z-index: 10;
-}
-
 .listMessage {
   display: flex;
   align-items: center;
@@ -53,7 +41,7 @@
 .viewBtn {
   padding: 8px 16px;
   border: none;
-  border-radius: 20px;
+  border-radius: 16px;
   background-color: #e0e0e0;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -112,7 +100,7 @@
 }
 
 .listTitle {
-  font-size: clamp(18px, 3vw, 28px);
+  font-size: clamp(18px, 3vw, 30px);
   font-family: "Bricolage Grotesque", "Segoe UI", Helvetica, Arial, sans-serif;
   font-weight: 600;
   margin: 0;
@@ -131,10 +119,6 @@
   display: block;
   width: 100%;
   text-align: center;
-}
-
-.listTitle a:hover {
-  text-decoration: underline;
 }
 
 .pin {
