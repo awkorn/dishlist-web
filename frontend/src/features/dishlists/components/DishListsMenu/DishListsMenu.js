@@ -10,7 +10,7 @@ import {
   FilePenLine,
   BookX,
   Pin,
-  Ellipsis
+  Ellipsis,
 } from "lucide-react";
 import {
   DELETE_DISHLIST,
@@ -217,31 +217,36 @@ const DishListsMenu = ({
             )}
           </button>
 
-          <button
-            onClick={handleEditDishList}
-            disabled={!selectedDishListOwned}
-            className={!selectedDishListOwned ? styles.disabledOption : ""}
-          >
-            <FilePenLine size={18} className={styles.buttonIcon} /> Edit
-            DishList
-          </button>
+          {selectionMode && (
+            <div>
+              <button
+                onClick={handleEditDishList}
+                disabled={!selectedDishListOwned}
+                className={!selectedDishListOwned ? styles.disabledOption : ""}
+              >
+                <FilePenLine size={18} className={styles.buttonIcon} /> Edit
+                DishList
+              </button>
 
-          <button
-            onClick={handleDeleteDishList}
-            disabled={!selectedDishListOwned}
-            className={!selectedDishListOwned ? styles.disabledOption : ""}
-          >
-            <BookX size={18} className={styles.buttonIcon} /> Delete DishList
-          </button>
+              <button
+                onClick={handleDeleteDishList}
+                disabled={!selectedDishListOwned}
+                className={!selectedDishListOwned ? styles.disabledOption : ""}
+              >
+                <BookX size={18} className={styles.buttonIcon} /> Delete
+                DishList
+              </button>
 
-          <button
-            onClick={handleTogglePinDishList}
-            disabled={!selectedDishListOwned}
-            className={!selectedDishListOwned ? styles.disabledOption : ""}
-          >
-            <Pin size={18} className={styles.buttonIcon} />{" "}
-            {selectedDishListData?.isPinned ? "Unpin" : "Pin"} DishList
-          </button>
+              <button
+                onClick={handleTogglePinDishList}
+                disabled={!selectedDishListOwned}
+                className={!selectedDishListOwned ? styles.disabledOption : ""}
+              >
+                <Pin size={18} className={styles.buttonIcon} />{" "}
+                {selectedDishListData?.isPinned ? "Unpin" : "Pin"} DishList
+              </button>
+            </div>
+          )}
 
           {localSelectedDishList && (
             <div className={styles.selectedDishInfo}>
