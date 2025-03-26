@@ -92,7 +92,7 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
+  justify-content: center; 
   z-index: 10;
 }
 
@@ -104,7 +104,7 @@
 /* ===== TILE HEADER ===== */
 .dishTileHeader {
   width: 100%;
-  position: static; /* Changed from relative to static */
+  position: static; 
   margin-bottom: 15px;
   display: flex;
   justify-content: center;
@@ -120,9 +120,7 @@
   text-align: center;
   width: 100%;
   word-break: break-word;
-  /* Remove the left padding to center the text properly */
   padding: 0;
-  /* Leave space for the pin if needed but don't affect centering */
   position: relative;
   z-index: 1;
 }
