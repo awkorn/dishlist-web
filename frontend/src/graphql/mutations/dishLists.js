@@ -22,36 +22,36 @@ export const ADD_DEFAULT_DISHLIST = gql`
 `;
 
 export const ADD_DISHLIST = gql`
-mutation AddDishList(
-  $userId: String!
-  $title: String!
-  $isPinned: Boolean!
-  $description: String
-  $visibility: String!
-) {
-  addDishList(
-    userId: $userId
-    title: $title
-    isPinned: $isPinned
-    description: $description
-    visibility: $visibility
+  mutation AddDishList(
+    $userId: String!
+    $title: String!
+    $isPinned: Boolean!
+    $description: String
+    $visibility: String!
   ) {
-    id
-    userId
-    title
-    isPinned
-    description
-    visibility
+    addDishList(
+      userId: $userId
+      title: $title
+      isPinned: $isPinned
+      description: $description
+      visibility: $visibility
+    ) {
+      id
+      userId
+      title
+      isPinned
+      description
+      visibility
+    }
   }
-}
 `;
 
 export const DELETE_DISHLIST = gql`
-mutation RemoveDishList($id: ID!, $userId: String!) {
-  removeDishList(id: $id, userId: $userId) {
-    id
+  mutation RemoveDishList($id: ID!, $userId: String!) {
+    removeDishList(id: $id, userId: $userId) {
+      id
+    }
   }
-}
 `;
 
 export const EDIT_DISHLIST = gql`
@@ -60,17 +60,20 @@ export const EDIT_DISHLIST = gql`
     $title: String!
     $userId: String!
     $description: String
+    $visibility: String!
   ) {
     editDishList(
       id: $id
       title: $title
       userId: $userId
       description: $description
+      visibility: $visibility
     ) {
       id
       title
       userId
       description
+      visibility
     }
   }
 `;
@@ -92,7 +95,6 @@ export const UNPIN_DISHLIST = gql`
     }
   }
 `;
-
 
 export const FOLLOW_DISHLIST = gql`
   mutation FollowDishList($dishListId: ID!, $userId: String!) {
