@@ -74,7 +74,7 @@ const AddDishListPage = () => {
     <div className={styles.pageContainer}>
       <TopNav pageType={"add-dishlist"} />
       <div className={styles.createDishlistContainer}>
-        <PageTitle title="Create new DishList" />
+        <h1 className={styles.pageTitle}>Create new DishList</h1>
 
         <form className={styles.addDishlistForm} onSubmit={handleAddDishList}>
           <div className={styles.formGroup}>
