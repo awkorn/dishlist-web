@@ -8,7 +8,8 @@ import AddDishListPage from "../features/dishlists/pages/AddDishListPage";
 import DishListDetailPage from "../features/dishlist/pages/DishListDetailPage";
 import AddRecipePage from "../features/recipe/pages/AddRecipePage";
 import RecipeDetailPage from "../features/recipe/pages/RecipeDetailPage";
-import RecipeBuilderPage from "../features/recipeBuilder/pages/RecipeBuilderPage"
+import RecipeBuilderPage from "../features/recipeBuilder/pages/RecipeBuilderPage";
+import EditDishListPage from "../features/dishlists/pages/EditDishListPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRoutes = () => {
@@ -62,6 +63,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <RecipeBuilderPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/edit-dishlist/:id"
+        element={
+          <ProtectedRoute>
+            <EditDishListPage />
           </ProtectedRoute>
         }
       />
