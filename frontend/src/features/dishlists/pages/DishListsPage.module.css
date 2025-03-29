@@ -136,7 +136,7 @@
 .badge {
   font-size: 11px;
   padding: 4px 10px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   display: inline-block;
   white-space: nowrap;
@@ -207,7 +207,6 @@
 .recipeCountDisplay {
   font-size: 14px;
   color: #666;
-  margin: 5px 0 8px 0;
   padding-left: 2px;
   display: flex;
   align-items: center;
