@@ -118,10 +118,10 @@
 
 .pin {
   flex-shrink: 0;
-  height: 24px;
-  width: 24px;
-  filter: brightness(10);
-  color: black;
+  height: 20px;
+  width: 20px;
+  color: #274b75;
+  fill: #274b75;
 }
 
 /* ===== STATUS BADGES ===== */
@@ -201,6 +201,22 @@
 .followAction button:hover {
   filter: brightness(0.9);
   transform: translateY(-2px);
+}
+
+/* ===== RECIPE COUNT ===== */
+.recipeCountDisplay {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0 8px 0;
+  padding-left: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.loadingCount {
+  font-style: italic;
+  font-size: 13px;
+  color: #999;
 }
 
 /* ===== NO DISHLISTS STATE ===== */
