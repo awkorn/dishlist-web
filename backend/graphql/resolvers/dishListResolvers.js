@@ -1,4 +1,4 @@
-import { DishList, User, Notification } from "../../models/index.js";
+import { DishList, User, Notification, Recipe } from "../../models/index.js";
 
 const dishListResolvers = {
   Query: {
@@ -43,6 +43,58 @@ const dishListResolvers = {
       }
 
       return dishList;
+    },
+
+    dishListsRecipeCounts: async (_, { dishListIds, userId }) => {
+      try {
+        // Check which dishlists the user has access to
+        const accessibleDishLists = await DishList.find({
+          _id: { $in: dishListIds },
+          $or: [
+            { userId }, // Owner
+            { collaborators: userId }, // Collaborator
+            { followers: userId }, // Follower
+            { visibility: "public" }, // Public list
+            { visibility: "shared", sharedWith: userId }, // Shared with user
+          ],
+        });
+
+        if (!accessibleDishLists.length) {
+          return [];
+        }
+
+        const accessibleIds = accessibleDishLists.map((list) => list._id);
+
+        // Find all recipes that belong to any of these dishlists
+        const recipes = await Recipe.find({
+          dishLists: { $in: accessibleIds },
+        });
+
+        // Count recipes for each dishlist
+        const countMap = {};
+        accessibleIds.forEach((id) => {
+          countMap[id.toString()] = 0;
+        });
+
+        // Count recipes per dishlist
+        recipes.forEach((recipe) => {
+          recipe.dishLists.forEach((listId) => {
+            const listIdStr = listId.toString();
+            if (countMap[listIdStr] !== undefined) {
+              countMap[listIdStr]++;
+            }
+          });
+        });
+
+        // Format the response
+        return accessibleIds.map((id) => ({
+          dishListId: id.toString(),
+          count: countMap[id.toString()] || 0,
+        }));
+      } catch (error) {
+        console.error("Error getting dishlist recipe counts:", error);
+        throw new Error("Failed to get recipe counts");
+      }
     },
   },
 
