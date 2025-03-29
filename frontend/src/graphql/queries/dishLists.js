@@ -31,3 +31,12 @@ export const GET_USER_DISHLISTS = gql`
     }
   }
 `;
+
+export const GET_DISHLISTS_RECIPE_COUNTS = gql`
+  query GetDishListsRecipeCounts($dishListIds: [ID!]!, $userId: String!) {
+    dishListsRecipeCounts(dishListIds: $dishListIds, userId: $userId) {
+      dishListId
+      count
+    }
+  }
+`;
