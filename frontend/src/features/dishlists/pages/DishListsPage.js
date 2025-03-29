@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
@@ -24,6 +24,48 @@ const DishListsPage = () => {
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedDishList, setSelectedDishList] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const filterDishListsByMode = useCallback(
+    (dishLists, mode) => {
+      if (!dishLists || !currentUser) return;
+
+      let filtered;
+      switch (mode) {
+        case "owned":
+          filtered = dishLists.filter(
+            (list) => list.userId === currentUser.uid
+          );
+          break;
+        case "collaborated":
+          filtered = dishLists.filter(
+            (list) =>
+              list.userId !== currentUser.uid &&
+              list.collaborators.includes(currentUser.uid)
+          );
+          break;
+        case "followed":
+          filtered = dishLists.filter(
+            (list) =>
+              list.userId !== currentUser.uid &&
+              !list.collaborators.includes(currentUser.uid) &&
+              list.followers.includes(currentUser.uid)
+          );
+          break;
+        default:
+          filtered = [...dishLists];
+          break;
+      }
+
+      const sortedFiltered = [...filtered].sort((a, b) => {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return a.title.localeCompare(b.title);
+      });
+
+      setFilteredDishLists(sortedFiltered);
+    },
+    [currentUser]
+  );
 
   const [addDishList] = useMutation(ADD_DEFAULT_DISHLIST, {
     onCompleted: (data) => {
@@ -60,7 +102,7 @@ const DishListsPage = () => {
     } else {
       filterDishListsByMode(allDishLists, viewMode);
     }
-  }, [searchTerm, allDishLists, viewMode]);
+  }, [searchTerm, allDishLists, viewMode, filterDishListsByMode]);
 
   useEffect(() => {
     if (data?.getDishLists) {
@@ -86,47 +128,7 @@ const DishListsPage = () => {
         });
       }
     }
-  }, [data, currentUser, addDishList, viewMode]);
-
-  const filterDishListsByMode = (dishLists, mode) => {
-    if (!dishLists || !currentUser) return;
-
-    let filtered;
-    switch (mode) {
-      case "owned":
-        filtered = dishLists.filter((list) => list.userId === currentUser.uid);
-        break;
-      case "collaborated":
-        filtered = dishLists.filter(
-          (list) =>
-            list.userId !== currentUser.uid &&
-            list.collaborators.includes(currentUser.uid)
-        );
-        break;
-      case "followed":
-        filtered = dishLists.filter(
-          (list) =>
-            list.userId !== currentUser.uid &&
-            !list.collaborators.includes(currentUser.uid) &&
-            list.followers.includes(currentUser.uid)
-        );
-        break;
-      default: // "all"
-        filtered = [...dishLists];
-        break;
-    }
-
-    // Sort a new copy of the filtered array
-    const sortedFiltered = [...filtered].sort((a, b) => {
-      // First, sort by pinned status
-      if (a.isPinned && !b.isPinned) return -1;
-      if (!a.isPinned && b.isPinned) return 1;
-
-      return a.title.localeCompare(b.title);
-    });
-
-    setFilteredDishLists(sortedFiltered);
-  };
+  }, [data, currentUser, addDishList, viewMode, filterDishListsByMode]);
 
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
