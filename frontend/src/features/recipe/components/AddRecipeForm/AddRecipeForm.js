@@ -120,7 +120,7 @@ const AddRecipeForm = ({
           rotation: image.rotation || 0,
         };
       } else if (typeof image === "string") {
-        //handle legacy format 
+        //handle legacy format
         imageInput = {
           url: image,
           rotation: 0,
@@ -179,6 +179,7 @@ const AddRecipeForm = ({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter recipe title"
+            maxLength={50}
             className={errors.title ? styles.inputError : ""}
           />
           {errors.title && (

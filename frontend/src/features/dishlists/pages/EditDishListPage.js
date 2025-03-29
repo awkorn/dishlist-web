@@ -128,6 +128,7 @@ const EditDishListPage = () => {
               className={styles.formInput}
               type="text"
               value={title}
+              maxLength={40}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter a title for your DishList"
               required
