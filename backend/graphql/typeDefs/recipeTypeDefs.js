@@ -53,6 +53,7 @@ const recipeTypeDefs = gql`
     getUserRecipes(userId: String!): [Recipe]
     getDishListRecipes(dishListId: ID!, userId: String!): [Recipe]
     searchRecipes(searchTerm: String!, limit: Int, userId: String): [Recipe]
+    getUserProfile(userId: String!): UserProfile
   }
 
   type Mutation {
@@ -82,7 +83,7 @@ const recipeTypeDefs = gql`
     ): Recipe
 
     deleteRecipe(id: ID!, userId: String!): String
-    
+
     addRecipeToDishList(recipeId: ID!, dishListId: ID!, userId: String!): Recipe
 
     removeRecipeFromDishList(
@@ -99,6 +100,23 @@ const recipeTypeDefs = gql`
     ): Recipe
 
     removeComment(recipeId: ID!, commentId: ID!, userId: String!): Recipe
+  }
+
+  type UserProfile {
+    id: ID!
+    firebaseUid: String!
+    email: String!
+    username: String!
+    ownedDishLists: [ID]!
+    savedRecipes: [ID]!
+    followingDishLists: [ID]
+    collaboratedDishLists: [ID]
+    pendingFollowRequests: [ID]
+    notificationPreferences: NotificationPreferences
+    bio: String
+    profilePicture: String
+    publicDishLists: [DishList]
+    publicRecipes: [Recipe]
   }
 `;
 
