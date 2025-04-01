@@ -11,6 +11,7 @@ import RecipeDetailPage from "../features/recipe/pages/RecipeDetailPage";
 import RecipeBuilderPage from "../features/recipeBuilder/pages/RecipeBuilderPage";
 import EditDishListPage from "../features/dishlists/pages/EditDishListPage";
 import ProtectedRoute from "./ProtectedRoute";
+import ProfilePage from "../features/profile/pages/ProfilePage"
 
 const AppRoutes = () => {
   return (
@@ -71,6 +72,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <EditDishListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile/:userId"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
           </ProtectedRoute>
         }
       />
