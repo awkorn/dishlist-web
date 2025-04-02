@@ -6,7 +6,7 @@ import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
 import ProfileTabs from "../components/ProfileTabs/ProfileTabs";
-import DishListsGrid from "../../dishlists/components/DishListsTile/DishListTile";
+import ProfileDishListGrid from "../components/ProfileDishListGrid/ProfileDishListGrid";
 import RecipeGrid from "../../dishlist/components/RecipeList/RecipeList";
 import styles from "./ProfilePage.module.css";
 
@@ -15,7 +15,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState("dishlists");
-  
+
   // Fetch user profile data
   const { loading, error, data } = useQuery(GET_USER_PROFILE, {
     variables: { userId },
@@ -84,34 +84,35 @@ const ProfilePage = () => {
   return (
     <div className={styles.pageContainer}>
       <TopNav />
-      
+
       <div className={styles.profileContainer}>
-        <ProfileHeader 
-          user={user} 
+        <ProfileHeader
+          user={user}
           isCurrentUser={isCurrentUser}
           dishListsCount={user.ownedDishLists.length}
           recipesCount={user.savedRecipes.length}
         />
-        
-        <ProfileTabs 
-          activeTab={activeTab} 
-          onTabChange={setActiveTab} 
-        />
-        
+
+        <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
         <div className={styles.contentContainer}>
           {activeTab === "dishlists" ? (
             <div className={styles.dishListsContainer}>
               {user.publicDishLists && user.publicDishLists.length > 0 ? (
-                <DishListsGrid 
+                <ProfileDishListGrid
                   dishLists={user.publicDishLists}
                   currentUserId={currentUser?.uid}
                 />
               ) : (
                 <div className={styles.emptyState}>
                   <h3>No DishLists to display</h3>
-                  <p>{isCurrentUser ? "You haven't created any public DishLists yet." : "This user hasn't created any public DishLists yet."}</p>
+                  <p>
+                    {isCurrentUser
+                      ? "You haven't created any public DishLists yet."
+                      : "This user hasn't created any public DishLists yet."}
+                  </p>
                   {isCurrentUser && (
-                    <button 
+                    <button
                       className={styles.createButton}
                       onClick={() => navigate("/create-dishlist")}
                     >
@@ -124,16 +125,20 @@ const ProfilePage = () => {
           ) : (
             <div className={styles.recipesContainer}>
               {user.publicRecipes && user.publicRecipes.length > 0 ? (
-                <RecipeGrid 
+                <RecipeGrid
                   recipes={user.publicRecipes}
                   currentUserId={currentUser?.uid}
                 />
               ) : (
                 <div className={styles.emptyState}>
                   <h3>No Recipes to display</h3>
-                  <p>{isCurrentUser ? "You haven't created any public recipes yet." : "This user hasn't created any public recipes yet."}</p>
+                  <p>
+                    {isCurrentUser
+                      ? "You haven't created any public recipes yet."
+                      : "This user hasn't created any public recipes yet."}
+                  </p>
                   {isCurrentUser && (
-                    <button 
+                    <button
                       className={styles.createButton}
                       onClick={() => navigate("/add-recipe")}
                     >
