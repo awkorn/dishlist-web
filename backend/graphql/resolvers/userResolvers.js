@@ -30,7 +30,6 @@ const userResolvers = {
           email: user.email,
           username: user.username,
           ownedDishLists: user.ownedDishLists,
-          savedRecipes: user.savedRecipes,
           followingDishLists: user.followingDishLists,
           collaboratedDishLists: user.collaboratedDishLists,
           pendingFollowRequests: user.pendingFollowRequests,

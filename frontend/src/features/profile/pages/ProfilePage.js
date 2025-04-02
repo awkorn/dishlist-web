@@ -90,7 +90,7 @@ const ProfilePage = () => {
           user={user}
           isCurrentUser={isCurrentUser}
           dishListsCount={user.ownedDishLists.length}
-          recipesCount={user.savedRecipes.length}
+          recipesCount={user.publicRecipes.length}
         />
 
         <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
