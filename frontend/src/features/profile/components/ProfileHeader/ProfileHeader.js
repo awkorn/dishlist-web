@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import styles from "./ProfileHeader.module.css";
+import profilePlaceHolder from "../../../../assets/images/chef-placeholder.png"
 
 const ProfileHeader = ({ user, isCurrentUser, dishListsCount, recipesCount }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
   // Default profile image if none is set
-  const profileImage = user.profilePicture || 
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=274b75&color=fff&size=150`;
+  const profileImage = user.profilePicture || profilePlaceHolder;
   
   // Create display name from username
   const displayName = user.username;
