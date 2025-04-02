@@ -153,18 +153,18 @@
 }
 
 .publicBadge {
-  background-color: #dce7f4;
-  color: #274b75;
+  background-color: #e8f5e9;
+  color: #2e7d32;
 }
 
 .privateBadge {
-  background-color: #e0e0e0;
-  color: black;
+  background-color: #e4baba;
+  color: #ffffff;
 }
 
 .sharedBadge {
-  background-color: #ddebe6;
-  color: #274b75;
+  background-color:#5984b4bb;;
+  color: #ffffff;
 }
 
 /* ===== FOLLOW ACTIONS ===== */
