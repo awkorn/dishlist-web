@@ -11,6 +11,7 @@ export const GET_USER_PROFILE = gql`
       profilePicture
       ownedDishLists
       collaboratedDishLists
+      savedRecipes
       followingDishLists
       publicDishLists {
         id

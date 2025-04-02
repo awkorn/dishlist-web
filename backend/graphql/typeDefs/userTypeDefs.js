@@ -15,6 +15,7 @@ const userTypeDefs = gql`
     email: String!
     username: String!
     ownedDishLists: [ID]!
+    savedRecipes: [ID]!
     followingDishLists: [ID]
     collaboratedDishLists: [ID]
     pendingFollowRequests: [ID]
