@@ -89,7 +89,7 @@ const ProfilePage = () => {
         <ProfileHeader
           user={user}
           isCurrentUser={isCurrentUser}
-          dishListsCount={user.ownedDishLists.length}
+          dishListsCount={user.publicDishLists.length}
           recipesCount={user.publicRecipes.length}
         />
 
