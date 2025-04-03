@@ -17,7 +17,7 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("dishlists");
 
   // Fetch user profile data
-  const { loading, error, data } = useQuery(GET_USER_PROFILE, {
+  const { loading, error, data, refetch } = useQuery(GET_USER_PROFILE, {
     variables: { userId },
     skip: !userId,
     fetchPolicy: "cache-and-network",
@@ -91,6 +91,7 @@ const ProfilePage = () => {
           isCurrentUser={isCurrentUser}
           dishListsCount={user.publicDishLists.length}
           recipesCount={user.publicRecipes.length}
+          refetchProfile={refetch}
         />
 
         <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />

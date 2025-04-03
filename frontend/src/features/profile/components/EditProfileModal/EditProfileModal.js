@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { UPDATE_USER_PROFILE } from "../../../../graphql/mutations/userProfile";
+import {GET_USER_PROFILE } from "../../../../graphql/queries/userProfile"
 import { toast } from "react-toastify";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styles from "./EditProfileModal.module.css";
 
-const EditProfileModal = ({ user, onClose }) => {
+const EditProfileModal = ({ user, onClose, refetchProfile }) => {
   const [username, setUsername] = useState(user.username || "");
   const [bio, setBio] = useState(user.bio || "");
   const [profileImage, setProfileImage] = useState(null);
@@ -15,10 +16,40 @@ const EditProfileModal = ({ user, onClose }) => {
   const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE, {
     onCompleted: () => {
       toast.success("Profile updated successfully!");
+      refetchProfile(); 
       onClose();
     },
     onError: (error) => {
       toast.error(`Error updating profile: ${error.message}`);
+    },
+    // Add this update function to modify the Apollo cache
+    update: (cache, { data: { updateUserProfile } }) => {
+      try {
+        // Read existing profile data from cache
+        const existingData = cache.readQuery({
+          query: GET_USER_PROFILE,
+          variables: { userId: user.firebaseUid }
+        });
+        
+        if (existingData) {
+          // Create updated user data by merging existing data with new data
+          const updatedUser = {
+            ...existingData.getUserProfile,
+            username: updateUserProfile.username,
+            bio: updateUserProfile.bio,
+            profilePicture: updateUserProfile.profilePicture
+          };
+          
+          // Write the merged data back to cache
+          cache.writeQuery({
+            query: GET_USER_PROFILE,
+            variables: { userId: user.firebaseUid },
+            data: { getUserProfile: updatedUser }
+          });
+        }
+      } catch (error) {
+        console.error("Error updating cache:", error);
+      }
     }
   });
 
