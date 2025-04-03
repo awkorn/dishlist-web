@@ -1,10 +1,12 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../contexts/AuthProvider";
 import styles from "../TopNav.module.css";
 
 const NavButtons = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   return (
     <div className="nav-buttons">
@@ -25,10 +27,20 @@ const NavButtons = () => {
         Recipe Builder
       </button>
       <button
-        className={`${styles.navBtn} ${location.pathname === "/about" ? styles.active : ""}`}
+        className={`${styles.navBtn} ${
+          location.pathname === "/about" ? styles.active : ""
+        }`}
         onClick={() => navigate("/about")}
       >
         About
+      </button>
+      <button
+        className={`${styles.navBtn} ${
+          location.pathname.startsWith("/profile") ? styles.active : ""
+        }`}
+        onClick={() => navigate(`/profile/${currentUser?.uid}`)}
+      >
+        Profile
       </button>
     </div>
   );
