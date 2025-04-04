@@ -20,7 +20,7 @@ const ProfileDishListGrid = ({ dishLists, currentUserId }) => {
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
-        <h3 className={styles.noDishlistsMessage}>No Public DishLists Found</h3>
+        <h3 className={styles.noDishlistsMessage}>No DishLists Available</h3>
       </div>
     );
   }
@@ -29,7 +29,8 @@ const ProfileDishListGrid = ({ dishLists, currentUserId }) => {
     <div className={styles.dishTiles}>
       {dishLists.map((dishlist) => {
         const userIsOwner = dishlist.userId === currentUserId;
-        const userIsCollaborator = dishlist.collaborators.includes(currentUserId);
+        const userIsCollaborator =
+          dishlist.collaborators.includes(currentUserId);
         const userIsFollower = dishlist.followers.includes(currentUserId);
 
         return (
