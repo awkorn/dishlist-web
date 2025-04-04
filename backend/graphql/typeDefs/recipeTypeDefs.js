@@ -53,7 +53,7 @@ const recipeTypeDefs = gql`
     getUserRecipes(userId: String!): [Recipe]
     getDishListRecipes(dishListId: ID!, userId: String!): [Recipe]
     searchRecipes(searchTerm: String!, limit: Int, userId: String): [Recipe]
-    getUserProfile(userId: String!): UserProfile
+    getUserProfile(userId: String!, viewerId: String!): UserProfile
   }
 
   type Mutation {
@@ -115,8 +115,10 @@ const recipeTypeDefs = gql`
     notificationPreferences: NotificationPreferences
     bio: String
     profilePicture: String
-    publicDishLists: [DishList]
-    publicRecipes: [Recipe]
+    visibleDishLists: [DishList]
+    visibleRecipes: [Recipe]
+    dishListCount: Int
+    recipeCount: Int
   }
 `;
 
