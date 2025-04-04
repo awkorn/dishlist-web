@@ -8,7 +8,7 @@ const ProfileHeader = ({
   isCurrentUser,
   dishListsCount,
   recipesCount,
-  refetchProfile
+  refetchProfile,
 }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -62,7 +62,7 @@ const ProfileHeader = ({
         <EditProfileModal
           user={user}
           onClose={() => setIsEditModalOpen(false)}
-          refetchProfile={refetchProfile} 
+          refetchProfile={refetchProfile}
         />
       )}
     </div>
