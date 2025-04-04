@@ -2,30 +2,100 @@ import { DishList, User, Recipe } from "../../models/index.js";
 
 const userResolvers = {
   Query: {
-    getUserProfile: async (_, { userId }) => {
+    getUserProfile: async (_, { userId, viewerId }) => {
       try {
         // Get the user
         const user = await User.findOne({ firebaseUid: userId });
         if (!user) throw new Error("User not found");
 
-        // Get user's public DishLists
-        const publicDishLists = await DishList.find({
-          userId,
-          visibility: "public",
-        });
+        // Check if viewer is profile owner
+        const isOwnProfile = userId === viewerId;
 
-        // Get recipes from public DishLists
-        const publicDishListIds = publicDishLists.map((list) => list._id);
-        const publicRecipes = await Recipe.find({
-          $and: [
-            { creatorId: userId },
-            { dishLists: { $in: publicDishListIds } },
-          ],
-        });
+        let dishListsToDisplay = [];
+        let recipesToDisplay = [];
+        let dishListCount = 0;
+        let recipeCount = 0;
+
+        if (isOwnProfile) {
+          // Get all owned dishlists
+          const ownedDishLists = await DishList.find({ userId });
+
+          // Get all collaborated dishlists
+          const collaboratedDishLists = await DishList.find({
+            collaborators: { $in: [userId] },
+          });
+
+          dishListsToDisplay = [...ownedDishLists, ...collaboratedDishLists];
+          dishListCount = ownedDishLists.length + collaboratedDishLists.length;
+
+          // Get all user recipes
+          recipesToDisplay = await Recipe.find({ creatorId: userId });
+          recipeCount = recipesToDisplay.length;
+        } else {
+          // Get public dishlists owned by profile user
+          const publicDishLists = await DishList.find({
+            userId,
+            visibility: "public",
+          });
+
+          // Get shared dishlists that the viewer has access to
+          const sharedDishLists = await DishList.find({
+            userId,
+            visibility: "shared",
+            $or: [
+              { sharedWith: { $in: [viewerId] } },
+              { collaborators: { $in: [viewerId] } },
+            ],
+          });
+
+          // Get dishlists where viewer is a collaborator
+          const collaboratedDishLists = await DishList.find({
+            userId,
+            collaborators: { $in: [viewerId] },
+          });
+
+          // Get dishlists where viewer is a follower
+          const followerDishLists = await DishList.find({
+            userId,
+            followers: { $in: [viewerId] },
+          });
+
+          const allAccessibleDishListIds = new Set();
+
+          [
+            ...publicDishLists,
+            ...sharedDishLists,
+            ...collaboratedDishLists,
+            ...followerDishLists,
+          ].forEach((list) => {
+            allAccessibleDishListIds.add(list._id.toString());
+          });
+
+          // Get unique dishlist objects
+          dishListsToDisplay = await DishList.find({
+            _id: { $in: Array.from(allAccessibleDishListIds) },
+          });
+
+          // Count visible dishlists
+          dishListCount = dishListsToDisplay.length;
+
+          // Get all IDs viewer has access to
+          const accessibleDishListIds = dishListsToDisplay.map(
+            (list) => list._id
+          );
+
+          // Get recipes from those accessible dishlists
+          recipesToDisplay = await Recipe.find({
+            creatorId: userId,
+            dishLists: { $in: accessibleDishListIds },
+          });
+
+          recipeCount = recipesToDisplay.length;
+        }
 
         // Return user with additional data
         return {
-          id: user._id.toString(), 
+          id: user._id.toString(),
           firebaseUid: user.firebaseUid,
           email: user.email,
           username: user.username,
@@ -37,8 +107,10 @@ const userResolvers = {
           notificationPreferences: user.notificationPreferences,
           bio: user.bio,
           profilePicture: user.profilePicture,
-          publicDishLists,
-          publicRecipes,
+          visibleDishLists: dishListsToDisplay,
+          visibleRecipes: recipesToDisplay,
+          dishListCount,
+          recipeCount,
         };
       } catch (error) {
         console.error("Error fetching user profile:", error);
