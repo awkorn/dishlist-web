@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_USER_PROFILE = gql`
-  query GetUserProfile($userId: String!) {
-    getUserProfile(userId: $userId) {
+  query GetUserProfile($userId: String!, $viewerId: String!) {
+    getUserProfile(userId: $userId, viewerId: $viewerId) {
       id
       firebaseUid
       email
@@ -13,7 +13,9 @@ export const GET_USER_PROFILE = gql`
       collaboratedDishLists
       savedRecipes
       followingDishLists
-      publicDishLists {
+      dishListCount
+      recipeCount
+      visibleDishLists {
         id
         title
         isPinned
@@ -23,7 +25,7 @@ export const GET_USER_PROFILE = gql`
         visibility
         description
       }
-      publicRecipes {
+      visibleRecipes {
         id
         title
         ingredients {
