@@ -16,10 +16,13 @@ const ProfilePage = () => {
   const { currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState("dishlists");
 
-  // Fetch user profile data
+  // Fetch user profile data with the viewer's ID for proper visibility filtering
   const { loading, error, data, refetch } = useQuery(GET_USER_PROFILE, {
-    variables: { userId },
-    skip: !userId,
+    variables: {
+      userId,
+      viewerId: currentUser?.uid || "",
+    },
+    skip: !userId || !currentUser?.uid,
     fetchPolicy: "cache-and-network",
   });
 
@@ -89,8 +92,8 @@ const ProfilePage = () => {
         <ProfileHeader
           user={user}
           isCurrentUser={isCurrentUser}
-          dishListsCount={user.publicDishLists.length}
-          recipesCount={user.publicRecipes.length}
+          dishListsCount={user.dishListCount}
+          recipesCount={user.recipeCount}
           refetchProfile={refetch}
         />
 
@@ -99,9 +102,9 @@ const ProfilePage = () => {
         <div className={styles.contentContainer}>
           {activeTab === "dishlists" ? (
             <div className={styles.dishListsContainer}>
-              {user.publicDishLists && user.publicDishLists.length > 0 ? (
+              {user.visibleDishLists && user.visibleDishLists.length > 0 ? (
                 <ProfileDishListGrid
-                  dishLists={user.publicDishLists}
+                  dishLists={user.visibleDishLists}
                   currentUserId={currentUser?.uid}
                 />
               ) : (
@@ -109,8 +112,8 @@ const ProfilePage = () => {
                   <h3>No DishLists to display</h3>
                   <p>
                     {isCurrentUser
-                      ? "You haven't created any public DishLists yet."
-                      : "This user hasn't created any public DishLists yet."}
+                      ? "You haven't created any visible DishLists yet."
+                      : "This user hasn't shared any DishLists you can access."}
                   </p>
                   {isCurrentUser && (
                     <button
@@ -125,9 +128,9 @@ const ProfilePage = () => {
             </div>
           ) : (
             <div className={styles.recipesContainer}>
-              {user.publicRecipes && user.publicRecipes.length > 0 ? (
+              {user.visibleRecipes && user.visibleRecipes.length > 0 ? (
                 <RecipeGrid
-                  recipes={user.publicRecipes}
+                  recipes={user.visibleRecipes}
                   currentUserId={currentUser?.uid}
                 />
               ) : (
@@ -135,8 +138,8 @@ const ProfilePage = () => {
                   <h3>No Recipes to display</h3>
                   <p>
                     {isCurrentUser
-                      ? "You haven't created any public recipes yet."
-                      : "This user hasn't created any public recipes yet."}
+                      ? "You haven't created any recipes yet."
+                      : "This user hasn't shared any recipes you can access."}
                   </p>
                   {isCurrentUser && (
                     <button
