@@ -105,7 +105,7 @@ const AddRecipeForm = ({
         name: ing.name,
         amount: ing.amount,
         unit: ing.unit,
-      })); // Clean the ingredients objects to remove __typename
+      }));
 
     const filteredInstructions = instructions.filter(
       (inst) => inst.trim() !== ""
@@ -147,19 +147,24 @@ const AddRecipeForm = ({
         });
       } else {
         // Create new recipe
-        createRecipe({
-          variables: {
-            creatorId: userId,
-            title,
-            ingredients: filteredIngredients,
-            instructions: filteredInstructions,
-            cookTime: cookTime ? parseInt(cookTime) : null,
-            prepTime: prepTime ? parseInt(prepTime) : null,
-            servings: servings ? parseInt(servings) : null,
-            tags,
-            image: imageInput,
-          },
-        });
+        const variables = {
+          creatorId: userId,
+          title,
+          ingredients: filteredIngredients,
+          instructions: filteredInstructions,
+          cookTime: cookTime ? parseInt(cookTime) : null,
+          prepTime: prepTime ? parseInt(prepTime) : null,
+          servings: servings ? parseInt(servings) : null,
+          tags,
+          image: imageInput,
+        };
+
+        // If dishListParam exists from URL, use that
+        if (dishListParam) {
+          variables.dishListId = dishListParam;
+        }
+
+        createRecipe({ variables });
       }
     } catch (error) {
       toast.error(

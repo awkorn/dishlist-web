@@ -11,6 +11,7 @@ export const CREATE_RECIPE = gql`
     $servings: Int
     $tags: [String]
     $image: ImageDataInput
+    $dishListId: ID
   ) {
     createRecipe(
       creatorId: $creatorId
@@ -22,6 +23,7 @@ export const CREATE_RECIPE = gql`
       servings: $servings
       tags: $tags
       image: $image
+      dishListId: $dishListId
     ) {
       id
       title
@@ -129,7 +131,6 @@ export const UPDATE_RECIPE = gql`
     }
   }
 `;
-
 
 export const SAVE_RECIPE = gql`
   mutation SaveRecipe($userId: ID!, $recipeId: ID!) {

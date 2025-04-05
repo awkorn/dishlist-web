@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { useAuth } from '../../../../contexts/AuthProvider';
-import { toast } from 'react-toastify';
-import { CREATE_RECIPE, ADD_RECIPE_TO_DISHLIST } from '../../../../graphql/mutations/recipe';
-import { GET_USER_DISHLISTS } from '../../../../graphql/queries/dishLists';
-import styles from './SaveToDishListPanel.module.css';
+import React, { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { useAuth } from "../../../../contexts/AuthProvider";
+import { toast } from "react-toastify";
+import { CREATE_RECIPE } from "../../../../graphql/mutations/recipe";
+import { GET_USER_DISHLISTS } from "../../../../graphql/queries/dishLists";
+import { useNavigate } from "react-router-dom";
+import styles from "./SaveToDishListPanel.module.css";
 
 const SaveToDishListPanel = ({ recipe, onClose }) => {
   const { currentUser } = useAuth();
-  const [selectedDishList, setSelectedDishList] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDishList, setSelectedDishList] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredDishLists, setFilteredDishLists] = useState([]);
   const [allDishLists, setAllDishLists] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch user's dishlists
   const { loading, error, data } = useQuery(GET_USER_DISHLISTS, {
@@ -21,7 +23,6 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
   });
 
   const [createRecipe] = useMutation(CREATE_RECIPE);
-  const [addRecipeToDishList] = useMutation(ADD_RECIPE_TO_DISHLIST);
 
   // Process dishlists when data is fetched
   useEffect(() => {
@@ -32,11 +33,11 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
       // Add a type property to distinguish between owned and collaborated lists
       const ownedWithType = ownedLists.map((list) => ({
         ...list,
-        type: 'owned',
+        type: "owned",
       }));
       const collaboratedWithType = collaboratedLists.map((list) => ({
         ...list,
-        type: 'collaborated',
+        type: "collaborated",
       }));
 
       // Sort pinned lists first, then alphabetically
@@ -52,7 +53,9 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
       setFilteredDishLists(combinedLists);
 
       // Auto-select "My Recipes" dishlist if it exists
-      const myRecipes = sortedOwnedLists.find(list => list.title === 'My Recipes');
+      const myRecipes = sortedOwnedLists.find(
+        (list) => list.title === "My Recipes"
+      );
       if (myRecipes && !selectedDishList) {
         setSelectedDishList(myRecipes.id);
       } else if (sortedOwnedLists.length > 0 && !selectedDishList) {
@@ -63,7 +66,7 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
 
   // Filter dishlists based on search term
   useEffect(() => {
-    if (searchTerm.trim() === '') {
+    if (searchTerm.trim() === "") {
       setFilteredDishLists(allDishLists);
     } else {
       const filtered = allDishLists.filter((list) =>
@@ -76,7 +79,7 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
   // Handle saving the recipe
   const handleSaveRecipe = async () => {
     if (!selectedDishList) {
-      toast.error('Please select a DishList');
+      toast.error("Please select a DishList");
       return;
     }
 
@@ -84,13 +87,12 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
       setIsSaving(true);
 
       // Format ingredients for GraphQL
-      const formattedIngredients = recipe.ingredients.map(ingredient => {
-        // Check if ingredient is already an object or just a string
-        if (typeof ingredient === 'string') {
+      const formattedIngredients = recipe.ingredients.map((ingredient) => {
+        if (typeof ingredient === "string") {
           return {
             name: ingredient,
-            amount: '',
-            unit: ''
+            amount: "",
+            unit: "",
           };
         }
         return ingredient;
@@ -107,26 +109,19 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
           prepTime: recipe.prepTime || null,
           servings: recipe.servings || null,
           tags: recipe.tags || [],
-          image: recipe.image || null
-        }
+          image: recipe.image || null,
+          dishListId: selectedDishList,
+        },
       });
 
       if (recipeData?.createRecipe?.id) {
-        // Then add it to the selected dishlist
-        await addRecipeToDishList({
-          variables: {
-            recipeId: recipeData.createRecipe.id,
-            dishListId: selectedDishList,
-            userId: currentUser?.uid
-          }
-        });
-
-        toast.success('Recipe saved successfully!');
+        toast.success("Recipe saved successfully!");
+        navigate(`/recipe/${recipeData.createRecipe.id}`);
         onClose();
       }
     } catch (err) {
-      console.error('Error saving recipe:', err);
-      toast.error('Failed to save recipe. Please try again.');
+      console.error("Error saving recipe:", err);
+      toast.error("Failed to save recipe. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -148,7 +143,9 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
         <div className={styles.panel}>
           <div className={styles.header}>
             <h3>Save to DishList</h3>
-            <button className={styles.closeBtn} onClick={onClose}>×</button>
+            <button className={styles.closeBtn} onClick={onClose}>
+              ×
+            </button>
           </div>
           <div className={styles.errorMessage}>
             Error loading DishLists. Please try again.
@@ -163,7 +160,9 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
       <div className={styles.panel}>
         <div className={styles.header}>
           <h3>Save to DishList</h3>
-          <button className={styles.closeBtn} onClick={onClose}>×</button>
+          <button className={styles.closeBtn} onClick={onClose}>
+            ×
+          </button>
         </div>
 
         <div className={styles.content}>
@@ -188,15 +187,21 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
                   <li
                     key={list.id}
                     className={`${styles.dishlistItem} ${
-                      selectedDishList === list.id ? styles.selectedDishlist : ''
+                      selectedDishList === list.id
+                        ? styles.selectedDishlist
+                        : ""
                     }`}
                     onClick={() => setSelectedDishList(list.id)}
                   >
                     <span className={styles.dishlistTitle}>
                       {list.title}
-                      {list.isPinned && <span className={styles.pinnedIndicator}>📌</span>}
-                      {list.type === 'collaborated' && (
-                        <span className={styles.collaboratorIndicator}>Collaborator</span>
+                      {list.isPinned && (
+                        <span className={styles.pinnedIndicator}>📌</span>
+                      )}
+                      {list.type === "collaborated" && (
+                        <span className={styles.collaboratorIndicator}>
+                          Collaborator
+                        </span>
                       )}
                     </span>
                     {selectedDishList === list.id && (
@@ -207,7 +212,8 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
               </ul>
             ) : (
               <div className={styles.noResults}>
-                No DishLists found. {searchTerm ? 'Try a different search term.' : ''}
+                No DishLists found.{" "}
+                {searchTerm ? "Try a different search term." : ""}
               </div>
             )}
           </div>
@@ -225,7 +231,7 @@ const SaveToDishListPanel = ({ recipe, onClose }) => {
               onClick={handleSaveRecipe}
               disabled={!selectedDishList || isSaving}
             >
-              {isSaving ? 'Saving...' : 'Save Recipe'}
+              {isSaving ? "Saving..." : "Save Recipe"}
             </button>
           </div>
         </div>
