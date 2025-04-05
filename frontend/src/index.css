@@ -24,7 +24,8 @@ body {
 
 /* Style for success toast */
 .Toastify__toast--success {
-  background-color: #013328 !important;
+  background-color: #274b75 !important;
+  color: white !important;
 }
 
 /* Style for error toast */

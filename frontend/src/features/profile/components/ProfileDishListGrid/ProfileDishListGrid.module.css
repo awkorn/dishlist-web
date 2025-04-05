@@ -116,13 +116,13 @@
   }
   
   .privateBadge {
-    background-color: #e0e0e0;
-    color: black;
+    background-color: #df9c9c;
+    color: white;
   }
   
   .sharedBadge {
-    background-color: #e3f2fd;
-    color: #1565c0;
+    background-color:#5984b4bb;;
+    color: #ffffff;
   }
   
   /* Empty state */
