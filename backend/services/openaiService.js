@@ -67,7 +67,7 @@ export const generateRecipe = async (ingredients, dietaryRestrictions, macros) =
     }
     
     prompt += `Format the response as a JSON object with these fields:
-    - title (string): A creative name for the recipe
+    - title (string): A simple name for the recipe
     - prepTime (number): Estimated preparation time in minutes
     - cookTime (number): Estimated cooking time in minutes
     - servings (number): Number of servings

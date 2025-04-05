@@ -113,6 +113,7 @@ const recipeResolvers = {
         servings,
         tags,
         image,
+        dishListId,
       }
     ) => {
       try {
@@ -122,12 +123,6 @@ const recipeResolvers = {
         if (!user) {
           throw new Error("User not found");
         }
-
-        // Find the user's default dishlist (should be titled "My Recipes")
-        const defaultDishList = await DishList.findOne({
-          userId: creatorId,
-          title: "My Recipes",
-        });
 
         // Create the recipe
         const newRecipe = new Recipe({
@@ -140,15 +135,51 @@ const recipeResolvers = {
           servings,
           tags: tags || [],
           image,
-          dishLists: defaultDishList ? [defaultDishList._id] : [],
+          dishLists: [],
           comments: [],
         });
 
         const savedRecipe = await newRecipe.save();
 
-        // If there's a default dishlist, add the recipe to it
-        if (defaultDishList) {
-          // No need to update the dishlist itself, as recipes only reference dishlists, not vice versa
+        // If a specific dishListId is provided, use that
+        if (dishListId) {
+          const dishList = await DishList.findById(dishListId);
+
+          if (!dishList) {
+            throw new Error("DishList not found");
+          }
+
+          // Check if user has permission to add recipes to this dishlist
+          const canAdd =
+            dishList.userId === creatorId || // Owner
+            dishList.collaborators.includes(creatorId); // Collaborator
+
+          if (!canAdd) {
+            throw new Error(
+              "You don't have permission to add recipes to this dishlist"
+            );
+          }
+
+          // Add dishlist to recipe's dishLists array
+          await Recipe.findByIdAndUpdate(
+            savedRecipe.id,
+            { $addToSet: { dishLists: dishListId } },
+            { new: true }
+          );
+        } else {
+          // Default behavior - add to "My Recipes" dishlist
+          const defaultDishList = await DishList.findOne({
+            userId: creatorId,
+            title: "My Recipes",
+          });
+
+          if (defaultDishList) {
+            await Recipe.findByIdAndUpdate(
+              savedRecipe.id,
+              { $addToSet: { dishLists: defaultDishList._id } },
+              { new: true }
+            );
+          }
         }
 
         return savedRecipe;

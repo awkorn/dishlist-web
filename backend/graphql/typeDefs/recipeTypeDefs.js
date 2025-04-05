@@ -67,6 +67,7 @@ const recipeTypeDefs = gql`
       servings: Int
       tags: [String]
       image: ImageDataInput
+      dishListId: ID
     ): Recipe
 
     updateRecipe(
