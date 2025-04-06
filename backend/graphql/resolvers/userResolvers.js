@@ -28,8 +28,18 @@ const userResolvers = {
           dishListsToDisplay = [...ownedDishLists, ...collaboratedDishLists];
           dishListCount = ownedDishLists.length + collaboratedDishLists.length;
 
-          // Get all user recipes
-          recipesToDisplay = await Recipe.find({ creatorId: userId });
+          // Get all user's dishlist IDs
+          const userDishListIds = [
+            ...ownedDishLists.map(list => list._id),
+            ...collaboratedDishLists.map(list => list._id)
+          ];
+
+          // Get only recipes that are still in at least one of the user's dishlists
+          recipesToDisplay = await Recipe.find({
+            creatorId: userId,
+            dishLists: { $elemMatch: { $in: userDishListIds } }
+          });
+          
           recipeCount = recipesToDisplay.length;
         } else {
           // Get public dishlists owned by profile user
@@ -87,7 +97,7 @@ const userResolvers = {
           // Get recipes from those accessible dishlists
           recipesToDisplay = await Recipe.find({
             creatorId: userId,
-            dishLists: { $in: accessibleDishListIds },
+            dishLists: { $elemMatch: { $in: accessibleDishListIds } }
           });
 
           recipeCount = recipesToDisplay.length;
