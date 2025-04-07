@@ -13,6 +13,7 @@ const RecipeList = ({
   userRole,
   currentUserId,
   emptyStateContent,
+  onRecipeClick,
 }) => {
   const navigate = useNavigate();
 
@@ -53,23 +54,28 @@ const RecipeList = ({
   const handleRemoveRecipe = (recipeId) => {
     if (removeLoading) return;
 
-    if (
-      window.confirm(
-        "Are you sure you want to remove this recipe from the DishList?"
-      )
-    ) {
-      removeRecipe({
-        variables: {
-          recipeId,
-          dishListId,
-          userId: currentUserId,
-        },
-      });
+    if (window.confirm("Are you sure you want to remove this recipe?")) {
+      // Build variables based on context
+      const variables = {
+        recipeId,
+        userId: currentUserId,
+      };
+
+      // Only add dishListId if it's provided (not on profile page)
+      if (dishListId) {
+        variables.dishListId = dishListId;
+      }
+
+      removeRecipe({ variables });
     }
   };
 
   const handleRecipeClick = (recipeId) => {
-    navigate(`/recipe/${recipeId}?from=${dishListId}`);
+    if (onRecipeClick) {
+      onRecipeClick(recipeId);
+    } else {
+      navigate(`/recipe/${recipeId}?from=${dishListId}`);
+    }
   };
 
   if (!recipes || recipes.length === 0) {
@@ -92,9 +98,10 @@ const RecipeList = ({
           <RecipeCard
             key={recipe.id}
             recipe={recipe}
-            onClick={() => handleRecipeClick(recipe.id)}
+            onClick={() => handleRecipeClick(recipe.id)} 
             onRemove={() => handleRemoveRecipe(recipe.id)}
             isUserCreator={recipe.creatorId === currentUserId}
+            dishListId={dishListId}
           />
         ))}
       </div>
