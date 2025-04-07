@@ -16,6 +16,10 @@ const ProfilePage = () => {
   const { currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState("dishlists");
 
+  const handleRecipeClick = (recipeId) => {
+    navigate(`/recipe/${recipeId}?from=profile`);
+  };
+
   // Fetch user profile data with the viewer's ID for proper visibility filtering
   const { loading, error, data, refetch } = useQuery(GET_USER_PROFILE, {
     variables: {
@@ -133,8 +137,10 @@ const ProfilePage = () => {
                   <RecipeList
                     recipes={user.visibleRecipes}
                     currentUserId={currentUser?.uid}
-                    dishListId={null} 
+                    dishListId={null}
                     emptyStateContent={null}
+                    refetchProfile={refetch}
+                    onRecipeClick={handleRecipeClick} 
                   />
                 </div>
               ) : (

@@ -25,13 +25,25 @@ const RecipeDetailPage = () => {
   const [isSaved, setIsSaved] = useState(false);
 
   const [referringDishListId, setReferringDishListId] = useState(null);
+  const [backButtonText, setBackButtonText] = useState("Back to DishList");
 
   useEffect(() => {
     // Extract dishListId from query parameters
     const queryParams = new URLSearchParams(location.search);
     const dishListId = queryParams.get("from");
+
     if (dishListId) {
       setReferringDishListId(dishListId);
+
+      // Check if we're coming from profile page
+      if (dishListId === "null" || dishListId === "profile") {
+        setBackButtonText("Back to Profile");
+      } else {
+        setBackButtonText("Back to DishList");
+      }
+    } else {
+      // Default text when there's no explicit referrer
+      setBackButtonText("Back");
     }
   }, [location]);
 
@@ -93,13 +105,20 @@ const RecipeDetailPage = () => {
 
   const handleBackClick = () => {
     if (referringDishListId) {
-      navigate(`/dishlist/${referringDishListId}`);
+      if (referringDishListId === "profile" || referringDishListId === "null") {
+        // Navigate back to the user's profile
+        navigate(`/profile/${currentUser.uid}`);
+      } else {
+        // Regular case - navigate to the specific dishlist
+        navigate(`/dishlist/${referringDishListId}`);
+      }
     } else {
-      // If no referring dishlist, check if the recipe exists in any dishlists
+      // No explicit referring context - attempt to find an appropriate destination
       if (data?.getRecipe?.dishLists?.length > 0) {
         navigate(`/dishlist/${data.getRecipe.dishLists[0]}`);
       } else {
-        navigate("/dishlists");
+        // Default to profile if we can't find a better destination
+        navigate(`/profile/${currentUser.uid}`);
       }
     }
   };
@@ -182,7 +201,7 @@ const RecipeDetailPage = () => {
 
       <div className={styles.recipeContainer}>
         <button className={styles.backButton} onClick={handleBackClick}>
-          <ArrowLeft size={18} /> Back to DishList
+          <ArrowLeft size={18} /> {backButtonText}
         </button>
 
         <RecipeHeader
