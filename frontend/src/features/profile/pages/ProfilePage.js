@@ -7,7 +7,7 @@ import TopNav from "../../../components/layout/TopNav/TopNav";
 import ProfileHeader from "../components/ProfileHeader/ProfileHeader";
 import ProfileTabs from "../components/ProfileTabs/ProfileTabs";
 import ProfileDishListGrid from "../components/ProfileDishListGrid/ProfileDishListGrid";
-import RecipeGrid from "../../dishlist/components/RecipeList/RecipeList";
+import RecipeList from "../../dishlist/components/RecipeList/RecipeList";
 import styles from "./ProfilePage.module.css";
 
 const ProfilePage = () => {
@@ -129,10 +129,14 @@ const ProfilePage = () => {
           ) : (
             <div className={styles.recipesContainer}>
               {user.visibleRecipes && user.visibleRecipes.length > 0 ? (
-                <RecipeGrid
-                  recipes={user.visibleRecipes}
-                  currentUserId={currentUser?.uid}
-                />
+                <div className={styles.recipeGridWrapper}>
+                  <RecipeList
+                    recipes={user.visibleRecipes}
+                    currentUserId={currentUser?.uid}
+                    dishListId={null} 
+                    emptyStateContent={null}
+                  />
+                </div>
               ) : (
                 <div className={styles.emptyState}>
                   <h3>No Recipes to display</h3>
