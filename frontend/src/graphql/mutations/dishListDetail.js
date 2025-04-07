@@ -1,10 +1,14 @@
 import { gql } from "@apollo/client";
 
 export const REMOVE_RECIPE_FROM_DISHLIST = gql`
-  mutation RemoveRecipeFromDishList($recipeId: ID!, $dishListId: ID!, $userId: String!) {
+  mutation RemoveRecipeFromDishList(
+    $recipeId: ID!
+    $userId: String!
+    $dishListId: ID
+  ) {
     removeRecipeFromDishList(
-      recipeId: $recipeId,
-      dishListId: $dishListId,
+      recipeId: $recipeId
+      dishListId: $dishListId
       userId: $userId
     ) {
       id
@@ -19,10 +23,14 @@ export const LEAVE_COLLABORATION = gql`
 `;
 
 export const INVITE_COLLABORATOR = gql`
-  mutation InviteCollaborator($dishListId: ID!, $targetUserId: String!, $userId: String!) {
+  mutation InviteCollaborator(
+    $dishListId: ID!
+    $targetUserId: String!
+    $userId: String!
+  ) {
     inviteCollaborator(
-      dishListId: $dishListId,
-      targetUserId: $targetUserId,
+      dishListId: $dishListId
+      targetUserId: $targetUserId
       userId: $userId
     ) {
       id
