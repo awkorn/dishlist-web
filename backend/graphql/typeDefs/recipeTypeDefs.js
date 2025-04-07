@@ -89,7 +89,7 @@ const recipeTypeDefs = gql`
 
     removeRecipeFromDishList(
       recipeId: ID!
-      dishListId: ID!
+      dishListId: ID
       userId: String!
     ): Recipe
 

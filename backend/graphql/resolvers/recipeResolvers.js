@@ -303,36 +303,48 @@ const recipeResolvers = {
 
     // Remove a recipe from a dishlist
     removeRecipeFromDishList: async (_, { recipeId, dishListId, userId }) => {
-      // Check if user has permission to remove from this dishlist
-      const dishList = await DishList.findById(dishListId);
-
-      if (!dishList) {
-        throw new Error("DishList not found");
-      }
-
-      // Only owner can remove recipes, or collaborators if they added it
-      if (
-        dishList.userId !== userId &&
-        !dishList.collaborators.includes(userId)
-      ) {
-        throw new Error(
-          "You don't have permission to remove recipes from this dishlist"
-        );
-      }
-
-      // Get the recipe
       const recipe = await Recipe.findById(recipeId);
 
       if (!recipe) {
         throw new Error("Recipe not found");
       }
 
-      // Remove dishlist from recipe's dishLists array
-      return await Recipe.findByIdAndUpdate(
-        recipeId,
-        { $pull: { dishLists: dishListId } },
-        { new: true }
-      );
+      // Check ownership - only creator can delete from all dishlists
+      if (recipe.creatorId !== userId) {
+        throw new Error("Only the creator can remove this recipe");
+      }
+
+      // If dishListId is provided, remove from just that dishlist
+      if (dishListId) {
+        const dishList = await DishList.findById(dishListId);
+        if (!dishList) {
+          throw new Error("DishList not found");
+        }
+
+        // Check permissions for specific dishlist
+        if (
+          dishList.userId !== userId &&
+          !dishList.collaborators.includes(userId)
+        ) {
+          throw new Error(
+            "You don't have permission to remove recipes from this dishlist"
+          );
+        }
+
+        // Remove from specified dishlist
+        return await Recipe.findByIdAndUpdate(
+          recipeId,
+          { $pull: { dishLists: dishListId } },
+          { new: true }
+        );
+      } else {
+        // No dishListId, remove from all dishlists (only for owner)
+        return await Recipe.findByIdAndUpdate(
+          recipeId,
+          { dishLists: [] },
+          { new: true }
+        );
+      }
     },
 
     // Add a comment to a recipe
