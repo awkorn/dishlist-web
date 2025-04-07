@@ -153,7 +153,7 @@ const GeneratedRecipeView = ({ recipe, onRegenerate }) => {
         {/* Nutrition Section (if available) */}
         {editableRecipe.nutrition && (
           <div className={styles.nutritionSection}>
-            <h3 className={styles.sectionTitle}>Nutrition Information</h3>
+            <h3 className={styles.sectionTitle}>Nutrition Information </h3>
             <div className={styles.nutritionTable}>
               <div className={styles.nutritionRow}>
                 <span className={styles.nutritionLabel}>Calories:</span>
