@@ -57,7 +57,7 @@ export const generateRecipe = async (
 ) => {
   try {
     // Construct the prompt for OpenAI
-    let prompt = `Generate a detailed recipe using these ingredients: ${ingredients.join(
+    let prompt = `Generate a detailed recipe that must include these ingredients as a starting point: ${ingredients.join(
       ", "
     )}.\n\n`;
 
