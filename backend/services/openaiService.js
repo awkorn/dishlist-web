@@ -6,7 +6,6 @@ dotenv.config();
 // Initialize OpenAI client
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-
 /**
  * Calculate nutrition facts for given ingredients
  * @param {string[]} ingredients - List of ingredients
@@ -18,22 +17,24 @@ export const analyzeNutrition = async (ingredients, servingsCount) => {
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { 
-          role: "system", 
+        {
+          role: "system",
           content: `You are a nutrition expert. Analyze the given ingredients and provide accurate 
                     nutritional information. Consider standard cooking methods and ingredient interactions.
                     Return ONLY a JSON object with these nutritional values per serving: calories (number), 
                     protein (g, number), carbs (g, number), fat (g, number), fiber (g, number), 
-                    sugar (g, number), sodium (mg, number).` 
+                    sugar (g, number), sodium (mg, number).`,
         },
-        { 
-          role: "user", 
-          content: `Calculate nutrition facts for these ingredients for ${servingsCount} serving(s):\n\n${ingredients.join('\n')}` 
-        }
+        {
+          role: "user",
+          content: `Calculate nutrition facts for these ingredients for ${servingsCount} serving(s):\n\n${ingredients.join(
+            "\n"
+          )}`,
+        },
       ],
       response_format: { type: "json_object" },
     });
-    
+
     // Parse the JSON response
     return JSON.parse(response.choices[0].message.content);
   } catch (error) {
@@ -49,25 +50,37 @@ export const analyzeNutrition = async (ingredients, servingsCount) => {
  * @param {Object} macros - Target macros
  * @returns {Promise<Object>} - Recipe data
  */
-export const generateRecipe = async (ingredients, dietaryRestrictions, macros) => {
+export const generateRecipe = async (
+  ingredients,
+  dietaryRestrictions,
+  macros
+) => {
   try {
     // Construct the prompt for OpenAI
-    let prompt = `Generate a detailed recipe using these ingredients: ${ingredients.join(", ")}.\n\n`;
-    
+    let prompt = `Generate a detailed recipe using these ingredients: ${ingredients.join(
+      ", "
+    )}.\n\n`;
+
     if (dietaryRestrictions && dietaryRestrictions.length > 0) {
-      prompt += `The recipe must follow these dietary restrictions: ${dietaryRestrictions.join(", ")}.\n\n`;
+      prompt += `The recipe must follow these dietary restrictions: ${dietaryRestrictions.join(
+        ", "
+      )}.\n\n`;
     }
-    
+
     if (macros) {
-      prompt += "The recipe should aim for these nutritional targets per serving:\n";
-      if (macros.calories) prompt += `- Calories: approximately ${macros.calories}\n`;
-      if (macros.protein) prompt += `- Protein: approximately ${macros.protein}g\n`;
-      if (macros.carbs) prompt += `- Carbohydrates: approximately ${macros.carbs}g\n`;
+      prompt +=
+        "The recipe should aim for these nutritional targets per serving:\n";
+      if (macros.calories)
+        prompt += `- Calories: approximately ${macros.calories}\n`;
+      if (macros.protein)
+        prompt += `- Protein: approximately ${macros.protein}g\n`;
+      if (macros.carbs)
+        prompt += `- Carbohydrates: approximately ${macros.carbs}g\n`;
       if (macros.fat) prompt += `- Fat: approximately ${macros.fat}g\n\n`;
     }
-    
+
     prompt += `Format the response as a JSON object with these fields:
-    - title (string): A simple name for the recipe
+    - title (string): A realistic, appealing, and straightforward recipe title (avoid puns or overly whimsical names)
     - prepTime (number): Estimated preparation time in minutes
     - cookTime (number): Estimated cooking time in minutes
     - servings (number): Number of servings
@@ -79,17 +92,17 @@ export const generateRecipe = async (ingredients, dietaryRestrictions, macros) =
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { 
-          role: "system", 
-          content: `You are an expert chef specializing in recipe creation. Create delicious, practical 
-                    recipes based on user ingredients and requirements. Provide accurate measurements, 
-                    clear instructions, and reasonable nutritional estimates.` 
+        {
+          role: "system",
+          content: `You are a professional chef with experience writing recipes for real-world cookbooks. 
+          Generate recipes that are practical, delicious, popular, and based on tested cooking principles. 
+          Use accurate measurements, realistic prep/cook times, clear instructions, and avoid gimmicky or overly creative titles.`,
         },
-        { role: "user", content: prompt }
+        { role: "user", content: prompt },
       ],
       response_format: { type: "json_object" },
     });
-    
+
     // Parse the recipe from the response
     return JSON.parse(response.choices[0].message.content);
   } catch (error) {
@@ -100,5 +113,5 @@ export const generateRecipe = async (ingredients, dietaryRestrictions, macros) =
 
 export default {
   analyzeNutrition,
-  generateRecipe
+  generateRecipe,
 };
