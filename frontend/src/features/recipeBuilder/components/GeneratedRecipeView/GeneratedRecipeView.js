@@ -35,6 +35,13 @@ const GeneratedRecipeView = ({ recipe, onRegenerate }) => {
     });
   };
 
+  const handleTitleChange = (value) => {
+    setEditableRecipe({
+      ...editableRecipe,
+      title: value,
+    });
+  };
+
   // Format cooking time (convert minutes to hours and minutes if needed)
   const formatTime = (timeInMinutes) => {
     if (!timeInMinutes) return "N/A";
@@ -56,7 +63,18 @@ const GeneratedRecipeView = ({ recipe, onRegenerate }) => {
   return (
     <div className={styles.recipeContainer}>
       <div className={styles.recipeHeader}>
-        <h2 className={styles.recipeTitle}>{editableRecipe.title}</h2>
+        <h2 className={styles.recipeTitle}>
+          {isEditing ? (
+            <input
+              type="text"
+              value={editableRecipe.title}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              className={styles.editInput}
+            />
+          ) : (
+            editableRecipe.title
+          )}
+        </h2>
 
         <div className={styles.recipeMeta}>
           {editableRecipe.prepTime && (
