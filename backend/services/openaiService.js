@@ -56,10 +56,9 @@ export const generateRecipe = async (
   macros
 ) => {
   try {
-    // Construct the prompt for OpenAI
-    let prompt = `Generate a detailed recipe that must include these ingredients as a starting point: ${ingredients.join(
-      ", "
-    )}.\n\n`;
+    let prompt = `Generate a detailed recipe that must include these ingredients as a starting point: ${ingredients.join(", ")}.
+    Incorporate additional ingredients (e.g., vegetables, spices, pantry staples, or other proteins) to create a flavorful dish.
+    Draw inspiration from global cuisines, seasonal flavors, or classic comfort foods, while keeping the recipe approachable for home cooks.\n\n`;
 
     if (dietaryRestrictions && dietaryRestrictions.length > 0) {
       prompt += `The recipe must follow these dietary restrictions: ${dietaryRestrictions.join(
