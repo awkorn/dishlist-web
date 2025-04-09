@@ -6,13 +6,27 @@ const GeneratedRecipeView = ({ recipe, onRegenerate }) => {
   const [isSavePanelOpen, setIsSavePanelOpen] = useState(false);
   const [editableRecipe, setEditableRecipe] = useState(recipe);
   const [isEditing, setIsEditing] = useState(false);
+  const [originalRecipe, setOriginalRecipe] = useState(null);
 
   const toggleEditMode = () => {
     if (isEditing) {
+      // Save changes - exit edit mode
       setIsEditing(false);
+      setOriginalRecipe(null);
     } else {
+      // Enter edit mode - store original state for cancel option
+      setOriginalRecipe({ ...editableRecipe });
       setIsEditing(true);
     }
+  };
+
+  const cancelEditing = () => {
+    // Restore original recipe state and exit edit mode
+    if (originalRecipe) {
+      setEditableRecipe(originalRecipe);
+    }
+    setIsEditing(false);
+    setOriginalRecipe(null);
   };
 
   const handleIngredientChange = (index, value) => {
@@ -32,13 +46,6 @@ const GeneratedRecipeView = ({ recipe, onRegenerate }) => {
     setEditableRecipe({
       ...editableRecipe,
       instructions: updatedInstructions,
-    });
-  };
-
-  const handleTitleChange = (value) => {
-    setEditableRecipe({
-      ...editableRecipe,
-      title: value,
     });
   };
 
@@ -63,18 +70,7 @@ const GeneratedRecipeView = ({ recipe, onRegenerate }) => {
   return (
     <div className={styles.recipeContainer}>
       <div className={styles.recipeHeader}>
-        <h2 className={styles.recipeTitle}>
-          {isEditing ? (
-            <input
-              type="text"
-              value={editableRecipe.title}
-              onChange={(e) => handleTitleChange(e.target.value)}
-              className={styles.editInput}
-            />
-          ) : (
-            editableRecipe.title
-          )}
-        </h2>
+        <h2 className={styles.recipeTitle}>{editableRecipe.title}</h2>
 
         <div className={styles.recipeMeta}>
           {editableRecipe.prepTime && (
@@ -110,16 +106,30 @@ const GeneratedRecipeView = ({ recipe, onRegenerate }) => {
             Generate New Recipe
           </button>
 
-          <button className={styles.editBtn} onClick={toggleEditMode}>
-            {isEditing ? "Save Changes" : "Edit Recipe"}
-          </button>
-
           <button
             className={styles.saveBtn}
             onClick={() => setIsSavePanelOpen(true)}
           >
             Save to DishList
           </button>
+
+          {isEditing ? (
+            <>
+              <button className={styles.editBtn} onClick={toggleEditMode}>
+                Save Changes
+              </button>
+            </>
+          ) : (
+            <button className={styles.editBtn} onClick={toggleEditMode}>
+              Edit Recipe
+            </button>
+          )}
+
+          {isEditing && (
+            <button className={styles.cancelBtn} onClick={cancelEditing}>
+              Cancel
+            </button>
+          )}
         </div>
       </div>
 
