@@ -23,14 +23,19 @@ router.post("/nutrition", async (req, res) => {
 
 // Recipe generation endpoint
 router.post("/generate-recipe", async (req, res) => {
-  const { ingredients, dietaryRestrictions, macros } = req.body;
+  const { ingredients, dietaryRestrictions, macros, specialInstructions } = req.body;
   
   if (!ingredients || !ingredients.length) {
     return res.status(400).json({ error: "Ingredients are required" });
   }
   
   try {
-    const recipe = await openaiService.generateRecipe(ingredients, dietaryRestrictions, macros);
+    const recipe = await openaiService.generateRecipe(
+      ingredients, 
+      dietaryRestrictions, 
+      macros,
+      specialInstructions
+    );
     res.json({ recipe });
   } catch (error) {
     console.error("API error:", error);
