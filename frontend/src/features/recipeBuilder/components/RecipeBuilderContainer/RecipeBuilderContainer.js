@@ -43,7 +43,7 @@ const RecipeBuilderContainer = () => {
     <div className={styles.container}>
       <div className={styles.builderPanel}>
         <h1 className={styles.title}>Recipe Builder</h1>
-        <p className={styles.subtitle}>Generate custom recipes based on ingredients, dietary preferences, and macros</p>
+        <p className={styles.subtitle}>Generate custom recipes based on ingredients, dietary preferences, and special requirements</p>
       
         {!generatedRecipe ? (
           <RecipeGenerationForm 
