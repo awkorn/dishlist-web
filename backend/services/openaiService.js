@@ -48,17 +48,24 @@ export const analyzeNutrition = async (ingredients, servingsCount) => {
  * @param {string[]} ingredients - List of ingredients
  * @param {string[]} dietaryRestrictions - List of dietary restrictions
  * @param {Object} macros - Target macros
+ * @param {string} specialInstructions - Special instructions for recipe
  * @returns {Promise<Object>} - Recipe data
  */
 export const generateRecipe = async (
   ingredients,
   dietaryRestrictions,
-  macros
+  macros,
+  specialInstructions
 ) => {
   try {
     let prompt = `Generate a detailed recipe that must include these ingredients as a starting point: ${ingredients.join(", ")}.
     Incorporate additional ingredients (e.g., vegetables, spices, pantry staples, or other proteins) to create a flavorful dish.
     Draw inspiration from global cuisines, seasonal flavors, or classic comfort foods, while keeping the recipe approachable for home cooks.\n\n`;
+
+    // Add special instructions if provided
+    if (specialInstructions && specialInstructions.trim()) {
+      prompt += `IMPORTANT - Follow these special instructions for the recipe: ${specialInstructions}\n\n`;
+    }
 
     if (dietaryRestrictions && dietaryRestrictions.length > 0) {
       prompt += `The recipe must follow these dietary restrictions: ${dietaryRestrictions.join(
