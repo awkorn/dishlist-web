@@ -18,6 +18,7 @@ const RecipeGenerationForm = ({ onSubmit, isGenerating }) => {
     carbs: '',
     fat: '',
   });
+  const [specialInstructions, setSpecialInstructions] = useState('');
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -60,6 +61,11 @@ const RecipeGenerationForm = ({ onSubmit, isGenerating }) => {
     }
   };
 
+  // Handle special instructions changes
+  const handleSpecialInstructionsChange = (e) => {
+    setSpecialInstructions(e.target.value);
+  };
+
   // Form validation
   const validateForm = () => {
     const newErrors = {};
@@ -90,6 +96,7 @@ const RecipeGenerationForm = ({ onSubmit, isGenerating }) => {
       dietaryRestrictions: Object.keys(dietaryRestrictions).filter(
         key => dietaryRestrictions[key]
       ),
+      specialInstructions: specialInstructions.trim(),
     };
 
     // Add macros if they are provided
@@ -149,6 +156,22 @@ const RecipeGenerationForm = ({ onSubmit, isGenerating }) => {
         {errors.ingredients && (
           <div className={styles.errorMessage}>{errors.ingredients}</div>
         )}
+      </div>
+
+      {/* Special Instructions Section */}
+      <div className={styles.formSection}>
+        <h2 className={styles.sectionTitle}>Special Instructions</h2>
+        <p className={styles.sectionDescription}>
+          Add any specific preferences, cooking methods, or requirements for your recipe
+        </p>
+        
+        <textarea
+          className={styles.specialInstructionsInput}
+          placeholder="Examples: 'Make it a slow cooker recipe', 'Suitable for picnic', 'Quick weeknight dinner', 'Spicy Thai-inspired dish'"
+          value={specialInstructions}
+          onChange={handleSpecialInstructionsChange}
+          rows={3}
+        />
       </div>
 
       {/* Advanced Options Toggle */}
