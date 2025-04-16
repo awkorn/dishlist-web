@@ -228,7 +228,7 @@
 }
 
 .editTextarea {
-  resize: vertical;
+  resize: none;
   min-height: 80px;
 }
 
