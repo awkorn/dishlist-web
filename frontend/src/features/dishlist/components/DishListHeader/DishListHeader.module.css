@@ -122,7 +122,7 @@
   border-radius: 8px;
   font-size: 16px;
   font-family: inherit;
-  resize: vertical;
+  resize: none;
 }
 
 .inputGroup input:focus,
