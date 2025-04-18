@@ -50,11 +50,11 @@
   }
   
   .backButton:hover {
-    transform: translateY(-3px);
+    transform: translateY(calc(-50% - 2px));
   }
   
   .backButton:active {
-    transform: translateY(0);
+    transform: translateY(-50%);
   }
 
   .descriptionWithIcon {
@@ -189,7 +189,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
   
-  .analyzeButton:disabled, .backButton:disabled {
+  .analyzeButton:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
