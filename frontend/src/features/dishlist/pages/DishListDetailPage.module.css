@@ -168,12 +168,12 @@
 }
 
 .importButton {
-  background-color: #8e44ad;
+  background-color: #6f97ee;
   color: white;
 }
 
 .importButton:hover {
-  background-color: #7d3c98;
+  background-color: #4c63ce;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
