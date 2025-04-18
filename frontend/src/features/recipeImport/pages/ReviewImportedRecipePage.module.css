@@ -1,0 +1,72 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    background-color: #F4F2EE;
+  }
+  
+  .reviewContainer {
+    max-width: 800px;
+    width: 90%;
+    margin: 40px auto;
+    padding: 0 0 60px;
+  }
+  
+  .pageTitle {
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #274b75;
+    margin: 0 0 24px;
+    text-align: center;
+  }
+  
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 100px auto;
+  }
+  
+  .loadingSpinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(39, 75, 117, 0.2);
+    border-radius: 50%;
+    border-top-color: #274b75;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .reviewContainer {
+      width: 95%;
+      margin: 20px auto;
+    }
+    
+    .pageTitle {
+      font-size: 28px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .reviewContainer {
+      width: 100%;
+      padding: 0 15px 40px;
+    }
+    
+    .pageTitle {
+      font-size: 24px;
+    }
+  }
