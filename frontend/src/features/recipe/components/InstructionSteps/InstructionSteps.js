@@ -29,7 +29,7 @@ const InstructionSteps = () => {
       el.style.height = "auto";
       el.style.height = `${el.scrollHeight}px`;
     });
-  }, [instructions]);
+  }, [instructions])
 
   const autoResize = (e) => {
     e.target.style.height = "auto";
