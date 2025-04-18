@@ -95,7 +95,7 @@ const ImportRecipePage = () => {
             contentEditable
             className={styles.recipeTextArea}
             onInput={(e) => setRecipeText(e.currentTarget.innerText)}
-            data-placeholder="Paste the entire recipe text here..."
+            data-placeholder="Paste recipe here..."
             role="textbox"
             aria-label="Recipe text"
           />

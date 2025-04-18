@@ -136,7 +136,7 @@ const ParsedRecipeForm = ({
     return (
       <form className={styles.parsedRecipeForm} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label htmlFor="recipe-title">Recipe Title</label>
+          <h3>Recipe Title</h3>
           <input
             id="recipe-title"
             type="text"
