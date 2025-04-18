@@ -167,6 +167,17 @@
   transform: translateY(-2px);
 }
 
+.importButton {
+  background-color: #8e44ad;
+  color: white;
+}
+
+.importButton:hover {
+  background-color: #7d3c98;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
 /* Empty state */
 .emptyState {
   text-align: center;

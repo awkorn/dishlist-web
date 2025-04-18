@@ -285,14 +285,23 @@ const DishListDetailPage = () => {
             </button>
           )}
 
-          {/* Add recipe button (for owners and collaborators) */}
+          {/* Add recipe and import recipe buttons (for owners and collaborators) */}
           {(userIsOwner || userIsCollaborator) && (
-            <button
-              className={`${styles.actionButton} ${styles.addRecipeButton}`}
-              onClick={() => navigate(`/add-recipe?dishListId=${id}`)}
-            >
-              Add Recipe
-            </button>
+            <>
+              <button
+                className={`${styles.actionButton} ${styles.addRecipeButton}`}
+                onClick={() => navigate(`/add-recipe?dishListId=${id}`)}
+              >
+                Add Recipe
+              </button>
+
+              <button
+                className={`${styles.actionButton} ${styles.importButton}`}
+                onClick={() => navigate(`/import-recipe/${id}`)}
+              >
+                Import Recipe
+              </button>
+            </>
           )}
         </div>
       </div>
