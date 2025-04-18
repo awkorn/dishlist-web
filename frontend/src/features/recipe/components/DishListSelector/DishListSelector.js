@@ -1,23 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
-import { gql } from "@apollo/client";
 import styles from "./DishListSelector.module.css";
-
-// Fetch user's owned and collaborated dishlists
-const GET_USER_DISHLISTS = gql`
-  query GetUserDishlists($userId: String!) {
-    getUserOwnedDishLists(userId: $userId) {
-      id
-      title
-      isPinned
-    }
-    getUserCollaboratedDishLists(userId: $userId) {
-      id
-      title
-      userId
-    }
-  }
-`;
+import { GET_USER_DISHLISTS } from "../../../../graphql/queries/dishLists";
 
 const DishListSelector = ({
   currentUserId,
@@ -30,7 +14,8 @@ const DishListSelector = ({
   );
 
   // Determine which value and setter to use (props vs internal)
-  const selectedDishList = value !== undefined ? value : internalSelectedDishList;
+  const selectedDishList =
+    value !== undefined ? value : internalSelectedDishList;
 
   const handleDishListChange = (newValue) => {
     if (onChange) {
@@ -39,7 +24,7 @@ const DishListSelector = ({
 
     setInternalSelectedDishList(newValue); // Internal state for uncontrolled usage
   };
-  
+
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDishLists, setFilteredDishLists] = useState([]);
   const [allDishLists, setAllDishLists] = useState([]);
