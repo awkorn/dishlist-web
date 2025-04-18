@@ -13,6 +13,13 @@
     margin: 40px auto;
     padding: 0 0 60px;
   }
+
+  .importHeader {
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+  }
   
   .pageTitle {
     font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
@@ -21,6 +28,41 @@
     color: #274b75;
     margin: 0 0 16px;
     text-align: center;
+  }
+
+  .backButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .backButton:hover {
+    transform: translateY(-3px);
+  }
+  
+  .backButton:active {
+    transform: translateY(0);
+  }
+
+  .descriptionWithIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
   }
   
   .pageDescription {
@@ -46,7 +88,7 @@
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background-color: #e0e0e0;
+    background-color: transparent;
   }
   
   .infoIcon:hover {
@@ -122,39 +164,23 @@
     color: #aaa;
     font-style: italic;
   }
-  
-  .actionButtons {
+
+  .analyzeButtonContainer {
     display: flex;
-    justify-content: space-between;
-    gap: 16px;
-  }
-  
-  .backButton, .analyzeButton {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .backButton {
-    background-color: transparent;
-    border: 1.5px solid #ccc;
-    color: #666;
-  }
-  
-  .backButton:hover:not(:disabled) {
-    background-color: #f5f5f5;
-    border-color: #999;
-    color: #333;
+    justify-content: center;
+    margin-top: 24px;
   }
   
   .analyzeButton {
     background-color: #274b75;
     border: none;
     color: white;
-    flex: 2;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
   
   .analyzeButton:hover:not(:disabled) {

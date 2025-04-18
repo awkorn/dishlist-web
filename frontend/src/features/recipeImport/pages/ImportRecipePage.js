@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import styles from "./ImportRecipePage.module.css";
-import { Info } from "lucide-react";
+import { Info, ArrowLeft } from "lucide-react";
 
 const ImportRecipePage = () => {
   const { id: dishListId } = useParams();
@@ -58,20 +58,34 @@ const ImportRecipePage = () => {
   return (
     <div className={styles.pageContainer}>
       <TopNav />
-      <div className={styles.importContainer}>
-        <h1 className={styles.pageTitle}>Import Recipe</h1>
-        <p className={styles.pageDescription}>
-          Paste a recipe from the web to import it into your DishList.
-        </p>
 
-        <div className={styles.infoContainer}>
-          <div className={styles.infoIcon}>
-            <Info size={20} />
-            <div className={styles.infoTooltip}>
-              For best results, view the recipe online, click "Print Recipe" (if
-              available), and copy the content from the print view. This
-              typically includes the most relevant information without ads and
-              extra content.
+      <div className={styles.importContainer}>
+        <div className={styles.importHeader}>
+          <button
+            className={styles.backButton}
+            onClick={handleGoBack}
+            disabled={isAnalyzing}
+          >
+            <ArrowLeft size={18} /> Back
+          </button>
+
+          <h1 className={styles.pageTitle}>Import Recipe</h1>
+        </div>
+
+        <div className={styles.descriptionWithIcon}>
+          <p className={styles.pageDescription}>
+            Paste a recipe from the web to import it into your DishList.
+          </p>
+
+          <div className={styles.infoContainer}>
+            <div className={styles.infoIcon}>
+              <Info size={20} />
+              <div className={styles.infoTooltip}>
+                For best results, view the recipe online, click "Print Recipe"
+                (if available), and copy the content from the print view. This
+                typically includes the most relevant information without ads and
+                extra content.
+              </div>
             </div>
           </div>
         </div>
@@ -87,14 +101,7 @@ const ImportRecipePage = () => {
           />
         </div>
 
-        <div className={styles.actionButtons}>
-          <button
-            className={styles.backButton}
-            onClick={handleGoBack}
-            disabled={isAnalyzing}
-          >
-            Back
-          </button>
+        <div className={styles.analyzeButtonContainer}>
           <button
             className={styles.analyzeButton}
             onClick={handleRecipeAnalysis}
