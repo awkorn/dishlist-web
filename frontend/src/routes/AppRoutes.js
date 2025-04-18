@@ -11,7 +11,9 @@ import RecipeDetailPage from "../features/recipe/pages/RecipeDetailPage";
 import RecipeBuilderPage from "../features/recipeBuilder/pages/RecipeBuilderPage";
 import EditDishListPage from "../features/dishlists/pages/EditDishListPage";
 import ProtectedRoute from "./ProtectedRoute";
-import ProfilePage from "../features/profile/pages/ProfilePage"
+import ProfilePage from "../features/profile/pages/ProfilePage";
+import ImportRecipePage from "../features/recipeImport/pages/ImportRecipePage";
+import ReviewImportedRecipePage from "../features/recipeImport/pages/ReviewImportedRecipePage";
 
 const AppRoutes = () => {
   return (
@@ -72,6 +74,22 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <EditDishListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/import-recipe/:id"
+        element={
+          <ProtectedRoute>
+            <ImportRecipePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/review-recipe/:id"
+        element={
+          <ProtectedRoute>
+            <ReviewImportedRecipePage />
           </ProtectedRoute>
         }
       />
