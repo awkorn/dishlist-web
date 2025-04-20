@@ -209,9 +209,22 @@
   text-decoration: underline;
 }
 
+.checkingUsername {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+  display: block;
+  font-style: italic;
+}
+
 /* Error states */
 .inputError {
   border-color: #f44336;
+}
+
+.inputWithError {
+  position: relative;
+  width: 100%;
 }
 
 .errorMessage {

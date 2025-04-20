@@ -6,18 +6,47 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../contexts/AuthProvider";
 import styles from "./SignUpForm.module.css";
+import { useLazyQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+
+// GraphQL query to check username availability
+const CHECK_USERNAME_AVAILABILITY = gql`
+  query CheckUsernameAvailability($username: String!) {
+    checkUsernameAvailability(username: $username)
+  }
+`;
 
 const SignUpForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [usernameError, setUsernameError] = useState("");
+  const [checkingUsername, setCheckingUsername] = useState(false);
   const navigate = useNavigate();
   const { currentUser, dbUser } = useAuth();
+
+  // Set up the username availability check query
+  const [checkUsername, { loading: usernameLoading }] = useLazyQuery(CHECK_USERNAME_AVAILABILITY, {
+    onCompleted: (data) => {
+      if (!data.checkUsernameAvailability) {
+        setUsernameError("This username is already taken. Please choose another one.");
+      } else {
+        setUsernameError("");
+      }
+      setCheckingUsername(false);
+    },
+    onError: (error) => {
+      console.error("Error checking username:", error);
+      setUsernameError("Error checking username availability");
+      setCheckingUsername(false);
+    }
+  });
 
   useEffect(() => {
     // Only redirect when both Firebase auth and MongoDB user are ready
@@ -26,15 +55,53 @@ const SignUpForm = () => {
       const isNewUser = currentUser.metadata.creationTime === currentUser.metadata.lastSignInTime;
       
       if (isNewUser) {
-        toast.success("Sign-up successful! Welcome, " + currentUser.displayName);
+        toast.success(`Welcome, ${firstName} ${lastName}!`);
       }
   
       navigate("/dishlists");
     }
-  }, [currentUser, dbUser, navigate]);
+  }, [currentUser, dbUser, navigate, firstName, lastName]);
+
+  // Validate username (only alphanumeric and underscores allowed)
+  const validateUsername = (username) => {
+    const usernameRegex = /^[a-zA-Z0-9_]+$/;
+    return usernameRegex.test(username);
+  };
+
+  // Create a debounced username check function
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    
+    // First, validate the format
+    if (value && !validateUsername(value)) {
+      setUsernameError("Username can only contain letters, numbers, and underscores");
+      return;
+    } 
+    
+    setUsernameError("");
+    
+    // If username is valid and at least 3 characters, check availability
+    if (value.length >= 3) {
+      setCheckingUsername(true);
+      
+      // Add debounce logic to avoid too many requests
+      const timeoutId = setTimeout(() => {
+        checkUsername({ variables: { username: value } });
+      }, 500); // Wait 500ms after user stops typing
+      
+      return () => clearTimeout(timeoutId);
+    }
+  };
 
   const handleSignUp = async (e) => {
     e.preventDefault(); // Prevents page reload
+
+    // Check for username errors
+    if (usernameError) {
+      toast.error("Please fix the username issues before submitting");
+      return;
+    }
 
     // Password verification
     const passwordRegex =
@@ -47,14 +114,26 @@ const SignUpForm = () => {
     }
 
     // Check for empty fields
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
       toast.error("Please fill out all fields.");
+      return;
+    }
+
+    // Validate username format
+    if (!validateUsername(username)) {
+      toast.error("Username can only contain letters, numbers, and underscores");
       return;
     }
 
     // Validate passwords match
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
+      return;
+    }
+
+    // Don't proceed if still checking username
+    if (checkingUsername || usernameLoading) {
+      toast.info("Still checking username availability. Please wait.");
       return;
     }
 
@@ -70,10 +149,10 @@ const SignUpForm = () => {
       const user = userCredentials.user;
 
       // Combine first and last name for display name
-      const fullName = `${firstName} ${lastName}`;
+      const displayName = `${firstName} ${lastName}`;
       
       try {
-        await updateProfile(user, { displayName: fullName });
+        await updateProfile(user, { displayName: displayName });
       } catch (error) {
         if (error.code === "auth/requires-recent-login") {
           toast.error("Please log in again to update your profile.");
@@ -90,6 +169,7 @@ const SignUpForm = () => {
       // Reset form fields
       setFirstName("");
       setLastName("");
+      setUsername("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
@@ -135,6 +215,21 @@ const SignUpForm = () => {
         autoComplete="family-name"
         required
       />
+
+      <div className={styles.inputWithError}>
+        <input
+          className={`${styles.signUpInput} ${usernameError ? styles.inputError : ''}`}
+          id="username"
+          type="text"
+          value={username}
+          placeholder="Username"
+          onChange={handleUsernameChange}
+          autoComplete="username"
+          required
+        />
+        {checkingUsername && <span className={styles.checkingUsername}>Checking username...</span>}
+        {usernameError && <div className={styles.errorMessage}>{usernameError}</div>}
+      </div>
 
       <input
         className={styles.signUpInput}
