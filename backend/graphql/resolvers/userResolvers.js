@@ -30,16 +30,16 @@ const userResolvers = {
 
           // Get all user's dishlist IDs
           const userDishListIds = [
-            ...ownedDishLists.map(list => list._id),
-            ...collaboratedDishLists.map(list => list._id)
+            ...ownedDishLists.map((list) => list._id),
+            ...collaboratedDishLists.map((list) => list._id),
           ];
 
           // Get only recipes that are still in at least one of the user's dishlists
           recipesToDisplay = await Recipe.find({
             creatorId: userId,
-            dishLists: { $elemMatch: { $in: userDishListIds } }
+            dishLists: { $elemMatch: { $in: userDishListIds } },
           });
-          
+
           recipeCount = recipesToDisplay.length;
         } else {
           // Get public dishlists owned by profile user
@@ -97,7 +97,7 @@ const userResolvers = {
           // Get recipes from those accessible dishlists
           recipesToDisplay = await Recipe.find({
             creatorId: userId,
-            dishLists: { $elemMatch: { $in: accessibleDishListIds } }
+            dishLists: { $elemMatch: { $in: accessibleDishListIds } },
           });
 
           recipeCount = recipesToDisplay.length;
@@ -109,6 +109,8 @@ const userResolvers = {
           firebaseUid: user.firebaseUid,
           email: user.email,
           username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
           ownedDishLists: user.ownedDishLists,
           savedRecipes: user.savedRecipes,
           followingDishLists: user.followingDishLists,
@@ -155,9 +157,13 @@ const userResolvers = {
         $or: [
           { username: { $regex: searchTerm, $options: "i" } },
           { email: { $regex: searchTerm, $options: "i" } },
+          { firstName: { $regex: searchTerm, $options: "i" } },
+          { lastName: { $regex: searchTerm, $options: "i" } },
         ],
       })
-        .select("id firebaseUid username email profilePicture") // Limited fields for privacy
+        .select(
+          "id firebaseUid username email profilePicture firstName lastName"
+        )
         .limit(limit);
     },
 
@@ -200,21 +206,40 @@ const userResolvers = {
         _id: { $in: user.pendingFollowRequests },
       });
     },
+
+    // Check if a username is already available
+    checkUsernameAvailability: async (_, { username }) => {
+      const existingUser = await User.findOne({ username });
+      return !existingUser; // Returns true if username is available
+    },
   },
 
   Mutation: {
-    createUser: async (_, { firebaseUid, email, username }) => {
+    createUser: async (
+      _,
+      { firebaseUid, email, username, firstName, lastName }
+    ) => {
       try {
+        // Check if username is already taken
+        const existingUsername = await User.findOne({ username });
+
+        if (existingUsername) {
+          throw new Error(
+            "Username is already taken. Please choose another one."
+          );
+        }
+
         let user = await User.findOne({ firebaseUid });
 
         if (!user) {
           console.log("Creating new user in MongoDB:", email);
 
-          // Create default empty arrays for new fields
           user = new User({
             firebaseUid,
             email,
             username,
+            firstName,
+            lastName,
             followingDishLists: [],
             ownedDishLists: [],
             savedRecipes: [],
@@ -248,7 +273,7 @@ const userResolvers = {
         return user;
       } catch (error) {
         console.error("Error creating user:", error);
-        throw new Error("Could not create user");
+        throw new Error(error.message || "Could not create user");
       }
     },
 
