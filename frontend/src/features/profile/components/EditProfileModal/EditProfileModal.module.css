@@ -114,10 +114,15 @@
   display: none;
 }
 
-.uploadHint {
-  font-size: 12px;
-  color: #666;
-  margin-top: 8px;
+.nameFields {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.nameFields .formGroup {
+  flex: 1;
+  margin-bottom: 0;
 }
 
 .formGroup {

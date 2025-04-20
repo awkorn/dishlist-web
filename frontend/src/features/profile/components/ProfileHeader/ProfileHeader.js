@@ -15,8 +15,8 @@ const ProfileHeader = ({
   // Default profile image if none is set
   const profileImage = user.profilePicture || profilePlaceHolder;
 
-  // Create display name from username
-  const displayName = user.username;
+  // Create display name from first and last name
+  const displayName = `${user.firstName} ${user.lastName}`;
 
   // Open edit profile modal
   const handleEditProfile = () => {
@@ -35,7 +35,10 @@ const ProfileHeader = ({
         </div>
 
         <div className={styles.profileInfo}>
-          <h1 className={styles.profileName}>{displayName}</h1>
+          <div className={styles.nameInfo}>
+            <h1 className={styles.profileName}>{displayName}</h1>
+            <span className={styles.username}>@{user.username}</span>
+          </div>
 
           <div className={styles.profileStats}>
             <div className={styles.statItem}>

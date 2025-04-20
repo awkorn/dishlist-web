@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { UPDATE_USER_PROFILE } from "../../../../graphql/mutations/userProfile";
-import {GET_USER_PROFILE } from "../../../../graphql/queries/userProfile"
+import { GET_USER_PROFILE } from "../../../../graphql/queries/userProfile";
 import { toast } from "react-toastify";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styles from "./EditProfileModal.module.css";
 
 const EditProfileModal = ({ user, onClose, refetchProfile }) => {
   const [username, setUsername] = useState(user.username || "");
+  const [firstName, setFirstName] = useState(user.firstName || "");
+  const [lastName, setLastName] = useState(user.lastName || "");
   const [bio, setBio] = useState(user.bio || "");
   const [profileImage, setProfileImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(user.profilePicture || null);
@@ -16,7 +18,7 @@ const EditProfileModal = ({ user, onClose, refetchProfile }) => {
   const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE, {
     onCompleted: () => {
       toast.success("Profile updated successfully!");
-      refetchProfile(); 
+      refetchProfile();
       onClose();
     },
     onError: (error) => {
@@ -28,29 +30,31 @@ const EditProfileModal = ({ user, onClose, refetchProfile }) => {
         // Read existing profile data from cache
         const existingData = cache.readQuery({
           query: GET_USER_PROFILE,
-          variables: { userId: user.firebaseUid }
+          variables: { userId: user.firebaseUid },
         });
-        
+
         if (existingData) {
           // Create updated user data by merging existing data with new data
           const updatedUser = {
             ...existingData.getUserProfile,
             username: updateUserProfile.username,
+            firstName: updateUserProfile.firstName,
+            lastName: updateUserProfile.lastName,
             bio: updateUserProfile.bio,
-            profilePicture: updateUserProfile.profilePicture
+            profilePicture: updateUserProfile.profilePicture,
           };
-          
+
           // Write the merged data back to cache
           cache.writeQuery({
             query: GET_USER_PROFILE,
             variables: { userId: user.firebaseUid },
-            data: { getUserProfile: updatedUser }
+            data: { getUserProfile: updatedUser },
           });
         }
       } catch (error) {
         console.error("Error updating cache:", error);
       }
-    }
+    },
   });
 
   const handleImageChange = (e) => {
@@ -88,8 +92,11 @@ const EditProfileModal = ({ user, onClose, refetchProfile }) => {
       if (profileImage) {
         const storage = getStorage();
         const timestamp = new Date().getTime();
-        const storageRef = ref(storage, `profile-images/${user.firebaseUid}_${timestamp}`);
-        
+        const storageRef = ref(
+          storage,
+          `profile-images/${user.firebaseUid}_${timestamp}`
+        );
+
         await uploadBytes(storageRef, profileImage);
         profilePictureUrl = await getDownloadURL(storageRef);
       }
@@ -99,9 +106,11 @@ const EditProfileModal = ({ user, onClose, refetchProfile }) => {
         variables: {
           userId: user.firebaseUid,
           username,
+          firstName,
+          lastName,
           bio,
-          profilePicture: profilePictureUrl
-        }
+          profilePicture: profilePictureUrl,
+        },
       });
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -116,17 +125,19 @@ const EditProfileModal = ({ user, onClose, refetchProfile }) => {
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
           <h2>Edit Profile</h2>
-          <button className={styles.closeButton} onClick={onClose}>×</button>
+          <button className={styles.closeButton} onClick={onClose}>
+            ×
+          </button>
         </div>
-        
+
         <form className={styles.editForm} onSubmit={handleSubmit}>
           <div className={styles.imageSection}>
             <div className={styles.currentImage}>
               {previewUrl ? (
-                <img 
-                  src={previewUrl} 
-                  alt="Profile preview" 
-                  className={styles.previewImage} 
+                <img
+                  src={previewUrl}
+                  alt="Profile preview"
+                  className={styles.previewImage}
                 />
               ) : (
                 <div className={styles.placeholderImage}>
@@ -134,22 +145,21 @@ const EditProfileModal = ({ user, onClose, refetchProfile }) => {
                 </div>
               )}
             </div>
-            
+
             <div className={styles.uploadControls}>
               <label htmlFor="profile-image" className={styles.uploadButton}>
                 Change Profile Picture
               </label>
-              <input 
-                type="file" 
-                id="profile-image" 
-                onChange={handleImageChange} 
+              <input
+                type="file"
+                id="profile-image"
+                onChange={handleImageChange}
                 className={styles.fileInput}
                 accept="image/jpeg, image/png"
               />
-              <p className={styles.uploadHint}>Recommended: 400×400px, max 5MB</p>
             </div>
           </div>
-          
+
           <div className={styles.formGroup}>
             <label htmlFor="username">Username</label>
             <input
@@ -161,7 +171,31 @@ const EditProfileModal = ({ user, onClose, refetchProfile }) => {
               required
             />
           </div>
-          
+
+          <div className={styles.nameFields}>
+            <div className={styles.formGroup}>
+              <label htmlFor="firstName">First Name</label>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className={styles.formInput}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className={styles.formInput}
+              />
+            </div>
+          </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="bio">Bio (Optional)</label>
             <textarea
@@ -173,22 +207,20 @@ const EditProfileModal = ({ user, onClose, refetchProfile }) => {
               rows="4"
               maxLength="200"
             />
-            <div className={styles.charCount}>
-              {bio ? bio.length : 0}/200
-            </div>
+            <div className={styles.charCount}>{bio ? bio.length : 0}/200</div>
           </div>
-          
+
           <div className={styles.formActions}>
-            <button 
-              type="button" 
-              className={styles.cancelButton} 
+            <button
+              type="button"
+              className={styles.cancelButton}
               onClick={onClose}
               disabled={uploading}
             >
               Cancel
             </button>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className={styles.saveButton}
               disabled={uploading}
             >
