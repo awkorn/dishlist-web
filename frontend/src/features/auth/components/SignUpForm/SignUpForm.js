@@ -6,13 +6,39 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../contexts/AuthProvider";
 import styles from "./SignUpForm.module.css";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client"; 
 import { gql } from "@apollo/client";
 
 // GraphQL query to check username availability
 const CHECK_USERNAME_AVAILABILITY = gql`
   query CheckUsernameAvailability($username: String!) {
     checkUsernameAvailability(username: $username)
+  }
+`;
+
+// Add the CREATE_USER mutation directly in the SignUpForm component
+const CREATE_USER = gql`
+  mutation CreateUser(
+    $firebaseUid: String!, 
+    $email: String!, 
+    $username: String!, 
+    $firstName: String!, 
+    $lastName: String!
+  ) {
+    createUser(
+      firebaseUid: $firebaseUid, 
+      email: $email, 
+      username: $username, 
+      firstName: $firstName, 
+      lastName: $lastName
+    ) {
+      id
+      firebaseUid
+      email
+      username
+      firstName
+      lastName
+    }
   }
 `;
 
@@ -29,7 +55,22 @@ const SignUpForm = () => {
   const [usernameError, setUsernameError] = useState("");
   const [checkingUsername, setCheckingUsername] = useState(false);
   const navigate = useNavigate();
-  const { currentUser, dbUser } = useAuth();
+  const { currentUser, dbUser, refreshUserData } = useAuth();
+
+  // Set up the mutation for creating a user
+  const [createUser] = useMutation(CREATE_USER, {
+    onCompleted: (data) => {
+      console.log("MongoDB user created successfully:", data);
+      // Optionally refresh user data in context
+      if (refreshUserData) {
+        refreshUserData();
+      }
+    },
+    onError: (error) => {
+      console.error("Error creating MongoDB user:", error);
+      toast.error("Error creating user profile: " + error.message);
+    }
+  });
 
   // Set up the username availability check query
   const [checkUsername, { loading: usernameLoading }] = useLazyQuery(CHECK_USERNAME_AVAILABILITY, {
@@ -139,8 +180,8 @@ const SignUpForm = () => {
 
     setLoading(true);
 
-    // Create user with email and password
     try {
+      // Step 1: Create Firebase user
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -152,32 +193,38 @@ const SignUpForm = () => {
       const displayName = `${firstName} ${lastName}`;
       
       try {
+        // Step 2: Update Firebase profile with display name
         await updateProfile(user, { displayName: displayName });
+        
+        // Step 3: Create MongoDB user directly with the form data
+        await createUser({
+          variables: {
+            firebaseUid: user.uid,
+            email: user.email,
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
+          }
+        });
+        
+        // Reset form fields
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+
+        toast.success("Account created successfully!");
+        
       } catch (error) {
+        console.error("Error in user creation process:", error);
         if (error.code === "auth/requires-recent-login") {
           toast.error("Please log in again to update your profile.");
-        } else if (error.code === "network-request-failed") {
-          toast.error(
-            "Network error. Please check your connection and try again."
-          );
         } else {
-          toast.error("Failed to update profile. Please try again.");
-          console.error("Profile update error:", error);
+          toast.error("Error creating account: " + error.message);
         }
       }
-
-      // Reset form fields
-      setFirstName("");
-      setLastName("");
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-
-      // AuthProvider will handle creating MongoDB user via the createUser mutation
-      toast.success("Account created successfully!");
-      
-      // No need to navigate here - useEffect will handle it once currentUser and dbUser are updated
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         toast.error("This email is already registered.");
@@ -194,6 +241,7 @@ const SignUpForm = () => {
 
   return (
     <form className={styles.signUpForm} onSubmit={handleSignUp}>
+      {/* Form fields remain the same */}
       <input
         className={styles.signUpInput}
         id="firstName"

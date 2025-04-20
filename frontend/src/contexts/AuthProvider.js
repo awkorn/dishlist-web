@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useLazyQuery, useMutation, gql } from "@apollo/client";
+import { useLazyQuery, gql } from "@apollo/client";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../services/authService";
 
@@ -32,43 +32,6 @@ const GET_USER = gql`
   }
 `;
 
-const CREATE_USER = gql`
-  mutation CreateUser(
-    $firebaseUid: String!, 
-    $email: String!, 
-    $username: String!, 
-    $firstName: String!, 
-    $lastName: String!
-  ) {
-    createUser(
-      firebaseUid: $firebaseUid, 
-      email: $email, 
-      username: $username, 
-      firstName: $firstName, 
-      lastName: $lastName
-    ) {
-      id
-      firebaseUid
-      email
-      username
-      firstName
-      lastName
-      ownedDishLists
-      followingDishLists
-      collaboratedDishLists
-      savedRecipes
-      pendingFollowRequests
-      notificationPreferences {
-        collaborationInvites
-        dishListShares
-        recipeAdditions
-        newFollowers
-        systemAnnouncements
-      }
-    }
-  }
-`;
-
 const GET_UNREAD_NOTIFICATIONS = gql`
   query GetUnreadNotificationCount($userId: String!) {
     getUnreadNotificationCount(userId: $userId)
@@ -83,7 +46,6 @@ export const AuthProvider = ({ children }) => {
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   const [getUserByEmail] = useLazyQuery(GET_USER, { fetchPolicy: "network-only" });
-  const [createUser] = useMutation(CREATE_USER);
   const [getUnreadCount] = useLazyQuery(GET_UNREAD_NOTIFICATIONS);
 
   // Function to refresh notification count
@@ -103,8 +65,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Fetch or create user in MongoDB
-  const fetchOrCreateMongoUser = async (firebaseUser) => {
+  // Fetch user from MongoDB
+  const fetchMongoUser = async (firebaseUser) => {
     try {
       // Try fetching the user from MongoDB via GraphQL
       const { data } = await getUserByEmail({ 
@@ -116,43 +78,14 @@ export const AuthProvider = ({ children }) => {
         // Refresh notification count after getting user
         refreshNotificationCount(data.getUserByEmail.firebaseUid);
         return data.getUserByEmail;
-      } else {
-        console.log("User not found in DB. Creating new user...");
-        
-        // Parse display name from Firebase user
-        let firstName = "New";
-        let lastName = "User";
-        let username = `user_${Date.now()}`;  // Default unique username
-        
-        if (firebaseUser.displayName) {
-          const nameParts = firebaseUser.displayName.split(' ');
-          firstName = nameParts[0] || "New";
-          lastName = nameParts.slice(1).join(' ') || "User";
-          // Generate a username based on first name and last initial
-          username = `${firstName.toLowerCase()}${lastName.charAt(0).toLowerCase()}${Math.floor(Math.random() * 1000)}`;
-        }
-        
-        // If the user doesn't exist, create a new record in db 
-        const { data: newUserData } = await createUser({
-          variables: {
-            firebaseUid: firebaseUser.uid,
-            email: firebaseUser.email,
-            username: username,
-            firstName: firstName,
-            lastName: lastName,
-          },
-        });
-        
-        if (newUserData?.createUser) {
-          setDbUser(newUserData.createUser);
-          return newUserData.createUser;
-        }
       }
+      
+      // If user not found in MongoDB, return null 
+      return null;
     } catch (error) {
-      console.error("Error fetching/creating user:", error);
+      console.error("Error fetching user:", error);
+      return null;
     }
-    
-    return null;
   };
 
   // Check if user is a collaborator on a dishlist
@@ -180,11 +113,19 @@ export const AuthProvider = ({ children }) => {
     return dbUser?.savedRecipes?.includes(recipeId);
   };
 
+  // Function to refresh user data (used after creating/updating profile)
+  const refreshUserData = async () => {
+    if (currentUser) {
+      return await fetchMongoUser(currentUser);
+    }
+    return null;
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setCurrentUser(user);
-        await fetchOrCreateMongoUser(user);
+        await fetchMongoUser(user);
         setLoading(false);
       } else {
         setCurrentUser(null);
@@ -208,7 +149,7 @@ export const AuthProvider = ({ children }) => {
     isOwner,
     hasPendingRequest,
     hasSavedRecipe,
-    refreshUserData: () => fetchOrCreateMongoUser(currentUser)
+    refreshUserData
   };
 
   return (
