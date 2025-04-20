@@ -5,7 +5,6 @@ import { auth } from "../services/authService";
 
 const AuthContext = createContext(null);
 
-// Updated to include all user fields we need throughout the app
 const GET_USER = gql`
   query GetUserByEmail($email: String!) {
     getUserByEmail(email: $email) {
@@ -13,6 +12,8 @@ const GET_USER = gql`
       firebaseUid
       email
       username
+      firstName
+      lastName
       ownedDishLists
       followingDishLists
       collaboratedDishLists
@@ -32,12 +33,26 @@ const GET_USER = gql`
 `;
 
 const CREATE_USER = gql`
-  mutation CreateUser($firebaseUid: String!, $email: String!, $username: String!) {
-    createUser(firebaseUid: $firebaseUid, email: $email, username: $username) {
+  mutation CreateUser(
+    $firebaseUid: String!, 
+    $email: String!, 
+    $username: String!, 
+    $firstName: String!, 
+    $lastName: String!
+  ) {
+    createUser(
+      firebaseUid: $firebaseUid, 
+      email: $email, 
+      username: $username, 
+      firstName: $firstName, 
+      lastName: $lastName
+    ) {
       id
       firebaseUid
       email
       username
+      firstName
+      lastName
       ownedDishLists
       followingDishLists
       collaboratedDishLists
@@ -103,12 +118,28 @@ export const AuthProvider = ({ children }) => {
         return data.getUserByEmail;
       } else {
         console.log("User not found in DB. Creating new user...");
+        
+        // Parse display name from Firebase user
+        let firstName = "New";
+        let lastName = "User";
+        let username = `user_${Date.now()}`;  // Default unique username
+        
+        if (firebaseUser.displayName) {
+          const nameParts = firebaseUser.displayName.split(' ');
+          firstName = nameParts[0] || "New";
+          lastName = nameParts.slice(1).join(' ') || "User";
+          // Generate a username based on first name and last initial
+          username = `${firstName.toLowerCase()}${lastName.charAt(0).toLowerCase()}${Math.floor(Math.random() * 1000)}`;
+        }
+        
         // If the user doesn't exist, create a new record in db 
         const { data: newUserData } = await createUser({
           variables: {
             firebaseUid: firebaseUser.uid,
             email: firebaseUser.email,
-            username: firebaseUser.displayName || "New User",
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
           },
         });
         
