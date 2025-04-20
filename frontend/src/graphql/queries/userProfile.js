@@ -7,6 +7,8 @@ export const GET_USER_PROFILE = gql`
       firebaseUid
       email
       username
+      firstName
+      lastName
       bio
       profilePicture
       ownedDishLists
