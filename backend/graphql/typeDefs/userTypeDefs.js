@@ -14,6 +14,8 @@ const userTypeDefs = gql`
     firebaseUid: String!
     email: String!
     username: String!
+    firstName: String!
+    lastName: String!
     ownedDishLists: [ID]!
     savedRecipes: [ID]!
     followingDishLists: [ID]
@@ -28,20 +30,30 @@ const userTypeDefs = gql`
     getUser(id: ID!): User
     getUserByEmail(email: String!): User
     getUserByFirebaseUid(firebaseUid: String!): User
+    getUserByUsername(username: String!): User
     searchUsers(searchTerm: String!, limit: Int): [User]
     getUserOwnedDishLists(userId: String!): [DishList]
     getUserCollaboratedDishLists(userId: String!): [DishList]
     getUserFollowedDishLists(userId: String!): [DishList]
     getUserPendingFollowRequests(userId: String!): [DishList]
+    checkUsernameAvailability(username: String!): Boolean!
   }
 
   type Mutation {
     saveRecipe(userId: ID!, recipeId: ID!): User
-    createUser(firebaseUid: String!, email: String!, username: String!): User
+    createUser(
+      firebaseUid: String!
+      email: String!
+      username: String!
+      firstName: String!
+      lastName: String!
+    ): User
     unsaveRecipe(userId: ID!, recipeId: ID!): User
     updateUserProfile(
       userId: ID!
       username: String
+      firstName: String
+      lastName: String
       bio: String
       profilePicture: String
     ): User

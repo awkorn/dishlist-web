@@ -108,6 +108,8 @@ const recipeTypeDefs = gql`
     firebaseUid: String!
     email: String!
     username: String!
+    firstName: String! 
+    lastName: String!
     ownedDishLists: [ID]!
     savedRecipes: [ID]!
     followingDishLists: [ID]
