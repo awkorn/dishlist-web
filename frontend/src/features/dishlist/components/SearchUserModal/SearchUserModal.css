@@ -136,6 +136,11 @@
     font-weight: 600;
     color: #333;
   }
+
+  .modal-fullname {
+    font-weight: 600;
+    color: #333;
+  }
   
   .modal-email {
     font-size: 13px;
