@@ -142,9 +142,6 @@ const CollaboratorList = ({ collaborators, dishListId, onRefetch }) => {
                     <div className={styles.collaboratorName}>
                       {collab.username}
                     </div>
-                    <div className={styles.collaboratorEmail}>
-                      {collab.email}
-                    </div>
                   </div>
                 </div>
                 <button
