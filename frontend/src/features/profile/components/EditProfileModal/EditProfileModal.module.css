@@ -118,11 +118,19 @@
   display: flex;
   gap: 16px;
   margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box; 
 }
 
 .nameFields .formGroup {
-  flex: 1;
-  margin-bottom: 0;
+  width: calc(50% - 8px); 
+  margin: 0; 
+  box-sizing: border-box; 
+}
+
+.nameFields .formGroup .formInput {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .formGroup {
