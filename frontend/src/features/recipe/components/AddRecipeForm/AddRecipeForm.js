@@ -60,19 +60,32 @@ const AddRecipeForm = ({
     if (isEditMode && recipeData) {
       setTitle(recipeData.title || "");
       setIngredients(
-        recipeData.ingredients || [{ name: "", amount: "", unit: "" }]
+        recipeData.ingredients?.length > 0
+          ? recipeData.ingredients
+          : [{ name: "", amount: "", unit: "" }]
       );
-      setInstructions(recipeData.instructions || [""]);
+      setInstructions(
+        recipeData.instructions?.length > 0 ? recipeData.instructions : [""]
+      );
       setTags(recipeData.tags || []);
       setCookTime(recipeData.cookTime || "");
       setPrepTime(recipeData.prepTime || "");
       setServings(recipeData.servings || "");
 
-      if (recipeData.image) {
-        setImage(recipeData.image);
+      if (recipeData.image && recipeData.image.url) {
+        // Create a proper image object that works with the component
+        const imageData = {
+          url: recipeData.image.url,
+          rotation: recipeData.image.rotation || 0,
+          // Add preview for UI display
+          preview: recipeData.image.url,
+        };
+        setImage(imageData);
+      } else {
+        setImage(null);
       }
 
-      // If the recipe is in any dishlists, use the first one as the selected dishlist
+      // Handle dishlist selection
       if (recipeData.dishLists && recipeData.dishLists.length > 0) {
         setSelectedDishList(recipeData.dishLists[0]);
       }
@@ -112,38 +125,40 @@ const AddRecipeForm = ({
     );
 
     // Format image data for GraphQL mutation
+    console.log("Current image state before mutation:", image);
+
     let imageInput = null;
-    if (image) {
-      if (typeof image === "object" && image.url) {
-        imageInput = {
-          url: image.url,
-          rotation: image.rotation || 0,
-        };
-      } else if (typeof image === "string") {
-        //handle legacy format
-        imageInput = {
-          url: image,
-          rotation: 0,
-        };
-      }
+
+    if (image && image.url) {
+      // Create a properly structured image object for MongoDB
+      imageInput = {
+        url: image.url,
+        rotation: image.rotation || 0,
+      };
+
+      console.log("Image data being sent to server:", imageInput);
+    } else {
+      console.log("No valid image data to send");
     }
 
     try {
       if (isEditMode) {
         // Update existing recipe
+        const updateVariables = {
+          id: recipeData.id,
+          userId: userId,
+          title,
+          ingredients: filteredIngredients,
+          instructions: filteredInstructions,
+          cookTime: cookTime ? parseInt(cookTime) : null,
+          prepTime: prepTime ? parseInt(prepTime) : null,
+          servings: servings ? parseInt(servings) : null,
+          tags,
+          image: imageInput,
+        };
+
         createRecipe({
-          variables: {
-            id: recipeData.id,
-            userId: userId,
-            title,
-            ingredients: filteredIngredients,
-            instructions: filteredInstructions,
-            cookTime: cookTime ? parseInt(cookTime) : null,
-            prepTime: prepTime ? parseInt(prepTime) : null,
-            servings: servings ? parseInt(servings) : null,
-            tags,
-            image: imageInput,
-          },
+          variables: updateVariables,
         });
       } else {
         // Create new recipe
