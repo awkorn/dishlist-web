@@ -86,6 +86,16 @@
   width: 100%;
 }
 
+.passwordField {
+  width: 100%;         
+  padding-right: 40px;   
+  letter-spacing: 0.4em; 
+}
+
+.passwordField::placeholder {
+  letter-spacing: normal; 
+}
+
 .passwordIcon {
   position: absolute;
   right: 16px;
