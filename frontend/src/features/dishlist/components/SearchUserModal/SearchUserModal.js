@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
-import "./SearchUserModal.css";
+import styles from "./SearchUserModal.module.css";
 
 // GraphQL query to search users
 const SEARCH_USERS = gql`
@@ -61,61 +61,63 @@ const SearchUserModal = ({
 
   // Handle clicking outside the modal to close it
   const handleOutsideClick = (e) => {
-    if (e.target.className === "modal-overlay") {
+    if (e.target.className === styles.modalOverlay) {
       onClose();
     }
   };
 
   return (
-    <div className="modal-overlay" onClick={handleOutsideClick}>
-      <div className="search-user-modal">
-        <div className="modal-header">
+    <div className={styles.modalOverlay} onClick={handleOutsideClick}>
+      <div className={styles.searchUserModal}>
+        <div className={styles.modalHeader}>
           <h2>Invite a Collaborator</h2>
-          <button className="close-button" onClick={onClose}>
+          <button className={styles.closeButton} onClick={onClose}>
             ×
           </button>
         </div>
 
-        <div className="modal-search-container">
+        <div className={styles.modalSearchContainer}>
           <input
             type="text"
             placeholder="Search for user"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="modal-search-input"
+            className={styles.modalSearchInput}
             autoFocus
           />
         </div>
 
-        <div className="modal-search-results">
+        <div className={styles.modalSearchResults}>
           {loading ? (
-            <div className="modal-search-loading">Searching...</div>
+            <div className={styles.modalSearchLoading}>Searching...</div>
           ) : searchResults.length > 0 ? (
-            <ul className="modal-user-list">
+            <ul className={styles.modalUserList}>
               {searchResults.map((user) => (
-                <li key={user.id} className="modal-user-item">
-                  <div className="modal-user-info">
+                <li key={user.id} className={styles.modalUserItem}>
+                  <div className={styles.modalUserInfo}>
                     {user.profilePicture ? (
                       <img
                         src={user.profilePicture}
                         alt={user.username}
-                        className="modal-user-avatar"
+                        className={styles.modalUserAvatar}
                       />
                     ) : (
-                      <div className="modal-user-avatar-placeholder">
+                      <div className={styles.modalUserAvatarPlaceholder}>
                         {user.username.charAt(0).toUpperCase()}
                       </div>
                     )}
-                    <div className="modal-user-details">
-                      <div className="modal-username">{user.username}</div>
-                      <div className="modal-fullname">
+                    <div className={styles.modalUserDetails}>
+                      <div className={styles.modalUsername}>
+                        {user.username}
+                      </div>
+                      <div className={styles.modalFullname}>
                         {user.firstName} {user.lastName}
                       </div>
-                      <div className="modal-email">{user.email}</div>
+                      <div className={styles.modalEmail}>{user.email}</div>
                     </div>
                   </div>
                   <button
-                    className="modal-invite-button"
+                    className={styles.modalInviteButton}
                     onClick={() => handleSelectUser(user.firebaseUid)}
                   >
                     Invite
@@ -124,9 +126,9 @@ const SearchUserModal = ({
               ))}
             </ul>
           ) : searchTerm.length >= 2 ? (
-            <div className="modal-no-results">No users found</div>
+            <div className={styles.modalNoResults}>No users found</div>
           ) : (
-            <div className="modal-search-prompt">
+            <div className={styles.modalSearchPrompt}>
               Type at least 2 characters to search
             </div>
           )}
