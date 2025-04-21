@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useMutation, useApolloClient } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { toast } from "react-toastify";
+import { useAuth } from "../../../../contexts/AuthProvider";
 import styles from "./CollaboratorList.module.css";
 
 const GET_USER_BY_FIREBASE_UID = gql`
@@ -36,7 +37,9 @@ const CollaboratorList = ({ collaborators, dishListId, onRefetch }) => {
   const [collaboratorDetails, setCollaboratorDetails] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
   const client = useApolloClient();
-  const currentUserId = localStorage.getItem("userId");
+
+  // Use the Auth Context instead of localStorage
+  const { currentUser } = useAuth();
 
   const [removeCollaborator, { loading: removeLoading }] =
     useMutation(REMOVE_COLLABORATOR);
@@ -70,19 +73,27 @@ const CollaboratorList = ({ collaborators, dishListId, onRefetch }) => {
 
   const handleRemoveCollaborator = async (targetUserId) => {
     try {
+      // Check if the user is authenticated
+      if (!currentUser || !currentUser.uid) {
+        toast.error("You must be logged in to remove collaborators");
+        return;
+      }
+
       await removeCollaborator({
         variables: {
           dishListId,
           targetUserId,
-          userId: currentUserId,
+          userId: currentUser.uid,
         },
       });
+
       toast.success("Collaborator removed successfully");
       setCollaboratorDetails((prev) =>
         prev.filter((collab) => collab.firebaseUid !== targetUserId)
       );
       if (onRefetch) onRefetch();
     } catch (error) {
+      console.error("Error removing collaborator:", error);
       toast.error("Failed to remove collaborator: " + error.message);
     }
   };
