@@ -37,6 +37,27 @@
   background-color: #f9f9f9;
 }
 
+.signInInput[type="password"] {
+  padding-right: 40px;   
+  letter-spacing: 0.4em; 
+}
+
+.signInInput[type="password"]::placeholder {
+  letter-spacing: normal; 
+}
+
+.passwordContainer {
+  position: relative;
+}
+
+.passwordIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
 .loginButton {
   width: 40%; 
   padding: 14px 20px;

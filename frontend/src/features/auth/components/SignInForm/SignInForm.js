@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import GoogleSignInButton from "../GoogleSignIn/GoogleSignInButton"
+import GoogleSignInButton from "../GoogleSignIn/GoogleSignInButton";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import { auth } from "../../../../services/authService";
@@ -10,6 +11,7 @@ import styles from "./SignInForm.module.css";
 const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { currentUser, dbUser } = useAuth();
@@ -35,10 +37,9 @@ const SignInForm = () => {
 
       setEmail("");
       setPassword("");
-      
+
       // Toast success message
       toast.success("Successfully signed in!");
-
     } catch (error) {
       if (error.code === "auth/user-not-found") {
         toast.error("No account found with this email.");
@@ -64,17 +65,25 @@ const SignInForm = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-      ></input>
-
-      <input
-        className={styles.signInInput}
-        type="password"
-        id="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
       />
+
+      <div className={styles.passwordContainer}>
+        <input
+          className={styles.signInInput}
+          type={showPassword ? "text" : "password"}
+          id="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <span
+          className={styles.passwordIcon}
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+        </span>
+      </div>
 
       <button type="submit" className={styles.loginButton} disabled={loading}>
         {loading ? "Signing in..." : "Login"}
