@@ -49,3 +49,16 @@ export const GET_USER_PROFILE = gql`
     }
   }
 `;
+
+export const SEARCH_USERS = gql`
+  query SearchUsers($searchTerm: String!, $limit: Int) {
+    searchUsers(searchTerm: $searchTerm, limit: $limit) {
+      id
+      firebaseUid
+      username
+      firstName
+      lastName
+      profilePicture
+    }
+  }
+`;
