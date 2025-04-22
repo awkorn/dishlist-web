@@ -90,7 +90,7 @@ const ProfilePage = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <TopNav />
+      <TopNav pageType="profile" />
 
       <div className={styles.profileContainer}>
         <ProfileHeader
