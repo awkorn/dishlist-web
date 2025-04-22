@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../TopNav.module.css";
+import UserSearch from "../../../../features/profile/components/UserSearch/UserSearch";
 
 const SearchBar = ({ pageType, items, onSearch }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -10,6 +11,9 @@ const SearchBar = ({ pageType, items, onSearch }) => {
     onSearch(value);
   };
 
+  if (pageType === "profile") {
+    return <UserSearch />;
+  }
 
   if (pageType !== "dishlists" && pageType !== "recipes") return null;
 

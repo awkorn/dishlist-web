@@ -30,21 +30,20 @@
 .searchContainer {
   flex-grow: 1;
   margin: 0 12px 0 20px; 
-  max-width: 500px;
+  max-width: 400px;
   position: relative;
 }
 
 .searchInput {
   width: 100%;
-  padding: 12px 16px;
-  padding-left: 40px;
-  border: 1.5px solid #e5e5e5;
-  border-radius: 24px;
   height: auto;
   font-size: 15px;
-  transition: all 0.2s ease;
-  background-color: #f7f7f7; 
   color: #333;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding: 8px 12px 8px 36px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
 }
 
 .searchInput:focus {
@@ -70,9 +69,7 @@
 }
 
 .searchInput::placeholder {
-  font-family: "Bricolage Grotesque", "Segoe UI", Helvetica, Arial, sans-serif;
-  color: #aaa;
-  font-size: medium;
+  color: #999;
 }
 
 /* Navigation container wrapping nav and auth buttons */
