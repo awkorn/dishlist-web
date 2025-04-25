@@ -7,6 +7,7 @@ const DishListSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   followers: [{ type: String }],
   collaborators: [{ type: String }],
+  pendingCollaborators: [{ type: String }],
   visibility: {
     type: String,
     enum: ["public", "private", "shared"],
@@ -14,7 +15,7 @@ const DishListSchema = new mongoose.Schema({
   },
   sharedWith: [{ type: String }], // For "shared" visibility - track specific users with access
   followRequests: [{ type: String }], // For tracking pending follow requests
-  description: { type: String }, // Optional description of the dishlist
+  description: { type: String }, 
 });
 
 const DishList = mongoose.model("DishList", DishListSchema);
