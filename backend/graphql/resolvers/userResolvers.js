@@ -328,11 +328,23 @@ const userResolvers = {
       const dishList = await DishList.findById(dishListId);
       if (!dishList) throw new Error("DishList not found");
 
-      if (!dishList.collaborators.includes(userId)) {
-        throw new Error("You are not invited to collaborate on this dishlist");
+      // Check if user is in pendingCollaborators rather than collaborators
+      if (
+        !dishList.pendingCollaborators ||
+        !dishList.pendingCollaborators.includes(userId)
+      ) {
+        throw new Error(
+          "You don't have a pending invitation for this dishlist"
+        );
       }
 
-      // Add dishlist to user's collaborated lists if not already there
+      // Move user from pendingCollaborators to collaborators
+      await DishList.findByIdAndUpdate(dishListId, {
+        $pull: { pendingCollaborators: userId },
+        $addToSet: { collaborators: userId },
+      });
+
+      // Add dishlist to user's collaborated lists
       const updatedUser = await User.findOneAndUpdate(
         { firebaseUid: userId },
         { $addToSet: { collaboratedDishLists: dishListId } },
@@ -352,22 +364,14 @@ const userResolvers = {
 
     // Handle declining a collaboration invitation
     declineCollaboration: async (_, { userId, dishListId }) => {
-      // Remove user from dishlist's collaborators
+      // Remove user from dishlist's pendingCollaborators (not collaborators)
       const dishList = await DishList.findByIdAndUpdate(
         dishListId,
-        { $pull: { collaborators: userId } },
+        { $pull: { pendingCollaborators: userId } },
         { new: true }
       );
 
       if (!dishList) throw new Error("DishList not found");
-
-      // Notify the owner
-      await Notification.create({
-        userId: dishList.userId,
-        type: "invite_response",
-        message: `A user declined your invitation to collaborate on "${dishList.title}"`,
-        relatedId: dishListId,
-      });
 
       return true;
     },

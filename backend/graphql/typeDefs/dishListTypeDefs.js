@@ -8,6 +8,7 @@ const dishListTypeDefs = gql`
     isPinned: Boolean!
     followers: [String]!
     collaborators: [String]!
+    pendingCollaborators: [String]
     visibility: String!
     sharedWith: [String]
     followRequests: [String]

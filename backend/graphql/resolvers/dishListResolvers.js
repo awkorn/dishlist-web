@@ -380,17 +380,24 @@ const dishListResolvers = {
         throw new Error("Only the owner can invite collaborators");
       }
 
-      // Add user to dishlist's collaborators
+      // Check if user is already a collaborator
+      if (dishList.collaborators.includes(targetUserId)) {
+        throw new Error("User is already a collaborator");
+      }
+
+      // Check if user already has a pending invite
+      if (
+        dishList.pendingCollaborators &&
+        dishList.pendingCollaborators.includes(targetUserId)
+      ) {
+        throw new Error("User already has a pending invitation");
+      }
+
+      // Add user to dishlist's pendingCollaborators instead of collaborators
       const updatedDishList = await DishList.findByIdAndUpdate(
         dishListId,
-        { $addToSet: { collaborators: targetUserId } },
+        { $addToSet: { pendingCollaborators: targetUserId } },
         { new: true }
-      );
-
-      // Add dishlist to user's collaborated lists
-      await User.findOneAndUpdate(
-        { firebaseUid: targetUserId },
-        { $addToSet: { collaboratedDishLists: dishListId } }
       );
 
       // Create notification for the invited user
