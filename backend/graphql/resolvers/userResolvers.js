@@ -1,4 +1,4 @@
-import { DishList, User, Recipe } from "../../models/index.js";
+import { DishList, User, Recipe, Notification } from "../../models/index.js";
 
 const userResolvers = {
   Query: {
@@ -388,14 +388,6 @@ const userResolvers = {
         { firebaseUid: userId },
         { $pull: { collaboratedDishLists: dishListId } }
       );
-
-      // Notify the owner
-      await Notification.create({
-        userId: dishList.userId,
-        type: "collaboration_update",
-        message: `A collaborator has left your dishlist "${dishList.title}"`,
-        relatedId: dishListId,
-      });
 
       return true;
     },
