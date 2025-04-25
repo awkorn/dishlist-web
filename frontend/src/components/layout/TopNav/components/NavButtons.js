@@ -6,7 +6,7 @@ import styles from "../TopNav.module.css";
 const NavButtons = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, unreadNotifications } = useAuth();
 
   return (
     <div className="nav-buttons">
@@ -33,6 +33,19 @@ const NavButtons = () => {
         onClick={() => navigate("/about")}
       >
         About
+      </button>
+      <button
+        className={`${styles.navBtn} ${
+          location.pathname === "/notifications" ? styles.active : ""
+        }`}
+        onClick={() => navigate("/notifications")}
+      >
+        <span style={{ position: "relative", display: "inline-block" }}>
+          Notifications
+          {unreadNotifications > 0 && (
+            <span className={styles.notificationDot}></span>
+          )}
+        </span>
       </button>
       <button
         className={`${styles.navBtn} ${

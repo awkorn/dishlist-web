@@ -130,6 +130,16 @@
   transform: translateY(-2px);
 }
 
+.notificationDot {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+}
+
 /* Auth Buttons */
 .authBtn {
   background: none;
