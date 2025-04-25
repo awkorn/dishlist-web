@@ -1,54 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { gql } from "@apollo/client";
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import { toast } from "react-toastify";
 import styles from "./NotificationsPage.module.css";
-
-// GraphQL queries and mutations
-const GET_USER_NOTIFICATIONS = gql`
-  query GetUserNotifications($userId: String!, $limit: Int, $offset: Int) {
-    getUserNotifications(userId: $userId, limit: $limit, offset: $offset) {
-      id
-      type
-      message
-      relatedId
-      isRead
-      createdAt
-    }
-  }
-`;
-
-const MARK_NOTIFICATION_READ = gql`
-  mutation MarkNotificationRead($id: ID!, $userId: String!) {
-    markNotificationRead(id: $id, userId: $userId) {
-      id
-      isRead
-    }
-  }
-`;
-
-const MARK_ALL_NOTIFICATIONS_READ = gql`
-  mutation MarkAllNotificationsRead($userId: String!) {
-    markAllNotificationsRead(userId: $userId)
-  }
-`;
-
-const DELETE_NOTIFICATION = gql`
-  mutation DeleteNotification($id: ID!, $userId: String!) {
-    deleteNotification(id: $id, userId: $userId)
-  }
-`;
-
-const ACCEPT_COLLABORATION = gql`
-  mutation AcceptCollaboration($userId: String!, $dishListId: ID!) {
-    acceptCollaboration(userId: $userId, dishListId: $dishListId) {
-      id
-      collaboratedDishLists
-    }
-  }
-`;
+import {
+  GET_USER_NOTIFICATIONS,
+  MARK_ALL_NOTIFICATIONS_READ,
+  MARK_NOTIFICATION_READ,
+  DELETE_NOTIFICATION,
+  ACCEPT_COLLABORATION,
+} from "../../../graphql";
 
 const NotificationsPage = () => {
   const { currentUser, refreshNotificationCount } = useAuth();
