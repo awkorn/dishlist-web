@@ -47,26 +47,29 @@ const CollaboratorList = ({ collaborators, dishListId, onRefetch }) => {
   useEffect(() => {
     const fetchCollaboratorDetails = async () => {
       const details = [];
-      for (const uid of collaborators) {
-        try {
-          const { data } = await client.query({
-            query: GET_USER_BY_FIREBASE_UID,
-            variables: { firebaseUid: uid },
-          });
-          if (data?.getUserByFirebaseUid) {
-            details.push({
-              ...data.getUserByFirebaseUid,
-              firebaseUid: uid,
+      // Only fetch if there are collaborators
+      if (collaborators && collaborators.length > 0) {
+        for (const uid of collaborators) {
+          try {
+            const { data } = await client.query({
+              query: GET_USER_BY_FIREBASE_UID,
+              variables: { firebaseUid: uid },
             });
+            if (data?.getUserByFirebaseUid) {
+              details.push({
+                ...data.getUserByFirebaseUid,
+                firebaseUid: uid,
+              });
+            }
+          } catch (error) {
+            console.error(`Error fetching details for user ${uid}:`, error);
           }
-        } catch (error) {
-          console.error(`Error fetching details for user ${uid}:`, error);
         }
       }
       setCollaboratorDetails(details);
     };
 
-    if (collaborators.length > 0) {
+    if (collaborators && collaborators.length > 0) {
       fetchCollaboratorDetails();
     }
   }, [collaborators, client]);
@@ -98,7 +101,8 @@ const CollaboratorList = ({ collaborators, dishListId, onRefetch }) => {
     }
   };
 
-  if (collaborators.length === 0) return null;
+  // Only render if there are actual collaborators (not pending ones)
+  if (!collaborators || collaborators.length === 0) return null;
 
   return (
     <div className={styles.collaboratorsSection}>
