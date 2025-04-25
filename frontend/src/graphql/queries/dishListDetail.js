@@ -10,6 +10,7 @@ export const GET_DISHLIST_DETAIL = gql`
       isPinned
       followers
       collaborators
+      pendingCollaborators
       visibility
       sharedWith
       followRequests
