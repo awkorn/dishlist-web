@@ -14,6 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import ProfilePage from "../features/profile/pages/ProfilePage";
 import ImportRecipePage from "../features/recipeImport/pages/ImportRecipePage";
 import ReviewImportedRecipePage from "../features/recipeImport/pages/ReviewImportedRecipePage";
+import NotificationsPage from "../features/notifications/pages/NotificationsPage";
 
 const AppRoutes = () => {
   return (
@@ -98,6 +99,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <NotificationsPage />
           </ProtectedRoute>
         }
       />
