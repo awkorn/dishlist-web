@@ -7,10 +7,10 @@ import { useApolloClient } from "@apollo/client";
 import styles from "./NotificationsPage.module.css";
 import {
   GET_USER_NOTIFICATIONS,
-  MARK_ALL_NOTIFICATIONS_READ,
   MARK_NOTIFICATION_READ,
   DELETE_NOTIFICATION,
   ACCEPT_COLLABORATION,
+  DELETE_ALL_NOTIFICATIONS
 } from "../../../graphql";
 
 const NotificationsPage = () => {
@@ -30,9 +30,9 @@ const NotificationsPage = () => {
 
   // Mutations
   const [markNotificationRead] = useMutation(MARK_NOTIFICATION_READ);
-  const [markAllNotificationsRead] = useMutation(MARK_ALL_NOTIFICATIONS_READ);
   const [deleteNotification] = useMutation(DELETE_NOTIFICATION);
   const [acceptCollaboration] = useMutation(ACCEPT_COLLABORATION);
+  const [deleteAllNotifications] = useMutation(DELETE_ALL_NOTIFICATIONS);
 
   // Format date to display
   const formatDate = (dateString) => {
@@ -118,28 +118,32 @@ const NotificationsPage = () => {
     client.cache,
   ]);
 
-  // Mark all notifications as read
-  const handleMarkAllRead = async () => {
+  // Delete all notifications
+  const handleDeleteAll = async () => {
+    // Confirm with the user before deleting all
+    if (!window.confirm("Are you sure you want to delete all notifications?")) {
+      return;
+    }
+    
     try {
-      await markAllNotificationsRead({
+      await deleteAllNotifications({
         variables: { userId: currentUser.uid },
       });
 
       // Update local state
-      setNotifications((prev) =>
-        prev.map((notification) => ({ ...notification, isRead: true }))
-      );
+      setNotifications([]);
 
       // Clear the notification count cache and refresh
       client.cache.evict({ fieldName: "getUnreadNotificationCount" });
+      client.cache.evict({ fieldName: "getUserNotifications" });
       client.cache.gc();
       
       // Refresh notification count
       refreshNotificationCount();
-      
-      toast.success("All notifications marked as read");
+
     } catch (error) {
-      toast.error("Failed to mark all notifications as read");
+      toast.error("Failed to delete all notifications");
+      console.error("Error deleting all notifications:", error);
     }
   };
 
@@ -251,10 +255,10 @@ const NotificationsPage = () => {
           <h1>Notifications</h1>
           <button
             className={styles.markAllReadButton}
-            onClick={handleMarkAllRead}
-            disabled={!notifications.some((n) => !n.isRead)}
+            onClick={handleDeleteAll}
+            disabled={notifications.length === 0}
           >
-            Mark all as read
+            Delete All
           </button>
         </div>
 

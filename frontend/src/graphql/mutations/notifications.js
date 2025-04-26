@@ -29,3 +29,9 @@ export const ACCEPT_COLLABORATION = gql`
     }
   }
 `;
+
+export const DELETE_ALL_NOTIFICATIONS = gql`
+  mutation DeleteAllNotifications($userId: String!) {
+    deleteAllNotifications(userId: $userId)
+  }
+`;
