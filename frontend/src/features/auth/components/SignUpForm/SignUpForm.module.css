@@ -7,7 +7,7 @@
   gap: 24px;
   padding: 30px;
   border-radius: 16px;
-  background-color: #F4F2EE;
+  background-color: white;
   transition: all 0.3s ease;
 }
 
@@ -40,7 +40,7 @@
   box-sizing: border-box;
   font-family: 'Bricolage Grotesque', "Franklin Gothic Light", "Arial", sans-serif;
   transition: all 0.2s ease;
-  background-color: #fafafa;
+  background-color: white;
 }
 
 .signUpInput::placeholder {
