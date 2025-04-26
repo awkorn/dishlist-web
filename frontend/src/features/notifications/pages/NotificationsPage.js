@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import { toast } from "react-toastify";
+import { useApolloClient } from "@apollo/client";
 import styles from "./NotificationsPage.module.css";
 import {
   GET_USER_NOTIFICATIONS,
@@ -17,6 +18,7 @@ const NotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const client = useApolloClient();
   const LIMIT = 20;
 
   // Query to fetch notifications
@@ -155,11 +157,14 @@ const NotificationsPage = () => {
         variables: { userId: currentUser.uid, dishListId },
       });
 
+      // Force the cache to evict dishlists data
+      client.cache.evict({ fieldName: "getDishLists" });
+      client.cache.gc();
+
       toast.success("Collaboration accepted");
-      // Remove this notification from the list after accepting
       handleDeleteNotification(notificationId);
     } catch (error) {
-      toast.error("Failed to accept collaboration");
+      toast.error("Failed to accept collaboration: " + error.message);
     }
   };
 
