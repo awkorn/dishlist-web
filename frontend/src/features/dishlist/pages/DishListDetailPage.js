@@ -19,6 +19,7 @@ import VisibilitySelector from "../components/VisibilitySelector/VisibilitySelec
 import CollaboratorsList from "../components/CollaboratorList/CollaboratorList";
 import styles from "./DishListDetailPage.module.css";
 import { ArrowLeft } from "lucide-react";
+import { useApolloClient } from "@apollo/client";
 
 const DishListDetailPage = () => {
   const { id } = useParams();
@@ -28,6 +29,7 @@ const DishListDetailPage = () => {
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const client = useApolloClient();
 
   // Fetch dishlist details
   const {
@@ -95,6 +97,12 @@ const DishListDetailPage = () => {
       });
 
       toast.success("You have left this collaboration");
+
+      // Force a complete cache reset for dish lists
+      client.cache.evict({ fieldName: "getDishLists" });
+      client.cache.evict({ fieldName: "getUserCollaboratedDishLists" });
+      client.cache.gc();
+
       navigate("/dishlists");
     } catch (error) {
       toast.error("Failed to leave collaboration: " + error.message);
