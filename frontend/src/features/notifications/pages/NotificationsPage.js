@@ -98,8 +98,12 @@ const NotificationsPage = () => {
           )
         );
 
-        // Refresh notification count in the header
+        // Refresh notification count in the header immediately after marking as read
         refreshNotificationCount();
+        
+        // Ensure the cache is updated for any related queries
+        client.cache.evict({ fieldName: "getUnreadNotificationCount" });
+        client.cache.gc();
       }
     };
 
@@ -111,6 +115,7 @@ const NotificationsPage = () => {
     currentUser,
     markNotificationRead,
     refreshNotificationCount,
+    client.cache,
   ]);
 
   // Mark all notifications as read
@@ -125,8 +130,13 @@ const NotificationsPage = () => {
         prev.map((notification) => ({ ...notification, isRead: true }))
       );
 
+      // Clear the notification count cache and refresh
+      client.cache.evict({ fieldName: "getUnreadNotificationCount" });
+      client.cache.gc();
+      
       // Refresh notification count
       refreshNotificationCount();
+      
       toast.success("All notifications marked as read");
     } catch (error) {
       toast.error("Failed to mark all notifications as read");
@@ -144,6 +154,10 @@ const NotificationsPage = () => {
       setNotifications((prev) =>
         prev.filter((notification) => notification.id !== id)
       );
+      
+      // Refresh notification count as deleted notifications should no longer count
+      refreshNotificationCount();
+      
       toast.success("Notification deleted");
     } catch (error) {
       toast.error("Failed to delete notification");
@@ -221,6 +235,13 @@ const NotificationsPage = () => {
       </div>
     );
   };
+
+  // Call refreshNotificationCount when component mounts to sync the count
+  useEffect(() => {
+    if (currentUser?.uid) {
+      refreshNotificationCount();
+    }
+  }, [currentUser, refreshNotificationCount]);
 
   return (
     <div className={styles.pageContainer}>
