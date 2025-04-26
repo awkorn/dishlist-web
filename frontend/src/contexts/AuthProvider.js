@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { useLazyQuery, gql } from "@apollo/client";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../services/authService";
@@ -46,24 +46,25 @@ export const AuthProvider = ({ children }) => {
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   const [getUserByEmail] = useLazyQuery(GET_USER, { fetchPolicy: "network-only" });
-  const [getUnreadCount] = useLazyQuery(GET_UNREAD_NOTIFICATIONS);
+  const [getUnreadCount] = useLazyQuery(GET_UNREAD_NOTIFICATIONS, { fetchPolicy: "network-only" });
 
-  // Function to refresh notification count
-  const refreshNotificationCount = async (userId) => {
-    if (!userId) return;
+  // Function to refresh notification count 
+  const refreshNotificationCount = useCallback(async () => {
+    if (!dbUser?.firebaseUid) return;
     
     try {
       const { data } = await getUnreadCount({ 
-        variables: { userId }
+        variables: { userId: dbUser.firebaseUid },
+        fetchPolicy: "network-only" // Force a network request to get latest data
       });
       
-      if (data) {
+      if (data && typeof data.getUnreadNotificationCount === 'number') {
         setUnreadNotifications(data.getUnreadNotificationCount);
       }
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
-  };
+  }, [dbUser, getUnreadCount]);
 
   // Fetch user from MongoDB
   const fetchMongoUser = async (firebaseUser) => {
@@ -75,8 +76,6 @@ export const AuthProvider = ({ children }) => {
       
       if (data?.getUserByEmail) {
         setDbUser(data.getUserByEmail);
-        // Refresh notification count after getting user
-        refreshNotificationCount(data.getUserByEmail.firebaseUid);
         return data.getUserByEmail;
       }
       
@@ -87,6 +86,13 @@ export const AuthProvider = ({ children }) => {
       return null;
     }
   };
+
+  // Refresh notification count when dbUser changes
+  useEffect(() => {
+    if (dbUser?.firebaseUid) {
+      refreshNotificationCount();
+    }
+  }, [dbUser, refreshNotificationCount]);
 
   // Check if user is a collaborator on a dishlist
   const isCollaborator = (dishListId) => {
@@ -116,7 +122,12 @@ export const AuthProvider = ({ children }) => {
   // Function to refresh user data (used after creating/updating profile)
   const refreshUserData = async () => {
     if (currentUser) {
-      return await fetchMongoUser(currentUser);
+      const userData = await fetchMongoUser(currentUser);
+      // After refreshing user data, also refresh notification count
+      if (userData) {
+        await refreshNotificationCount();
+      }
+      return userData;
     }
     return null;
   };
@@ -125,8 +136,13 @@ export const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setCurrentUser(user);
-        await fetchMongoUser(user);
+        const userData = await fetchMongoUser(user);
         setLoading(false);
+        
+        // If user data was fetched successfully, refresh notification count
+        if (userData) {
+          refreshNotificationCount();
+        }
       } else {
         setCurrentUser(null);
         setDbUser(null);
@@ -143,7 +159,7 @@ export const AuthProvider = ({ children }) => {
     currentUser,
     dbUser,
     unreadNotifications,
-    refreshNotificationCount: () => refreshNotificationCount(dbUser?.firebaseUid),
+    refreshNotificationCount,
     isCollaborator,
     isFollowing,
     isOwner,
