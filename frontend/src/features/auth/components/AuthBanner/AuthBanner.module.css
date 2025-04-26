@@ -19,13 +19,7 @@
   
   .logo {
     height: 50px;
-    transition: all 0.3s ease;
   }
-  
-  .logo:hover {
-    transform: scale(1.05);
-  }
-
   
   /* Responsive styles */
   @media (max-width: 768px) {
