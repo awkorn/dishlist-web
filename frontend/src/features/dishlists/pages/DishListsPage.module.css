@@ -167,6 +167,11 @@
   color: #ffffff;
 }
 
+.collabBadge{
+  background-color: #E0F7FA;
+  color: #00838F;
+}
+
 /* ===== FOLLOW ACTIONS ===== */
 .followAction {
   margin-top: 10px;
