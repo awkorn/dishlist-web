@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import SearchUserModal from "../components/SearchUserModal/SearchUserModal";
 import VisibilitySelector from "../components/VisibilitySelector/VisibilitySelector";
 import CollaboratorsList from "../components/CollaboratorList/CollaboratorList";
+import DishListActions from "../components/DishListActions/DishListActions";
 import styles from "./DishListDetailPage.module.css";
 import { ArrowLeft } from "lucide-react";
 import { useApolloClient } from "@apollo/client";
@@ -258,32 +259,16 @@ const DishListDetailPage = () => {
           </div>
         </div>
 
-        <div className={styles.dishlistActions}>
-          {/* Owner-only actions */}
+        <div className={styles.dishlistControls}>
+          {/* Show visibility selector only for owners */}
           {userIsOwner && (
-            <>
-              <VisibilitySelector
-                currentVisibility={dishlist.visibility}
-                onChange={handleVisibilityChange}
-              />
-
-              <button
-                className={`${styles.actionButton} ${styles.inviteButton}`}
-                onClick={() => setSearchModalOpen(true)}
-              >
-                Invite Collaborator
-              </button>
-
-              <button
-                className={`${styles.actionButton} ${styles.editButton}`}
-                onClick={() => navigate(`/edit-dishlist/${id}`)}
-              >
-                Edit DishList
-              </button>
-            </>
+            <VisibilitySelector
+              currentVisibility={dishlist.visibility}
+              onChange={handleVisibilityChange}
+            />
           )}
 
-          {/* Collaborator-only actions */}
+          {/* Show leave collaboration button for collaborators */}
           {userIsCollaborator && !userIsOwner && (
             <button
               className={`${styles.actionButton} ${styles.leaveButton}`}
@@ -293,23 +278,14 @@ const DishListDetailPage = () => {
             </button>
           )}
 
-          {/* Add recipe and import recipe buttons (for owners and collaborators) */}
+          {/* Actions dropdown menu for owners and collaborators */}
           {(userIsOwner || userIsCollaborator) && (
-            <>
-              <button
-                className={`${styles.actionButton} ${styles.addRecipeButton}`}
-                onClick={() => navigate(`/add-recipe?dishListId=${id}`)}
-              >
-                Add Recipe
-              </button>
-
-              <button
-                className={`${styles.actionButton} ${styles.importButton}`}
-                onClick={() => navigate(`/import-recipe/${id}`)}
-              >
-                Import Recipe
-              </button>
-            </>
+            <DishListActions
+              dishListId={id}
+              userIsOwner={userIsOwner}
+              userIsCollaborator={userIsCollaborator}
+              onOpenInviteModal={() => setSearchModalOpen(true)}
+            />
           )}
         </div>
       </div>
