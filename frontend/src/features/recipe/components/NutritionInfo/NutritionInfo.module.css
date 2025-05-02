@@ -1,170 +1,195 @@
 .nutritionSection {
-    background-color: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nutritionTitle {
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #274b75;
+  margin: 0 0 16px 0;
+}
+
+.nutritionDescription {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.calculateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.calculateButton {
+  background-color: #274b75;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calculateButton:hover:not(:disabled) {
+  background-color: #1c3657;
+  transform: translateY(-2px);
+}
+
+.calculateButton:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  color: #f44336;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Nutrition Facts Styles */
+.nutritionFacts {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  width: 100%;
+}
+
+.nutritionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 8px;
+  border-bottom: 8px solid #000;
+}
+
+.nutritionFactsTitle {
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0;
+}
+
+.expandIcon {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.expandIcon.expanded {
+  transform: rotate(180deg);
+}
+
+.servingInfo {
+  font-size: 14px;
+  border-bottom: 4px solid #000;
+  padding-bottom: 5px;
+  margin: 5px 0 15px;
+}
+
+.nutrientRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.nutrientName {
+  font-weight: 500;
+}
+
+.nutrientValue {
+  font-weight: 700;
+}
+
+.calorieBar {
+  margin: 15px 0;
+}
+
+.macroBar {
+  height: 20px;
+  display: flex;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.macroFill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  transition: width 0.3s ease;
+  white-space: nowrap;
+}
+
+.proteinFill {
+  background-color: #4CAF50; 
+}
+
+.carbsFill {
+  background-color: #2196F3; 
+}
+
+.fatFill {
+  background-color: #FF9800; 
+}
+
+.disclaimer {
+  font-size: 11px;
+  color: #666;
+  font-style: italic;
+  margin-top: 15px;
+  line-height: 1.4;
+}
+
+.recalculateButton {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 15px;
+  display: block;
+}
+
+.recalculateButton:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.recalculateButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .nutritionSection {
+    padding: 16px;
   }
   
   .nutritionTitle {
-    font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: #274b75;
-    margin: 0 0 16px 0;
-  }
-  
-  .nutritionDescription {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 16px;
-  }
-  
-  .calculateContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .calculateButton {
-    background-color: #274b75;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .calculateButton:hover:not(:disabled) {
-    background-color: #1c3657;
-    transform: translateY(-2px);
-  }
-  
-  .calculateButton:disabled {
-    background-color: #a0a0a0;
-    cursor: not-allowed;
-  }
-  
-  .errorMessage {
-    color: #f44336;
-    font-size: 14px;
-    margin-top: 10px;
-  }
-  
-  /* Nutrition Facts Styles */
-  .nutritionFacts {
-    font-family: 'Helvetica', 'Arial', sans-serif;
-    width: 100%;
-  }
-  
-  .nutritionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    padding-bottom: 8px;
-    border-bottom: 8px solid #000;
+    font-size: 16px;
   }
   
   .nutritionFactsTitle {
-    font-size: 20px;
-    font-weight: 900;
-    margin: 0;
+    font-size: 18px;
   }
   
-  .expandIcon {
-    font-size: 12px;
-    transition: transform 0.3s ease;
+  .calculateButton,
+  .recalculateButton {
+    padding: 6px 14px;
+    font-size: 13px;
+    width: 100%;
   }
-  
-  .expandIcon.expanded {
-    transform: rotate(180deg);
-  }
-  
-  .servingInfo {
-    font-size: 14px;
-    border-bottom: 4px solid #000;
-    padding-bottom: 5px;
-    margin: 5px 0 15px;
-  }
-  
-  .nutrientRow {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .nutrientName {
-    font-weight: 500;
-  }
-  
-  .nutrientValue {
-    font-weight: 700;
-  }
-  
-  .calorieBar {
-    margin: 15px 0;
-  }
-  
-  .macroBar {
-    height: 20px;
-    display: flex;
-    overflow: hidden;
-    border-radius: 10px;
-    margin-bottom: 5px;
-  }
-  
-  .macroFill {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 11px;
-    font-weight: 600;
-    transition: width 0.3s ease;
-    white-space: nowrap;
-  }
-  
-  .proteinFill {
-    background-color: #4CAF50; 
-  }
-  
-  .carbsFill {
-    background-color: #2196F3; 
-  }
-  
-  .fatFill {
-    background-color: #FF9800; 
-  }
-  
-  .disclaimer {
-    font-size: 11px;
-    color: #666;
-    font-style: italic;
-    margin-top: 15px;
-    line-height: 1.4;
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .nutritionSection {
-      padding: 16px;
-    }
-    
-    .nutritionTitle {
-      font-size: 16px;
-    }
-    
-    .nutritionFactsTitle {
-      font-size: 18px;
-    }
-    
-    .calculateButton {
-      padding: 6px 14px;
-      font-size: 13px;
-    }
-  }
+}

@@ -1,12 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./NutritionInfo.module.css";
 
 const NutritionInfo = ({ ingredients, servings }) => {
   const [nutritionData, setNutritionData] = useState(null);
   const [isCalculating, setIsCalculating] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [error, setError] = useState(null);
+
+  // Generate a unique key for this recipe's nutrition data
+  const getNutritionStorageKey = () => {
+    const ingredientsKey = ingredients
+      .filter(ing => ing.name.trim() !== "")
+      .map(ing => `${ing.amount || ""}|${ing.unit || ""}|${ing.name}`)
+      .join("_");
+    
+    // Combine with servings to create a unique key
+    return `nutrition_view_${ingredientsKey}_servings_${servings || 1}`;
+  };
+
+  // Load saved nutrition data on component mount
+  useEffect(() => {
+    const loadSavedNutritionData = () => {
+      const storageKey = getNutritionStorageKey();
+      const savedData = localStorage.getItem(storageKey);
+      
+      if (savedData) {
+        try {
+          setNutritionData(JSON.parse(savedData));
+        } catch (err) {
+          console.error("Error parsing saved nutrition data:", err);
+          localStorage.removeItem(storageKey);
+        }
+      }
+    };
+
+    // Only try to load data if we have ingredients
+    if (ingredients && ingredients.some(ing => ing.name.trim() !== "")) {
+      loadSavedNutritionData();
+    }
+  }, [ingredients, servings]);
 
   // Calculate nutrition facts
   const calculateNutrition = async () => {
@@ -36,6 +69,10 @@ const NutritionInfo = ({ ingredients, servings }) => {
       const data = response.data.result;
       setNutritionData(data);
       setIsExpanded(true);
+      
+      // Save to localStorage
+      const storageKey = getNutritionStorageKey();
+      localStorage.setItem(storageKey, JSON.stringify(data));
     } catch (err) {
       console.error("Error calculating nutrition:", err);
       setError("Failed to calculate nutrition. Please try again.");
@@ -198,6 +235,14 @@ const NutritionInfo = ({ ingredients, servings }) => {
                   {nutritionData.sodium}mg
                 </span>
               </div>
+              
+              <button
+                className={styles.recalculateButton}
+                onClick={calculateNutrition}
+                disabled={isCalculating}
+              >
+                {isCalculating ? "Calculating..." : "Recalculate"}
+              </button>
             </>
           )}
 
