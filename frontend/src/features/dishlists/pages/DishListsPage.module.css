@@ -172,42 +172,6 @@
   color: #00838F;
 }
 
-/* ===== FOLLOW ACTIONS ===== */
-.followAction {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.followAction button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: white;
-  width: 100%;
-  max-width: 200px;
-}
-
-.followBtn {
-  background-color: #00BCD4;
-}
-
-.unfollowBtn {
-  background-color: #FF5722;
-}
-
-.requestFollowBtn {
-  background-color: #FF9800;
-}
-
-.followAction button:hover {
-  filter: brightness(0.9);
-  transform: translateY(-2px);
-}
-
 /* ===== RECIPE COUNT ===== */
 .recipeCountDisplay {
   font-size: 14px;
@@ -269,11 +233,6 @@
   .pin {
     height: 25px;
     width: 25px;
-  }
-  
-  .followAction button {
-    padding: 6px 12px;
-    font-size: 12px;
   }
 }
 

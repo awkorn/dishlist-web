@@ -1,38 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Pin } from "lucide-react";
 import { Link } from "react-router-dom";
 import styles from "../../pages/DishListsPage.module.css";
 import { GET_DISHLISTS_RECIPE_COUNTS } from "../../../../graphql";
-import {
-  FOLLOW_DISHLIST,
-  UNFOLLOW_DISHLIST,
-  REQUEST_TO_FOLLOW,
-} from "../../../../graphql";
 
 const DishListTile = ({
   dishLists,
   currentUserId,
-  refetch,
   selectionMode = false,
   selectedDishList,
   onSelectDishList,
   isOwner,
 }) => {
   const [recipeCounts, setRecipeCounts] = useState({});
-
-  // Mutations
-  const [followDishList] = useMutation(FOLLOW_DISHLIST, {
-    onCompleted: () => refetch(),
-  });
-
-  const [unfollowDishList] = useMutation(UNFOLLOW_DISHLIST, {
-    onCompleted: () => refetch(),
-  });
-
-  const [requestToFollow] = useMutation(REQUEST_TO_FOLLOW, {
-    onCompleted: () => refetch(),
-  });
 
   // Fetch recipe counts for all dishlists in a single query
   const { loading: countsLoading, data: countsData } = useQuery(
@@ -57,25 +38,6 @@ const DishListTile = ({
       setRecipeCounts(countsMap);
     }
   }, [countsData]);
-
-  const handleFollow = (dishListId) => {
-    followDishList({
-      variables: { dishListId, userId: currentUserId },
-    });
-  };
-
-  const handleUnfollow = (dishListId) => {
-    unfollowDishList({
-      variables: { dishListId, userId: currentUserId },
-    });
-  };
-
-  const handleRequestFollow = (dishListId) => {
-    requestToFollow({
-      variables: { dishListId, userId: currentUserId },
-    });
-    alert("Follow request sent!");
-  };
 
   const handleDishListSelection = (dishListId) => {
     if (selectionMode && onSelectDishList) {
@@ -204,45 +166,6 @@ const DishListTile = ({
                   dishlist.visibility.slice(1)}
               </span>
             </div>
-
-            {/* Only show follow/unfollow for non-owners and non-collaborators when not in selection mode */}
-            {!selectionMode && !userIsOwner && !userIsCollaborator && (
-              <div className={styles.followAction}>
-                {userIsFollower ? (
-                  <button
-                    className={styles.unfollowBtn}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleUnfollow(dishlist.id);
-                    }}
-                  >
-                    Unfollow
-                  </button>
-                ) : dishlist.visibility === "public" ? (
-                  <button
-                    className={styles.followBtn}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleFollow(dishlist.id);
-                    }}
-                  >
-                    Follow
-                  </button>
-                ) : (
-                  !userHasPendingRequest && (
-                    <button
-                      className={styles.requestFollowBtn}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRequestFollow(dishlist.id);
-                      }}
-                    >
-                      Request to Follow
-                    </button>
-                  )
-                )}
-              </div>
-            )}
           </div>
         );
       })}
