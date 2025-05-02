@@ -6,6 +6,7 @@ import { ApolloServer } from "apollo-server-express";
 import typeDefs from "./graphql/typeDefs/index.js";
 import resolvers from "./graphql/resolvers/index.js";
 import aiRoutes from "./routes/aiRoutes.js";
+import { startCleanupJobs } from "./scripts/cleanupJob.js";
 
 dotenv.config();
 
@@ -43,3 +44,4 @@ async function startApolloServer() {
 }
 
 startApolloServer();
+startCleanupJobs();
