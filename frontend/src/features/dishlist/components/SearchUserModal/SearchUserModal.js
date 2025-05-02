@@ -1,22 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLazyQuery } from "@apollo/client";
-import { gql } from "@apollo/client";
+import { SEARCH_USERS } from "../../../../graphql/queries/userProfile";
 import styles from "./SearchUserModal.module.css";
-
-// GraphQL query to search users
-const SEARCH_USERS = gql`
-  query SearchUsers($searchTerm: String!, $limit: Int) {
-    searchUsers(searchTerm: $searchTerm, limit: $limit) {
-      id
-      firebaseUid
-      username
-      email
-      profilePicture
-      firstName
-      lastName
-    }
-  }
-`;
 
 const SearchUserModal = ({
   onClose,
@@ -79,7 +64,7 @@ const SearchUserModal = ({
         <div className={styles.modalSearchContainer}>
           <input
             type="text"
-            placeholder="Search for user"
+            placeholder="Search by username or name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.modalSearchInput}
@@ -113,7 +98,6 @@ const SearchUserModal = ({
                       <div className={styles.modalFullname}>
                         {user.firstName} {user.lastName}
                       </div>
-                      <div className={styles.modalEmail}>{user.email}</div>
                     </div>
                   </div>
                   <button
