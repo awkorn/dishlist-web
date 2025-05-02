@@ -5,7 +5,8 @@ import {
   Import, 
   UserPlus, 
   FilePenLine, 
-  Ellipsis 
+  Ellipsis,
+  Users
 } from "lucide-react";
 import styles from "./DishListActions.module.css";
 
@@ -13,17 +14,20 @@ const DishListActions = ({
   dishListId, 
   userIsOwner, 
   userIsCollaborator, 
-  onOpenInviteModal 
+  onOpenInviteModal,
+  collaborators = []
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showCollaborators, setShowCollaborators] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
 
-  // Handle outside clicks to close the menu
+  // Handle outside clicks to close the menu and collaborators
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
+        setShowCollaborators(false);
       }
     };
 
@@ -55,10 +59,52 @@ const DishListActions = ({
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+    // Close collaborators panel when menu is opened
+    if (!menuOpen) {
+      setShowCollaborators(false);
+    }
+  };
+
+  const toggleCollaborators = (e) => {
+    e.stopPropagation();
+    setShowCollaborators(!showCollaborators);
+    // Close menu when collaborators is opened
+    if (!showCollaborators) {
+      setMenuOpen(false);
+    }
   };
 
   return (
-    <div className={styles.actionMenuContainer} ref={menuRef}>
+    <div className={styles.actionsContainer} ref={menuRef}>
+      {/* Collaborators link/button */}
+      {collaborators.length > 0 && (
+        <div className={styles.collaboratorsLink} onClick={toggleCollaborators}>
+          <Users size={16} className={styles.collaboratorsIcon} />
+          <span className={styles.collaboratorsText}>
+            {collaborators.length} {collaborators.length === 1 ? 'Collaborator' : 'Collaborators'}
+          </span>
+          
+          {showCollaborators && (
+            <div className={styles.collaboratorsPopup}>
+              <h4 className={styles.collaboratorsTitle}>Collaborators</h4>
+              <ul className={styles.collaboratorsList}>
+                {collaborators.map((collaborator, index) => (
+                  <li key={index} className={styles.collaboratorItem}>
+                    <div className={styles.collaboratorAvatar}>
+                      {collaborator.username ? collaborator.username.charAt(0).toUpperCase() : '?'}
+                    </div>
+                    <span className={styles.collaboratorName}>
+                      {collaborator.username || `Collaborator ${index + 1}`}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Actions menu button */}
       <button 
         className={styles.menuToggleButton}
         onClick={toggleMenu}

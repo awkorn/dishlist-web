@@ -2,21 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import {
-  GET_DISHLIST_DETAIL,
-  GET_DISHLIST_RECIPES,
-} from "../../../graphql/queries/dishListDetail";
-import {
   LEAVE_COLLABORATION,
   INVITE_COLLABORATOR,
   UPDATE_VISIBILITY,
-} from "../../../graphql/mutations/dishListDetail";
+  GET_DISHLIST_DETAIL,
+  GET_DISHLIST_RECIPES,
+  GET_USER_BY_FIREBASE_UID,
+} from "../../../graphql/index";
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import RecipeList from "../components/RecipeList/RecipeList";
 import { toast } from "react-toastify";
 import SearchUserModal from "../components/SearchUserModal/SearchUserModal";
 import VisibilitySelector from "../components/VisibilitySelector/VisibilitySelector";
-import CollaboratorsList from "../components/CollaboratorList/CollaboratorList";
 import DishListActions from "../components/DishListActions/DishListActions";
 import styles from "./DishListDetailPage.module.css";
 import { ArrowLeft } from "lucide-react";
@@ -30,6 +28,7 @@ const DishListDetailPage = () => {
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [collaboratorDetails, setCollaboratorDetails] = useState([]);
   const client = useApolloClient();
 
   // Fetch dishlist details
@@ -146,6 +145,39 @@ const DishListDetailPage = () => {
       toast.error("Failed to update visibility: " + error.message);
     }
   };
+
+  // Fetch collaborator details 
+  useEffect(() => {
+    const fetchCollaboratorDetails = async () => {
+      if (dishlistData?.getDishList?.collaborators?.length > 0) {
+        const details = [];
+
+        for (const uid of dishlistData.getDishList.collaborators) {
+          try {
+            const { data } = await client.query({
+              query: GET_USER_BY_FIREBASE_UID,
+              variables: { firebaseUid: uid },
+            });
+
+            if (data?.getUserByFirebaseUid) {
+              details.push({
+                ...data.getUserByFirebaseUid,
+                firebaseUid: uid,
+              });
+            }
+          } catch (error) {
+            console.error(`Error fetching details for user ${uid}:`, error);
+          }
+        }
+
+        setCollaboratorDetails(details);
+      }
+    };
+
+    if (dishlistData?.getDishList) {
+      fetchCollaboratorDetails();
+    }
+  }, [dishlistData, client]);
 
   // Loading state
   if (dishlistLoading || recipesLoading) {
@@ -278,26 +310,18 @@ const DishListDetailPage = () => {
             </button>
           )}
 
-          {/* Actions dropdown menu for owners and collaborators */}
+          {/* Actions dropdown menu for owners and collaborators with collaborators data */}
           {(userIsOwner || userIsCollaborator) && (
             <DishListActions
               dishListId={id}
               userIsOwner={userIsOwner}
               userIsCollaborator={userIsCollaborator}
               onOpenInviteModal={() => setSearchModalOpen(true)}
+              collaborators={collaboratorDetails}
             />
           )}
         </div>
       </div>
-
-      {/* Collaborators section (visible to owner only) */}
-      {userIsOwner && dishlist.collaborators.length > 0 && (
-        <CollaboratorsList
-          collaborators={dishlist.collaborators}
-          dishListId={id}
-          onRefetch={refetchDishlist}
-        />
-      )}
 
       {/* Recipes grid */}
       <RecipeList
