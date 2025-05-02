@@ -146,7 +146,7 @@ const DishListDetailPage = () => {
     }
   };
 
-  // Fetch collaborator details 
+  // Fetch collaborator details
   useEffect(() => {
     const fetchCollaboratorDetails = async () => {
       if (dishlistData?.getDishList?.collaborators?.length > 0) {
@@ -318,6 +318,7 @@ const DishListDetailPage = () => {
               userIsCollaborator={userIsCollaborator}
               onOpenInviteModal={() => setSearchModalOpen(true)}
               collaborators={collaboratorDetails}
+              currentUserId={currentUser?.uid}
             />
           )}
         </div>

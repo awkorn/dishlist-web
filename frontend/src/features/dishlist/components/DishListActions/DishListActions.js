@@ -15,12 +15,18 @@ const DishListActions = ({
   userIsOwner, 
   userIsCollaborator, 
   onOpenInviteModal,
-  collaborators = []
+  collaborators = [],
+  currentUserId
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showCollaborators, setShowCollaborators] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+
+  // Filter out the current user from the collaborators list
+  const otherCollaborators = collaborators.filter(
+    collab => collab.firebaseUid !== currentUserId
+  );
 
   // Handle outside clicks to close the menu and collaborators
   useEffect(() => {
@@ -74,21 +80,24 @@ const DishListActions = ({
     }
   };
 
+  // Only show the collaborators link if there are other collaborators
+  const showCollaboratorsLink = otherCollaborators.length > 0;
+
   return (
     <div className={styles.actionsContainer} ref={menuRef}>
-      {/* Collaborators link/button */}
-      {collaborators.length > 0 && (
+      {/* Collaborators link/button - only show if there are other collaborators */}
+      {showCollaboratorsLink && (
         <div className={styles.collaboratorsLink} onClick={toggleCollaborators}>
           <Users size={16} className={styles.collaboratorsIcon} />
           <span className={styles.collaboratorsText}>
-            {collaborators.length} {collaborators.length === 1 ? 'Collaborator' : 'Collaborators'}
+            {otherCollaborators.length} {otherCollaborators.length === 1 ? 'Collaborator' : 'Collaborators'}
           </span>
           
           {showCollaborators && (
             <div className={styles.collaboratorsPopup}>
               <h4 className={styles.collaboratorsTitle}>Collaborators</h4>
               <ul className={styles.collaboratorsList}>
-                {collaborators.map((collaborator, index) => (
+                {otherCollaborators.map((collaborator, index) => (
                   <li key={index} className={styles.collaboratorItem}>
                     <div className={styles.collaboratorAvatar}>
                       {collaborator.username ? collaborator.username.charAt(0).toUpperCase() : '?'}
