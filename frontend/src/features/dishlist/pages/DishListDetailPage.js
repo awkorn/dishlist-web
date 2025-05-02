@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation, useLazyQuery } from "@apollo/client";
 import {
   LEAVE_COLLABORATION,
   INVITE_COLLABORATOR,
@@ -8,6 +8,9 @@ import {
   GET_DISHLIST_DETAIL,
   GET_DISHLIST_RECIPES,
   GET_USER_BY_FIREBASE_UID,
+  FOLLOW_DISHLIST,
+  UNFOLLOW_DISHLIST,
+  REQUEST_TO_FOLLOW
 } from "../../../graphql/index";
 import { useAuth } from "../../../contexts/AuthProvider";
 import TopNav from "../../../components/layout/TopNav/TopNav";
@@ -17,18 +20,19 @@ import SearchUserModal from "../components/SearchUserModal/SearchUserModal";
 import VisibilitySelector from "../components/VisibilitySelector/VisibilitySelector";
 import DishListActions from "../components/DishListActions/DishListActions";
 import styles from "./DishListDetailPage.module.css";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, UserCircle, Users } from "lucide-react";
 import { useApolloClient } from "@apollo/client";
 
 const DishListDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, hasPendingRequest } = useAuth();
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [collaboratorDetails, setCollaboratorDetails] = useState([]);
+  const [creatorDetails, setCreatorDetails] = useState(null);
   const client = useApolloClient();
 
   // Fetch dishlist details
@@ -55,10 +59,16 @@ const DishListDetailPage = () => {
     notifyOnNetworkStatusChange: true,
   });
 
+  // Fetch creator details
+  const [getUserDetails] = useLazyQuery(GET_USER_BY_FIREBASE_UID);
+
   // Mutations
   const [leaveCollaboration] = useMutation(LEAVE_COLLABORATION);
   const [inviteCollaborator] = useMutation(INVITE_COLLABORATOR);
   const [updateVisibility] = useMutation(UPDATE_VISIBILITY);
+  const [followDishList] = useMutation(FOLLOW_DISHLIST);
+  const [unfollowDishList] = useMutation(UNFOLLOW_DISHLIST);
+  const [requestToFollow] = useMutation(REQUEST_TO_FOLLOW);
 
   // When recipes data changes, update state
   useEffect(() => {
@@ -146,6 +156,56 @@ const DishListDetailPage = () => {
     }
   };
 
+  // Handle following a dishlist
+  const handleFollow = async () => {
+    try {
+      await followDishList({
+        variables: { dishListId: id, userId: currentUser?.uid },
+      });
+      
+      toast.success(`You are now following this dishlist`);
+      refetchDishlist();
+
+      // Update cache to reflect the follow action
+      client.cache.evict({ fieldName: "getDishLists" });
+      client.cache.gc();
+    } catch (error) {
+      toast.error("Failed to follow dishlist: " + error.message);
+    }
+  };
+
+  // Handle unfollowing a dishlist
+  const handleUnfollow = async () => {
+    try {
+      await unfollowDishList({
+        variables: { dishListId: id, userId: currentUser?.uid },
+      });
+      
+      toast.success(`You have unfollowed this dishlist`);
+      refetchDishlist();
+
+      // Update cache to reflect the unfollow action
+      client.cache.evict({ fieldName: "getDishLists" });
+      client.cache.gc();
+    } catch (error) {
+      toast.error("Failed to unfollow dishlist: " + error.message);
+    }
+  };
+
+  // Handle requesting to follow a dishlist
+  const handleRequestFollow = async () => {
+    try {
+      await requestToFollow({
+        variables: { dishListId: id, userId: currentUser?.uid },
+      });
+      
+      toast.success(`Follow request sent!`);
+      refetchDishlist();
+    } catch (error) {
+      toast.error("Failed to request follow: " + error.message);
+    }
+  };
+
   // Fetch collaborator details
   useEffect(() => {
     const fetchCollaboratorDetails = async () => {
@@ -178,6 +238,29 @@ const DishListDetailPage = () => {
       fetchCollaboratorDetails();
     }
   }, [dishlistData, client]);
+
+  // Fetch creator details
+  useEffect(() => {
+    const fetchCreatorDetails = async () => {
+      if (dishlistData?.getDishList?.userId) {
+        try {
+          const { data } = await getUserDetails({
+            variables: { firebaseUid: dishlistData.getDishList.userId },
+          });
+
+          if (data?.getUserByFirebaseUid) {
+            setCreatorDetails(data.getUserByFirebaseUid);
+          }
+        } catch (error) {
+          console.error("Error fetching creator details:", error);
+        }
+      }
+    };
+
+    if (dishlistData?.getDishList) {
+      fetchCreatorDetails();
+    }
+  }, [dishlistData, getUserDetails]);
 
   // Loading state
   if (dishlistLoading || recipesLoading) {
@@ -239,6 +322,7 @@ const DishListDetailPage = () => {
   const userIsOwner = dishlist.userId === currentUser?.uid;
   const userIsCollaborator = dishlist.collaborators.includes(currentUser?.uid);
   const userIsFollower = dishlist.followers.includes(currentUser?.uid);
+  const userHasPendingRequest = hasPendingRequest ? hasPendingRequest(id) : false;
 
   const userRole = userIsOwner
     ? "owner"
@@ -288,10 +372,61 @@ const DishListDetailPage = () => {
               {filteredRecipes.length}{" "}
               {filteredRecipes.length === 1 ? "recipe" : "recipes"}
             </span>
+
+            {dishlist.followers?.length > 0 && (
+              <span className={styles.followersCount}>
+                <Users size={14} className={styles.followersIcon} />
+                {dishlist.followers.length}{" "}
+                {dishlist.followers.length === 1 ? "follower" : "followers"}
+              </span>
+            )}
           </div>
+
+          {creatorDetails && !userIsOwner && (
+            <div className={styles.creatorInfo}>
+              <UserCircle size={16} className={styles.creatorIcon} />
+              <span>
+                Created by{" "}
+                <a 
+                  href={`/profile/${dishlist.userId}`}
+                  className={styles.creatorLink}
+                >
+                  {creatorDetails.username}
+                </a>
+              </span>
+            </div>
+          )}
         </div>
 
         <div className={styles.dishlistControls}>
+          {/* Follow/Unfollow button for visitors */}
+          {!userIsOwner && !userIsCollaborator && (
+            <div className={styles.followActions}>
+              {userIsFollower ? (
+                <button
+                  className={`${styles.actionButton} ${styles.unfollowButton}`}
+                  onClick={handleUnfollow}
+                >
+                  Unfollow
+                </button>
+              ) : dishlist.visibility === "public" ? (
+                <button
+                  className={`${styles.actionButton} ${styles.followButton}`}
+                  onClick={handleFollow}
+                >
+                  Follow
+                </button>
+              ) : !userHasPendingRequest && (
+                <button
+                  className={`${styles.actionButton} ${styles.requestFollowButton}`}
+                  onClick={handleRequestFollow}
+                >
+                  Request to Follow
+                </button>
+              )}
+            </div>
+          )}
+
           {/* Show visibility selector only for owners */}
           {userIsOwner && (
             <VisibilitySelector

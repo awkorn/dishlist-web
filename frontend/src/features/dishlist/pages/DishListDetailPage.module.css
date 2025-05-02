@@ -71,6 +71,8 @@
   font-size: 14px;
   color: #666;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .dishlistVisibility {
@@ -103,6 +105,40 @@
   align-items: center;
 }
 
+.followersCount {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.followersIcon {
+  color: #666;
+}
+
+.creatorInfo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.creatorIcon {
+  color: #666;
+}
+
+.creatorLink {
+  color: #274b75;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.creatorLink:hover {
+  text-decoration: underline;
+}
+
 /* Controls container */
 .dishlistControls {
   display: flex;
@@ -126,6 +162,36 @@
   white-space: nowrap;
 }
 
+.followButton {
+  background-color: #2196F3;
+  color: white;
+}
+
+.followButton:hover {
+  background-color: #1976D2;
+  transform: translateY(-2px);
+}
+
+.unfollowButton {
+  background-color: #F44336;
+  color: white;
+}
+
+.unfollowButton:hover {
+  background-color: #D32F2F;
+  transform: translateY(-2px);
+}
+
+.requestFollowButton {
+  background-color: #FF9800;
+  color: white;
+}
+
+.requestFollowButton:hover {
+  background-color: #F57C00;
+  transform: translateY(-2px);
+}
+
 .leaveButton {
   background-color: #f5f5f5;
   color: #d32f2f;
@@ -135,6 +201,12 @@
 .leaveButton:hover {
   background-color: #ffebee;
   transform: translateY(-2px);
+}
+
+/* Follow actions container */
+.followActions {
+  display: flex;
+  gap: 10px;
 }
 
 /* Empty state */
