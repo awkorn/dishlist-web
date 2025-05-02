@@ -20,7 +20,7 @@ import SearchUserModal from "../components/SearchUserModal/SearchUserModal";
 import VisibilitySelector from "../components/VisibilitySelector/VisibilitySelector";
 import DishListActions from "../components/DishListActions/DishListActions";
 import styles from "./DishListDetailPage.module.css";
-import { ArrowLeft, UserCircle, Users } from "lucide-react";
+import { ArrowLeft, Users } from "lucide-react";
 import { useApolloClient } from "@apollo/client";
 
 const DishListDetailPage = () => {
@@ -384,7 +384,6 @@ const DishListDetailPage = () => {
 
           {creatorDetails && !userIsOwner && (
             <div className={styles.creatorInfo}>
-              <UserCircle size={16} className={styles.creatorIcon} />
               <span>
                 Created by{" "}
                 <a 
