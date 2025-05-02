@@ -169,16 +169,6 @@ const EditDishListPage = () => {
               >
                 Private
               </button>
-
-              <button
-                type="button"
-                className={`${styles.visibilityBtn} ${
-                  visibility === "shared" ? styles.activeVisibility : ""
-                }`}
-                onClick={() => setVisibility("shared")}
-              >
-                Shared
-              </button>
             </div>
 
             <div className={styles.visibilityExplanation}>
@@ -189,9 +179,6 @@ const EditDishListPage = () => {
               )}
               {visibility === "private" && (
                 <p>Only you and collaborators can view this DishList.</p>
-              )}
-              {visibility === "shared" && (
-                <p>Only specific people you invite can view this DishList.</p>
               )}
             </div>
           </div>

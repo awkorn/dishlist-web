@@ -25,7 +25,6 @@ const UserSchema = new mongoose.Schema(
 
     notificationPreferences: {
       collaborationInvites: { type: Boolean, default: true },
-      dishListShares: { type: Boolean, default: true },
       recipeAdditions: { type: Boolean, default: true },
       newFollowers: { type: Boolean, default: true },
       systemAnnouncements: { type: Boolean, default: true },

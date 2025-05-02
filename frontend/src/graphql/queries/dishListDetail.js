@@ -12,7 +12,6 @@ export const GET_DISHLIST_DETAIL = gql`
       collaborators
       pendingCollaborators
       visibility
-      sharedWith
       followRequests
     }
   }

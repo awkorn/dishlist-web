@@ -25,7 +25,6 @@ const recipeResolvers = {
           { collaborators: userId }, // Collaborator
           { followers: userId }, // Follower
           { visibility: "public" }, // Public list
-          { visibility: "shared", sharedWith: userId }, // Shared with user
         ],
       });
 
@@ -54,9 +53,7 @@ const recipeResolvers = {
         dishList.userId === userId || // Owner
         dishList.collaborators.includes(userId) || // Collaborator
         dishList.followers.includes(userId) || // Follower
-        dishList.visibility === "public" || // Public list
-        (dishList.visibility === "shared" &&
-          dishList.sharedWith.includes(userId)); // Shared with user
+        dishList.visibility === "public"; // Public list
 
       if (!canAccess) {
         throw new Error(

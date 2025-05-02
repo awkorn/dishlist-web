@@ -8,7 +8,6 @@ const dishListResolvers = {
           { userId }, // Owner
           { followers: userId }, // Follower
           { collaborators: userId }, // Collaborator
-          { sharedWith: userId, visibility: "shared" }, // Shared with this user
         ],
       });
     },
@@ -34,9 +33,7 @@ const dishListResolvers = {
         dishList.userId === userId || // Owner
         dishList.collaborators.includes(userId) || // Collaborator
         dishList.followers.includes(userId) || // Follower
-        dishList.visibility === "public" || // Public list
-        (dishList.visibility === "shared" &&
-          dishList.sharedWith.includes(userId)); // Shared with user
+        dishList.visibility === "public"; // Public list
 
       if (!canView) {
         throw new Error("You don't have permission to view this DishList");
@@ -55,7 +52,6 @@ const dishListResolvers = {
             { collaborators: userId }, // Collaborator
             { followers: userId }, // Follower
             { visibility: "public" }, // Public list
-            { visibility: "shared", sharedWith: userId }, // Shared with user
           ],
         });
 
@@ -103,13 +99,18 @@ const dishListResolvers = {
       _,
       { userId, title, isPinned, collaborators, description, visibility }
     ) => {
+      // Validate visibility
+      if (visibility !== "public" && visibility !== "private") {
+        visibility = "private"; // Default to private if invalid value
+      }
+
       // Create the new dishlist
       const newDishList = new DishList({
         userId,
         title,
         isPinned,
         description: description || "",
-        visibility: visibility || "private",
+        visibility,
         collaborators: collaborators || [],
       });
 
@@ -146,6 +147,11 @@ const dishListResolvers = {
 
       if (dishList.userId !== userId) {
         throw new Error("Only the owner can edit dishlist details");
+      }
+
+      // Validate visibility
+      if (visibility !== "public" && visibility !== "private") {
+        visibility = "private"; // Default to private if invalid value
       }
 
       const updates = {};
@@ -233,7 +239,7 @@ const dishListResolvers = {
     },
 
     followDishList: async (_, { dishListId, userId }) => {
-      // Check if the dishlist exists and is public or shared with this user
+      // Check if the dishlist exists and is public
       const dishList = await DishList.findById(dishListId);
 
       if (!dishList) {
@@ -241,10 +247,7 @@ const dishListResolvers = {
       }
 
       // Make sure the user can follow this list
-      const canFollow =
-        dishList.visibility === "public" ||
-        (dishList.visibility === "shared" &&
-          dishList.sharedWith.includes(userId));
+      const canFollow = dishList.visibility === "public";
 
       if (!canFollow) {
         throw new Error(
@@ -303,69 +306,12 @@ const dishListResolvers = {
         throw new Error("Only the owner can change visibility settings");
       }
 
-      // If changing from shared to private/public, clear sharedWith array
-      const updates = { visibility };
-      if (dishList.visibility === "shared" && visibility !== "shared") {
-        updates.sharedWith = [];
+      // Validate visibility
+      if (visibility !== "public" && visibility !== "private") {
+        visibility = "private"; // Default to private if invalid value
       }
 
-      return await DishList.findByIdAndUpdate(id, updates, { new: true });
-    },
-
-    shareDishList: async (_, { dishListId, userIds, userId }) => {
-      // Check if user has permission (should be owner)
-      const dishList = await DishList.findById(dishListId);
-
-      if (!dishList) {
-        throw new Error("DishList not found");
-      }
-
-      if (dishList.userId !== userId) {
-        throw new Error("Only the owner can share this dishlist");
-      }
-
-      // Update to shared visibility if not already
-      const updates = {
-        visibility: "shared",
-        $addToSet: { sharedWith: { $each: userIds } },
-      };
-
-      const updatedDishList = await DishList.findByIdAndUpdate(
-        dishListId,
-        updates,
-        { new: true }
-      );
-
-      // Create notifications for users the dishlist is shared with
-      const notifications = userIds.map((sharedUserId) => ({
-        userId: sharedUserId,
-        type: "share",
-        message: `A dishlist "${dishList.title}" has been shared with you`,
-        relatedId: dishListId,
-      }));
-
-      await Notification.insertMany(notifications);
-
-      return updatedDishList;
-    },
-
-    removeSharedUser: async (_, { dishListId, targetUserId, userId }) => {
-      // Check if user has permission (should be owner)
-      const dishList = await DishList.findById(dishListId);
-
-      if (!dishList) {
-        throw new Error("DishList not found");
-      }
-
-      if (dishList.userId !== userId) {
-        throw new Error("Only the owner can remove shared access");
-      }
-
-      return await DishList.findByIdAndUpdate(
-        dishListId,
-        { $pull: { sharedWith: targetUserId } },
-        { new: true }
-      );
+      return await DishList.findByIdAndUpdate(id, { visibility }, { new: true });
     },
 
     inviteCollaborator: async (_, { dishListId, targetUserId, userId }) => {
@@ -440,14 +386,14 @@ const dishListResolvers = {
     },
 
     requestToFollow: async (_, { dishListId, userId }) => {
-      // Check if the dishlist exists and is private/shared
+      // Check if the dishlist exists
       const dishList = await DishList.findById(dishListId);
 
       if (!dishList) {
         throw new Error("DishList not found");
       }
 
-      // Only need to request for non-public dishlists
+      // Only need to request for private dishlists
       if (dishList.visibility === "public") {
         // For public dishlists, directly follow instead of requesting
         return await dishListResolvers.Mutation.followDishList(_, {

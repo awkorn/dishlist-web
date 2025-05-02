@@ -4,7 +4,7 @@ const NotificationSchema = new mongoose.Schema({
   userId: { type: String, required: true }, // Recipient
   type: { 
     type: String, 
-    enum: ["invite", "share", "recipe_add", "follow", "invite_response", "system"],
+    enum: ["invite", "recipe_add", "follow", "invite_response", "system"],
     required: true 
   },
   message: { type: String, required: true },

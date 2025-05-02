@@ -54,8 +54,6 @@ const DishListHeader = ({ dishList, userRole }) => {
         return { text: "Public", className: "visibility-badge public" };
       case "private":
         return { text: "Private", className: "visibility-badge private" };
-      case "shared":
-        return { text: "Shared", className: "visibility-badge shared" };
       default:
         return { text: dishList.visibility, className: "visibility-badge" };
     }

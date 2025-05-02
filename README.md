@@ -39,7 +39,6 @@ DishList is a comprehensive **recipe management and collaboration platform**. It
 ### **Visibility Options**
 - **Public:** Open for anyone to view and follow.  
 - **Private:** Restricted to owner and collaborators only.  
-- **Shared:** Accessible only to specific invited users.  
 
 ### **Flexible Sharing**
 - Share your cooking inspiration while maintaining privacy when needed.  

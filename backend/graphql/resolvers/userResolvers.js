@@ -48,16 +48,6 @@ const userResolvers = {
             visibility: "public",
           });
 
-          // Get shared dishlists that the viewer has access to
-          const sharedDishLists = await DishList.find({
-            userId,
-            visibility: "shared",
-            $or: [
-              { sharedWith: { $in: [viewerId] } },
-              { collaborators: { $in: [viewerId] } },
-            ],
-          });
-
           // Get dishlists where viewer is a collaborator
           const collaboratedDishLists = await DishList.find({
             userId,
@@ -74,7 +64,6 @@ const userResolvers = {
 
           [
             ...publicDishLists,
-            ...sharedDishLists,
             ...collaboratedDishLists,
             ...followerDishLists,
           ].forEach((list) => {
@@ -247,7 +236,6 @@ const userResolvers = {
             pendingFollowRequests: [],
             notificationPreferences: {
               collaborationInvites: true,
-              dishListShares: true,
               recipeAdditions: true,
               newFollowers: true,
               systemAnnouncements: true,

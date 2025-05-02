@@ -21,7 +21,6 @@ const GET_USER = gql`
       pendingFollowRequests
       notificationPreferences {
         collaborationInvites
-        dishListShares
         recipeAdditions
         newFollowers
         systemAnnouncements

@@ -3,7 +3,6 @@ import { gql } from "apollo-server-express";
 const userTypeDefs = gql`
   type NotificationPreferences {
     collaborationInvites: Boolean!
-    dishListShares: Boolean!
     recipeAdditions: Boolean!
     newFollowers: Boolean!
     systemAnnouncements: Boolean!
@@ -68,7 +67,6 @@ const userTypeDefs = gql`
 
   input NotificationPreferencesInput {
     collaborationInvites: Boolean
-    dishListShares: Boolean
     recipeAdditions: Boolean
     newFollowers: Boolean
     systemAnnouncements: Boolean

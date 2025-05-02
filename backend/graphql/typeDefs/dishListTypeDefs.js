@@ -10,7 +10,6 @@ const dishListTypeDefs = gql`
     collaborators: [String]!
     pendingCollaborators: [String]
     visibility: String!
-    sharedWith: [String]
     followRequests: [String]
     description: String
   }
@@ -50,11 +49,8 @@ const dishListTypeDefs = gql`
     pinDishList(id: ID!, userId: String!): DishList
     unpinDishList(id: ID!, userId: String!): DishList
     followDishList(dishListId: ID!, userId: String!): DishList
-    shareDishList(dishListId: ID!, visbility: String!): DishList
     inviteCollaborator(dishListId: ID!, targetUserId: String!, userId: String!): DishList
     updateVisibility(id: ID!, visibility: String!, userId: String!): DishList
-    addSharedUser(dishListId: ID!, userId: String!): DishList
-    removeSharedUser(dishListId: ID!, userId: String!): DishList
     requestToFollow(dishListId: ID!, userId: String!): Boolean
     approveFollowRequest(dishListId: ID!, userId: String!): DishList
     rejectFollowRequest(dishListId: ID!, userId: String!): Boolean

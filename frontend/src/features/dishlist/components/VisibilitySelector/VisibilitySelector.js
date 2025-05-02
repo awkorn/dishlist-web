@@ -17,12 +17,7 @@ const VisibilitySelector = ({ currentVisibility, onChange }) => {
       value: "private",
       label: "Private",
       description: "Only you and collaborators can see this dishlist",
-    },
-    {
-      value: "shared",
-      label: "Shared",
-      description: "Only specific people you invite can view this dishlist",
-    },
+    }
   ];
 
   // Find the current selected option

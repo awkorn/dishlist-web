@@ -120,11 +120,6 @@
     color: white;
   }
   
-  .sharedBadge {
-    background-color:#5984b4bb;;
-    color: #ffffff;
-  }
-  
   /* Empty state */
   .noDishlistsContainer {
     display: flex;

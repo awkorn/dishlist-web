@@ -10,7 +10,6 @@ export const FETCH_DISHLISTS = gql`
       followers
       userId
       visibility
-      sharedWith
       followRequests
       description
     }

@@ -96,10 +96,6 @@
   background-color: #F44336;
 }
 
-.shared {
-  background-color: #2196F3;
-}
-
 .recipeCount {
   display: flex;
   align-items: center;

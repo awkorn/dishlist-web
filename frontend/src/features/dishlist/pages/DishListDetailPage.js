@@ -363,9 +363,7 @@ const DishListDetailPage = () => {
               ></i>
               {dishlist.visibility === "public"
                 ? "Public"
-                : dishlist.visibility === "private"
-                ? "Private"
-                : "Shared"}
+                : "Private"}
             </span>
 
             <span className={styles.recipeCount}>

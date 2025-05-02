@@ -162,14 +162,14 @@
   color: white;
 }
 
-.sharedBadge {
-  background-color:#5984b4bb;;
-  color: #ffffff;
-}
-
 .collabBadge{
   background-color: #E0F7FA;
   color: #00838F;
+}
+
+.followerBadge{
+  background-color: #F3E5F5;
+  color: #6A1B9A;  
 }
 
 /* ===== RECIPE COUNT ===== */

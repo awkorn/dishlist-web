@@ -115,9 +115,8 @@ const ProfilePage = () => {
                 <div className={styles.emptyState}>
                   <h3>No DishLists to display</h3>
                   <p>
-                    {isCurrentUser
-                      ? "You haven't created any visible DishLists yet."
-                      : "This user hasn't shared any DishLists you can access."}
+                    {isCurrentUser &&
+                      "You haven't created any visible DishLists yet."}
                   </p>
                   {isCurrentUser && (
                     <button
@@ -140,16 +139,14 @@ const ProfilePage = () => {
                     dishListId={null}
                     emptyStateContent={null}
                     refetchProfile={refetch}
-                    onRecipeClick={handleRecipeClick} 
+                    onRecipeClick={handleRecipeClick}
                   />
                 </div>
               ) : (
                 <div className={styles.emptyState}>
                   <h3>No Recipes to display</h3>
                   <p>
-                    {isCurrentUser
-                      ? "You haven't created any recipes yet."
-                      : "This user hasn't shared any recipes you can access."}
+                    {isCurrentUser && "You haven't created any recipes yet."}
                   </p>
                   {isCurrentUser && (
                     <button
