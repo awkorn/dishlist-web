@@ -62,3 +62,15 @@ export const SEARCH_USERS = gql`
     }
   }
 `;
+
+
+export const GET_USER_BY_FIREBASE_UID = gql`
+  query GetUserByFirebaseUid($firebaseUid: String!) {
+    getUserByFirebaseUid(firebaseUid: $firebaseUid) {
+      id
+      username
+      email
+      profilePicture
+    }
+  }
+`;

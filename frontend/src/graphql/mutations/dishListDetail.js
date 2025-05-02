@@ -47,3 +47,20 @@ export const UPDATE_VISIBILITY = gql`
     }
   }
 `;
+
+export const REMOVE_COLLABORATOR = gql`
+  mutation RemoveCollaborator(
+    $dishListId: ID!
+    $targetUserId: String!
+    $userId: String!
+  ) {
+    removeCollaborator(
+      dishListId: $dishListId
+      targetUserId: $targetUserId
+      userId: $userId
+    ) {
+      id
+      collaborators
+    }
+  }
+`;

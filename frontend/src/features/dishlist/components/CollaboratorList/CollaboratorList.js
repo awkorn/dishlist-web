@@ -1,37 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useApolloClient } from "@apollo/client";
-import { gql } from "@apollo/client";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../../contexts/AuthProvider";
+import { REMOVE_COLLABORATOR, GET_USER_BY_FIREBASE_UID } from "../../../../graphql/index";
 import styles from "./CollaboratorList.module.css";
-
-const GET_USER_BY_FIREBASE_UID = gql`
-  query GetUserByFirebaseUid($firebaseUid: String!) {
-    getUserByFirebaseUid(firebaseUid: $firebaseUid) {
-      id
-      username
-      email
-      profilePicture
-    }
-  }
-`;
-
-const REMOVE_COLLABORATOR = gql`
-  mutation RemoveCollaborator(
-    $dishListId: ID!
-    $targetUserId: String!
-    $userId: String!
-  ) {
-    removeCollaborator(
-      dishListId: $dishListId
-      targetUserId: $targetUserId
-      userId: $userId
-    ) {
-      id
-      collaborators
-    }
-  }
-`;
 
 const CollaboratorList = ({ collaborators, dishListId, onRefetch }) => {
   const [collaboratorDetails, setCollaboratorDetails] = useState([]);
