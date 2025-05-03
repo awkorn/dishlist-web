@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { useLazyQuery, gql } from "@apollo/client";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../services/authService";
@@ -44,20 +50,24 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // Prevent flicker while checking auth status
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
-  const [getUserByEmail] = useLazyQuery(GET_USER, { fetchPolicy: "network-only" });
-  const [getUnreadCount] = useLazyQuery(GET_UNREAD_NOTIFICATIONS, { fetchPolicy: "network-only" });
+  const [getUserByEmail] = useLazyQuery(GET_USER, {
+    fetchPolicy: "network-only",
+  });
+  const [getUnreadCount] = useLazyQuery(GET_UNREAD_NOTIFICATIONS, {
+    fetchPolicy: "network-only",
+  });
 
-  // Function to refresh notification count 
+  // Function to refresh notification count
   const refreshNotificationCount = useCallback(async () => {
     if (!dbUser?.firebaseUid) return;
-    
+
     try {
-      const { data } = await getUnreadCount({ 
+      const { data } = await getUnreadCount({
         variables: { userId: dbUser.firebaseUid },
-        fetchPolicy: "network-only" // Force a network request to get latest data
+        fetchPolicy: "network-only", // Force a network request to get latest data
       });
-      
-      if (data && typeof data.getUnreadNotificationCount === 'number') {
+
+      if (data && typeof data.getUnreadNotificationCount === "number") {
         setUnreadNotifications(data.getUnreadNotificationCount);
       }
     } catch (error) {
@@ -66,25 +76,26 @@ export const AuthProvider = ({ children }) => {
   }, [dbUser, getUnreadCount]);
 
   // Fetch user from MongoDB
-  const fetchMongoUser = async (firebaseUser) => {
-    try {
-      // Try fetching the user from MongoDB via GraphQL
-      const { data } = await getUserByEmail({ 
-        variables: { email: firebaseUser.email }
-      });
-      
-      if (data?.getUserByEmail) {
-        setDbUser(data.getUserByEmail);
-        return data.getUserByEmail;
+  const fetchMongoUser = useCallback(
+    async (firebaseUser) => {
+      try {
+        const { data } = await getUserByEmail({
+          variables: { email: firebaseUser.email },
+        });
+
+        if (data?.getUserByEmail) {
+          setDbUser(data.getUserByEmail);
+          return data.getUserByEmail;
+        }
+
+        return null;
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        return null;
       }
-      
-      // If user not found in MongoDB, return null 
-      return null;
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      return null;
-    }
-  };
+    },
+    [getUserByEmail]
+  );
 
   // Refresh notification count when dbUser changes
   useEffect(() => {
@@ -137,7 +148,7 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(user);
         const userData = await fetchMongoUser(user);
         setLoading(false);
-        
+
         // If user data was fetched successfully, refresh notification count
         if (userData) {
           refreshNotificationCount();
@@ -151,7 +162,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [fetchMongoUser, refreshNotificationCount]);
 
   // Expose both Firebase user and MongoDB user details
   const value = {
@@ -164,7 +175,7 @@ export const AuthProvider = ({ children }) => {
     isOwner,
     hasPendingRequest,
     hasSavedRecipe,
-    refreshUserData
+    refreshUserData,
   };
 
   return (
