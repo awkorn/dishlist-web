@@ -274,10 +274,11 @@
 .selectionModeIndicator {
   background-color: #274b75;
   color: white;
-  padding: 0px 12px;
-  border-radius: 12px;
-  margin: 10px 0;
+  padding: 0px 20px;
+  border-radius: 20px;
+  margin: 12px auto;
   font-size: 16px;
+  max-width: fit-content;
   text-align: center;
   animation: pulse 2s infinite;
 }
