@@ -57,7 +57,7 @@ const RecipeDetailPage = () => {
   // Save/unsave mutations
   const [saveRecipe] = useMutation(SAVE_RECIPE, {
     onCompleted: () => {
-      toast.success("Recipe saved to your favorites");
+      toast.success("Recipe saved to 'My Recipes'");
       refreshUserData();
       setIsSaved(true);
     },
@@ -68,7 +68,7 @@ const RecipeDetailPage = () => {
 
   const [unsaveRecipe] = useMutation(UNSAVE_RECIPE, {
     onCompleted: () => {
-      toast.success("Recipe removed from your favorites");
+      toast.success("Recipe removed saved recipes");
       refreshUserData();
       setIsSaved(false);
     },

@@ -133,7 +133,7 @@ export const UPDATE_RECIPE = gql`
 `;
 
 export const SAVE_RECIPE = gql`
-  mutation SaveRecipe($userId: ID!, $recipeId: ID!) {
+  mutation SaveRecipe($userId: String!, $recipeId: ID!) {
     saveRecipe(userId: $userId, recipeId: $recipeId) {
       id
       savedRecipes
@@ -142,7 +142,7 @@ export const SAVE_RECIPE = gql`
 `;
 
 export const UNSAVE_RECIPE = gql`
-  mutation UnsaveRecipe($userId: ID!, $recipeId: ID!) {
+  mutation UnsaveRecipe($userId: String!, $recipeId: ID!) {
     unsaveRecipe(userId: $userId, recipeId: $recipeId) {
       id
       savedRecipes
