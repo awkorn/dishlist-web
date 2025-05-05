@@ -65,8 +65,8 @@ const DishListsMenu = ({
       return;
     }
 
-    navigate(`/edit-dishlist/${localSelectedDishList}`, { 
-      state: { dishListId: localSelectedDishList, returnTo: '/dishlists' } 
+    navigate(`/edit-dishlist/${localSelectedDishList}`, {
+      state: { dishListId: localSelectedDishList, returnTo: "/dishlists" },
     });
 
     setMenuOpen(false);
@@ -83,6 +83,16 @@ const DishListsMenu = ({
     // Check if user has permission
     if (!isOwner(localSelectedDishList)) {
       alert("You can only delete dishlists you own");
+      return;
+    }
+
+
+    // Check if it's my recipes dishlist 
+    const dishList = dishLists.find(
+      (dish) => dish.id === localSelectedDishList
+    );
+    if (dishList && dishList.title === "My Recipes") {
+      alert("The 'My Recipes' dishlist cannot be deleted");
       return;
     }
 

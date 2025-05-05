@@ -174,6 +174,11 @@ const dishListResolvers = {
         throw new Error("Only the owner can delete this dishlist");
       }
 
+      // Check if this is the "My Recipes" dishlist
+      if (dishList.title === "My Recipes") {
+        throw new Error("The 'My Recipes' dishlist cannot be deleted");
+      }
+
       // Remove dishlist from owner's ownedDishLists
       await User.findOneAndUpdate(
         { firebaseUid: userId },
@@ -311,7 +316,11 @@ const dishListResolvers = {
         visibility = "private"; // Default to private if invalid value
       }
 
-      return await DishList.findByIdAndUpdate(id, { visibility }, { new: true });
+      return await DishList.findByIdAndUpdate(
+        id,
+        { visibility },
+        { new: true }
+      );
     },
 
     inviteCollaborator: async (_, { dishListId, targetUserId, userId }) => {
