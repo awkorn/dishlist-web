@@ -266,19 +266,68 @@ const userResolvers = {
     },
 
     saveRecipe: async (_, { userId, recipeId }) => {
-      return await User.findOneAndUpdate(
-        { firebaseUid: userId },
-        { $addToSet: { savedRecipes: recipeId } },
-        { new: true }
-      );
+      try {
+        // Add to saved recipes array
+        const user = await User.findOneAndUpdate(
+          { firebaseUid: userId },
+          { $addToSet: { savedRecipes: recipeId } },
+          { new: true }
+        );
+
+        // Find My Recipes dishlist
+        const myRecipesDishList = await DishList.findOne({
+          userId,
+          title: "My Recipes",
+        });
+
+        if (!myRecipesDishList)
+          throw new Error("My Recipes dishlist not found");
+
+        // Add recipe to the dishlist
+        await Recipe.findByIdAndUpdate(
+          recipeId,
+          { $addToSet: { dishLists: myRecipesDishList._id } },
+          { new: true }
+        );
+
+        return user;
+      } catch (error) {
+        console.error("Error saving recipe:", error);
+        throw new Error("Failed to save recipe");
+      }
     },
 
     unsaveRecipe: async (_, { userId, recipeId }) => {
-      return await User.findOneAndUpdate(
-        { firebaseUid: userId },
-        { $pull: { savedRecipes: recipeId } },
-        { new: true }
-      );
+      try {
+        // Find user by firebaseUid
+        const user = await User.findOneAndUpdate(
+          { firebaseUid: userId },
+          { $pull: { savedRecipes: recipeId } },
+          { new: true }
+        );
+
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        // Find user's "My Recipes" dishlist
+        const myRecipesDishList = await DishList.findOne({
+          userId, // This is firebaseUid
+          title: "My Recipes",
+        });
+
+        if (myRecipesDishList) {
+          // Remove recipe from the dishlist
+          await Recipe.findByIdAndUpdate(recipeId, {
+            $pull: { dishLists: myRecipesDishList._id },
+          });
+        }
+
+        return user;
+      } catch (error) {
+        console.error("Error unsaving recipe:", error);
+        throw new Error(`Failed to unsave recipe: ${error.message}`);
+      }
     },
 
     updateUserProfile: async (_, { userId, username, bio, profilePicture }) => {

@@ -39,7 +39,7 @@ const userTypeDefs = gql`
   }
 
   type Mutation {
-    saveRecipe(userId: ID!, recipeId: ID!): User
+    saveRecipe(userId: String!, recipeId: ID!): User
     createUser(
       firebaseUid: String!
       email: String!
@@ -47,7 +47,7 @@ const userTypeDefs = gql`
       firstName: String!
       lastName: String!
     ): User
-    unsaveRecipe(userId: ID!, recipeId: ID!): User
+    unsaveRecipe(userId: String!, recipeId: ID!): User
     updateUserProfile(
       userId: ID!
       username: String
