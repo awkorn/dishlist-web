@@ -232,6 +232,10 @@ const dishListResolvers = {
         throw new Error("DishList not found");
       }
 
+      if (dishList.title === "My Recipes") {
+        throw new Error("This dishlist cannot be unpinned");
+      }
+
       if (dishList.userId !== userId) {
         throw new Error("Only the owner can unpin this dishlist");
       }

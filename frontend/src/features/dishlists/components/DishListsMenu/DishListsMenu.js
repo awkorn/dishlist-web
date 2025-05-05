@@ -86,7 +86,6 @@ const DishListsMenu = ({
       return;
     }
 
-
     // Check if it's my recipes dishlist 
     const dishList = dishLists.find(
       (dish) => dish.id === localSelectedDishList
@@ -125,6 +124,12 @@ const DishListsMenu = ({
     const dishList = dishLists.find(
       (dish) => dish.id === localSelectedDishList
     );
+    
+    if (dishList && dishList.title === "My Recipes") {
+      alert("The 'My Recipes' dishlist cannot be deleted");
+      return;
+    }
+
 
     if (dishList?.isPinned) {
       unpinDishList({
