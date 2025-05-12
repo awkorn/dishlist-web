@@ -44,7 +44,7 @@ const dishListResolvers = {
 
     dishListsRecipeCounts: async (_, { dishListIds, userId }) => {
       try {
-        // Check which dishlists the user has access to
+        // Get accessible dishlist IDs to ensure proper permissions
         const accessibleDishLists = await DishList.find({
           _id: { $in: dishListIds },
           $or: [
@@ -61,32 +61,23 @@ const dishListResolvers = {
 
         const accessibleIds = accessibleDishLists.map((list) => list._id);
 
-        // Find all recipes that belong to any of these dishlists
-        const recipes = await Recipe.find({
-          dishLists: { $in: accessibleIds },
-        });
+        const recipeCounts = await Recipe.aggregate([
+          { $match: { dishLists: { $in: accessibleIds } } },
+          { $unwind: "$dishLists" },
+          { $match: { dishLists: { $in: accessibleIds } } },
+          { $group: { _id: "$dishLists", count: { $sum: 1 } } },
+        ]);
 
-        // Count recipes for each dishlist
-        const countMap = {};
-        accessibleIds.forEach((id) => {
-          countMap[id.toString()] = 0;
+        // Format the results, ensuring every accessible dishlist gets a count
+        return accessibleIds.map((id) => {
+          const found = recipeCounts.find(
+            (item) => item._id.toString() === id.toString()
+          );
+          return {
+            dishListId: id.toString(),
+            count: found ? found.count : 0,
+          };
         });
-
-        // Count recipes per dishlist
-        recipes.forEach((recipe) => {
-          recipe.dishLists.forEach((listId) => {
-            const listIdStr = listId.toString();
-            if (countMap[listIdStr] !== undefined) {
-              countMap[listIdStr]++;
-            }
-          });
-        });
-
-        // Format the response
-        return accessibleIds.map((id) => ({
-          dishListId: id.toString(),
-          count: countMap[id.toString()] || 0,
-        }));
       } catch (error) {
         console.error("Error getting dishlist recipe counts:", error);
         throw new Error("Failed to get recipe counts");

@@ -15,7 +15,7 @@ const DishListTile = ({
 }) => {
   const [recipeCounts, setRecipeCounts] = useState({});
 
-  // Fetch recipe counts for all dishlists in a single query
+  // Fetch recipe counts for all dishlists
   const { loading: countsLoading, data: countsData } = useQuery(
     GET_DISHLISTS_RECIPE_COUNTS,
     {
@@ -24,7 +24,8 @@ const DishListTile = ({
         userId: currentUserId,
       },
       skip: !dishLists?.length || !currentUserId,
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: "cache-first", 
+      notifyOnNetworkStatusChange: true,
     }
   );
 
@@ -124,7 +125,7 @@ const DishListTile = ({
             {/* Recipe Count Display */}
             <div className={styles.recipeCountDisplay}>
               {countsLoading ? (
-                <span className={styles.loadingCount}>Loading recipes...</span>
+                <span className={styles.loadingCount}>Loading...</span>
               ) : (
                 <span>
                   {recipeCounts[dishlist.id] !== undefined
