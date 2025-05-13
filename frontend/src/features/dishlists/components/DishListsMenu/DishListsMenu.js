@@ -47,12 +47,10 @@ const DishListsMenu = ({
       }
     }
 
-    // Add event listener when menu is open
     if (menuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
-    // Clean up the event listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };

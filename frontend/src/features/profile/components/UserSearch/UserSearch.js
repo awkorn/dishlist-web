@@ -80,7 +80,7 @@ const UserSearch = () => {
           ref={inputRef}
           type="text"
           className={styles.searchInput}
-          placeholder="Search for users..."
+          placeholder="Search users"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => {
