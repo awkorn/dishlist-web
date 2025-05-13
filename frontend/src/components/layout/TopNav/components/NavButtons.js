@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../contexts/AuthProvider";
+import { BookOpen, ChefHat, Bell, User } from "lucide-react";
 import styles from "../TopNav.module.css";
 
 const NavButtons = () => {
@@ -16,6 +17,7 @@ const NavButtons = () => {
         }`}
         onClick={() => navigate("/dishlists")}
       >
+        <BookOpen size={16} className={styles.navIcon} />
         DishLists
       </button>
       <button
@@ -24,6 +26,7 @@ const NavButtons = () => {
         }`}
         onClick={() => navigate("/recipe-builder")}
       >
+        <ChefHat size={16} className={styles.navIcon} />
         Recipe Builder
       </button>
       <button
@@ -32,12 +35,13 @@ const NavButtons = () => {
         }`}
         onClick={() => navigate("/notifications")}
       >
-        <span style={{ position: "relative", display: "inline-block" }}>
-          Notifications
+        <div className={styles.iconContainer}>
+          <Bell size={16} className={styles.navIcon} />
           {unreadNotifications > 0 && (
             <span className={styles.notificationDot}></span>
           )}
-        </span>
+        </div>
+        Notifications
       </button>
       <button
         className={`${styles.navBtn} ${
@@ -45,6 +49,7 @@ const NavButtons = () => {
         }`}
         onClick={() => navigate(`/profile/${currentUser?.uid}`)}
       >
+        <User size={16} className={styles.navIcon} />
         Profile
       </button>
     </div>

@@ -83,6 +83,9 @@
 
 /* Navigation Buttons */
 .navBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: none;
   border: none;
   padding: 10px 16px;
@@ -93,6 +96,17 @@
   transition: all 0.2s ease;
   color: #333;
   position: relative;
+}
+
+.navIcon {
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.iconContainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .active {
@@ -132,10 +146,10 @@
 
 .notificationDot {
   position: absolute;
-  top: 0;
-  right: -8px;
-  width: 8px;
-  height: 8px;
+  top: -2px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
   background-color: red;
   border-radius: 50%;
 }
@@ -342,6 +356,7 @@
     width: 100%;
     text-align: left;
     margin: 4px 0;
+    justify-content: flex-start;
   }
   
   .mobileMenu {
