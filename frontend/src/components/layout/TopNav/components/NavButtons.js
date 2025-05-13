@@ -28,14 +28,6 @@ const NavButtons = () => {
       </button>
       <button
         className={`${styles.navBtn} ${
-          location.pathname === "/about" ? styles.active : ""
-        }`}
-        onClick={() => navigate("/about")}
-      >
-        About
-      </button>
-      <button
-        className={`${styles.navBtn} ${
           location.pathname === "/notifications" ? styles.active : ""
         }`}
         onClick={() => navigate("/notifications")}
