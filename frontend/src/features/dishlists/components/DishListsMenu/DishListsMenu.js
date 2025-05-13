@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useMutation } from "@apollo/client";
 import { useAuth } from "../../../../contexts/AuthProvider";
 import { useNavigate } from "react-router-dom";
@@ -30,11 +30,33 @@ const DishListsMenu = ({
   const [selectionMode, setSelectionMode] = useState(false);
   const [localSelectedDishList, setLocalSelectedDishList] = useState(null);
   const navigate = useNavigate();
+  const menuRef = useRef(null); 
 
   // Update local state when prop changes
   useEffect(() => {
     setLocalSelectedDishList(selectedDishList);
   }, [selectedDishList]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+        if (selectionMode) {
+          toggleSelectionMode(false);
+        }
+      }
+    }
+
+    // Add event listener when menu is open
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // Clean up the event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen, selectionMode]);
 
   // GraphQL Mutations
   const [deleteDishList] = useMutation(DELETE_DISHLIST, {
@@ -86,7 +108,7 @@ const DishListsMenu = ({
       return;
     }
 
-    // Check if it's my recipes dishlist 
+    // Check if it's my recipes dishlist
     const dishList = dishLists.find(
       (dish) => dish.id === localSelectedDishList
     );
@@ -124,12 +146,11 @@ const DishListsMenu = ({
     const dishList = dishLists.find(
       (dish) => dish.id === localSelectedDishList
     );
-    
+
     if (dishList && dishList.title === "My Recipes") {
       alert("The 'My Recipes' dishlist cannot be deleted");
       return;
     }
-
 
     if (dishList?.isPinned) {
       unpinDishList({
@@ -163,11 +184,6 @@ const DishListsMenu = ({
     }
   };
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-    toggleSelectionMode(false);
-  };
-
   // Check if selected dishlist is owned by current user
   const selectedDishListOwned =
     localSelectedDishList &&
@@ -182,15 +198,13 @@ const DishListsMenu = ({
   );
 
   return (
-    <div className={styles.menuContainer}>
+    <div className={styles.menuContainer} ref={menuRef}>
       {/* Menu Icon */}
       <Ellipsis
         size={28}
         className={styles.headerMenu}
         onClick={() => setMenuOpen(!menuOpen)}
       />
-
-      {menuOpen && <div className="overlay" onClick={closeMenu}></div>}
 
       {/* Dropdown Menu */}
       {menuOpen && (
