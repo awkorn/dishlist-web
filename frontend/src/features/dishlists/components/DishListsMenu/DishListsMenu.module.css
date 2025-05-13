@@ -174,3 +174,44 @@
   margin: 5px 0;
   border: none;
 }
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 992px) {
+  .menuContainer {
+    right: 5%;
+    top: 50%;
+  }
+
+  .menuOptions {
+    right: 0;
+    min-width: 180px;
+    padding: 10px;
+  }
+
+  .menuOptions button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menuContainer {
+    right: 8%;
+    top: 30%;
+  }
+
+  .menuOptions {
+    min-width: 160px;
+    padding: 8px;
+  }
+
+  .menuOptions button {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .menuOptions select {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+}
