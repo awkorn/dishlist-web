@@ -242,17 +242,15 @@
   }
   
   .dishTiles {
-    grid-template-columns: 1fr;
-    width: 90%;
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
   }
   
   .dishTile {
-    min-height: 150px;
+    min-height: 120px;
   }
   
   .listTitle {
-    font-size: 20px;
+    font-size: 18px;
   }
   
   .badge {
@@ -267,6 +265,11 @@
   .viewBtn {
     padding: 6px 12px;
     font-size: 12px;
+  }
+
+  .pin {
+    height: 15px;
+    width: 15px;
   }
 }
 
