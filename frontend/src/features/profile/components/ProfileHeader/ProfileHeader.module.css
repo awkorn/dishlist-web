@@ -96,53 +96,81 @@
     transform: translateY(-2px);
   }
   
+
   /* Responsive styles */
+
   @media (max-width: 768px) {
     .profileHeader {
       padding: 20px;
     }
     
     .profileContent {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      flex-direction: row;
+      align-items: flex-start;
+      text-align: left;
     }
     
     .profileImageContainer {
-      margin-right: 0;
-      margin-bottom: 20px;
+      margin-right: 15px;
+      margin-bottom: 0;
+    }
+    
+    .profileImage {
+      width: 100px;
+      height: 100px;
     }
     
     .profileStats {
-      justify-content: center;
+      justify-content: flex-start;
     }
     
     .editProfileBtn {
-      position: relative;
-      margin-top: 20px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-top: 0;
     }
     
     .profileBio {
-      text-align: center;
-      margin: 0 auto;
+      text-align: left;
+      margin: 0;
     }
   }
   
   @media (max-width: 480px) {
+    .profileHeader {
+      padding: 15px;
+    }
+    
     .profileName {
-      font-size: 24px;
+      font-size: 20px;
     }
     
     .profileImage {
-      width: 120px;
-      height: 120px;
+      width: 80px;
+      height: 80px;
     }
     
     .statCount {
-      font-size: 18px;
+      font-size: 16px;
     }
     
     .statLabel {
+      font-size: 11px;
+    }
+    
+    .username {
+      font-size: 14px;
+    }
+    
+    .profileBio {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .editProfileBtn {
+      padding: 6px 10px;
       font-size: 12px;
+      margin-right: 10px;
     }
   }

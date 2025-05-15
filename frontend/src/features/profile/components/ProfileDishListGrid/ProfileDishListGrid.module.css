@@ -146,33 +146,51 @@
     font-family: "Bricolage Grotesque", "Segoe UI", Helvetica, Arial, sans-serif;
   }
   
-  /* Responsive styles */
-  @media (max-width: 992px) {
-    .dishTiles {
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
+  /* Tablet */
+@media (max-width: 992px) {
+  .dishTiles {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+/* Small tablets */
+@media (max-width: 768px) {
+  .dishTiles {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
   }
   
-  @media (max-width: 768px) {
-    .dishTiles {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-    }
-    
-    .dishTile {
-      min-height: 140px;
-      padding: 15px;
-    }
+  .dishTile {
+    min-height: 140px;
+    padding: 15px;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+  .dishTiles {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    padding: 10px 0;
   }
   
-  @media (max-width: 480px) {
-    .dishTiles {
-      grid-template-columns: 1fr;
-      width: 100%;
-      gap: 15px;
-    }
-    
-    .dishTile {
-      min-height: auto;
-    }
+  .dishTile {
+    min-height: auto;
+    padding: 12px;
   }
+  
+  .listTitle {
+    font-size: 16px;
+  }
+  
+  .description {
+    font-size: 12px;
+    -webkit-line-clamp: 1;
+  }
+  
+  .badge {
+    font-size: 9px;
+    padding: 3px 8px;
+  }
+}
