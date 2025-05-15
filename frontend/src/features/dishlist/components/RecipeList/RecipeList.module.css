@@ -30,3 +30,33 @@
   color: #666;
   margin-bottom: 20px;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .recipesContainer {
+    padding: 16px;
+    margin: 15px;
+  }
+  
+  .recipesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .recipesContainer {
+    padding: 12px;
+    margin: 10px;
+  }
+  
+  .recipesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+  }
+  
+  .emptyState {
+    margin: 15px;
+    padding: 30px 15px;
+  }
+}
