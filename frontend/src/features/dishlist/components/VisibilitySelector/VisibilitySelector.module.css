@@ -1,3 +1,5 @@
+/* Updated VisibilitySelector.module.css */
+
 .visibilitySelector {
   position: relative;
   display: inline-block;
@@ -96,4 +98,32 @@
   font-size: 13px;
   color: #666;
   padding-left: 10px;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .visibilityDropdown {
+    right: auto;
+    left: 0;
+    width: 220px;
+  }
+  
+  /* When at the edge of the screen, flip the dropdown */
+  .visibilitySelector:last-child .visibilityDropdown,
+  .visibilitySelector.edge .visibilityDropdown {
+    left: auto;
+    right: 0;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+  .visibilityButton {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .visibilityDropdown {
+    width: 200px;
+  }
 }

@@ -223,43 +223,77 @@
   color: #333;
 }
 
-/* Responsive styles */
+/* Mobile responsive styles */
 @media (max-width: 768px) {
   .menuOptions {
-    right: -80px;
+    right: auto;
+    left: 0;
+    width: 200px;
+  }
+  
+  /* Handle right-edge cases */
+  .actionsContainer:last-child .menuOptions,
+  .actionsContainer.right-edge .menuOptions {
+    right: 0;
+    left: auto;
   }
   
   .menuOptions::before {
-    right: 93px;
+    right: auto;
+    left: 13px;
+  }
+  
+  /* For right-edge cases */
+  .actionsContainer:last-child .menuOptions::before,
+  .actionsContainer.right-edge .menuOptions::before {
+    left: auto;
+    right: 13px;
   }
   
   .collaboratorsPopup {
-    right: -60px;
+    right: auto;
+    left: 0;
+    width: 200px;
   }
   
   .collaboratorsPopup::before {
-    right: 80px;
+    right: auto;
+    left: 20px;
+  }
+  
+  /* Handle right-edge cases for collaborator popup */
+  .actionsContainer:last-child .collaboratorsPopup,
+  .actionsContainer.right-edge .collaboratorsPopup {
+    right: 0;
+    left: auto;
+  }
+  
+  .actionsContainer:last-child .collaboratorsPopup::before,
+  .actionsContainer.right-edge .collaboratorsPopup::before {
+    left: auto;
+    right: 20px;
   }
 }
 
-@media (max-width: 480px) {
-  .actionsContainer {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
+/* Extra small screens */
+@media (max-width: 360px) {
+  .menuToggleButton {
+    width: 36px;
+    height: 36px;
   }
   
-  .menuOptions {
-    right: -40px;
-    width: 200px;
+  .collaboratorsLink {
+    padding: 5px 10px;
+    font-size: 13px;
   }
   
-  .menuOptions::before {
-    right: 53px;
+  .menuOptions, .collaboratorsPopup {
+    width: 180px;
+    padding: 10px;
   }
   
-  .collaboratorsPopup {
-    right: 0;
-    width: 200px;
+  .menuOptions button {
+    padding: 8px 12px;
+    font-size: 14px;
   }
 }
