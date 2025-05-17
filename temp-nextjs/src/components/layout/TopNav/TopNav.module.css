@@ -1,0 +1,427 @@
+/* ===== TOP NAVIGATION BAR ===== */
+.topNav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 16px 24px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.scrolled {
+  padding: 12px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.navbarLogo {
+  height: 50px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.navbarLogo:hover {
+  transform: scale(1.05);
+}
+
+.searchContainer {
+  flex-grow: 1;
+  margin: 0 12px 0 20px;
+  max-width: 400px;
+  position: relative;
+  min-width: 0;
+}
+
+.searchInput {
+  width: 100%;
+  height: auto;
+  font-size: 14px;
+  color: #333;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding: 8px 12px 8px 36px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  background-color: #ffffff;
+  border-color: #274b75;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(39, 75, 117, 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  font-size: 18px;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus + .searchIcon {
+  color: #274b75;
+}
+
+.searchInput::placeholder {
+  color: #999;
+}
+
+.navContainer {
+  display: flex;
+  gap: 16px;
+  z-index: 50;
+  align-items: center;
+  margin-left: auto;
+}
+
+.navBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  color: #333;
+  position: relative;
+}
+
+.navIcon {
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.iconContainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.active {
+  color: #274b75;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-bottom: 3px solid #274b75;
+  background: transparent;
+  box-shadow: none;
+}
+
+.navBtn:not(.active) {
+  position: relative;
+  overflow: hidden;
+}
+
+.navBtn:not(.active)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #274b75;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navBtn:not(.active):hover::after {
+  width: 60%;
+}
+
+.navBtn:not(.active):hover {
+  color: #274b75;
+  transform: translateY(-2px);
+}
+
+.notificationDot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 6px;
+  height: 6px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.authBtn {
+  background: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1.5px solid #274b75;
+  cursor: pointer;
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-weight: 600;
+  border-radius: 24px;
+  transition: all 0.25s ease;
+  color: #274b75;
+}
+
+.loginBtn {
+  background: none;
+  color: #274b75;
+}
+
+.loginBtn:hover {
+  background-color: rgba(42, 53, 75, 0.08);
+  transform: translateY(-2px);
+}
+
+.signupBtn {
+  background-color: #274b75;
+  color: white;
+  margin-left: 8px;
+}
+
+.signupBtn:hover {
+  background-color: #1c3657;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(42, 53, 75, 0.2);
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 24px;
+  transition: all 0.2s ease;
+}
+
+.userProfile:hover {
+  background-color: rgba(42, 53, 75, 0.05);
+}
+
+.profilePic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #274b75;
+}
+
+.username {
+  font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: #333;
+}
+
+.mobileMenu {
+  display: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  flex-shrink: 0;
+}
+
+.mobileMenu:hover {
+  background-color: rgba(42, 53, 75, 0.1);
+}
+
+.hamburgerIcon {
+  display: block;
+  width: 24px;
+  height: 20px;
+  position: relative;
+}
+
+.hamburgerIcon span {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #274b75;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburgerIcon span:nth-child(1) {
+  top: 0;
+}
+
+.hamburgerIcon span:nth-child(2) {
+  top: 9px;
+}
+
+.hamburgerIcon span:nth-child(3) {
+  top: 18px;
+}
+
+.hamburgerOpen span:nth-child(1) {
+  transform: rotate(45deg);
+  top: 9px;
+}
+
+.hamburgerOpen span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburgerOpen span:nth-child(3) {
+  transform: rotate(-45deg);
+  top: 9px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.visibleOverlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ===== RESPONSIVE STYLING ===== */
+@media (max-width: 992px) {
+  .searchContainer {
+    max-width: 300px;
+  }
+
+  .navBtn, .authBtn {
+    padding: 8px 14px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .topNav {
+    padding: 12px 16px;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+  }
+
+  .navbarLogo {
+    height: 48px;
+    order: 1;
+    margin-right: 10px;
+  }
+
+  .searchContainer {
+    order: 2;
+    margin: 0 10px 0 0;
+    max-width: none;
+    width: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    min-width: 0;
+  }
+
+  .mobileMenu {
+    display: block;
+    order: 3;
+    margin-left: 10px;
+  }
+
+  .navContainer {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #F4F2EE;
+    width: 180px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    border-radius: 0 0 12px 12px;
+    z-index: 95;
+    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+    transform: translateY(10px);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .navOpen {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .navBtn, .authBtn {
+    width: 100%;
+    text-align: left;
+    margin: 6px 0;
+    padding: 10px 16px;
+    justify-content: flex-start;
+  }
+
+  .navBtn:not(.active):hover::after {
+    width: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .topNav {
+    padding: 10px 12px;
+  }
+
+  .navbarLogo {
+    height: 40px;
+    order: 1;
+    margin-right: 8px;
+  }
+
+  .searchContainer {
+    order: 2;
+    margin: 0 8px 0 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    min-width: 40px;
+  }
+
+  .searchInput {
+    padding: 8px 10px 8px 28px;
+    font-size: 13px;
+  }
+
+  .searchIcon {
+    left: 8px;
+    font-size: 14px;
+  }
+
+  .mobileMenu {
+    order: 3;
+    padding: 6px;
+    margin-left: 8px;
+  }
+
+  .hamburgerIcon {
+    width: 22px;
+    height: 18px;
+  }
+
+  .navContainer {
+    width: 160px;
+    right: 12px;
+  }
+
+  .navBtn, .authBtn {
+    font-size: 14px;
+  }
+}
