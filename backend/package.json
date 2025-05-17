@@ -19,6 +19,7 @@
     "graphql": "^16.10.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",
+    "node-cron": "^4.0.5",
     "openai": "^4.82.0"
   }
 }
