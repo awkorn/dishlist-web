@@ -25,7 +25,7 @@ dotenv.config({ path: envPath });
 const app = express();
 
 // Apply middleware
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 // Configure CORS based on environment
 const corsOptions = {
@@ -36,12 +36,12 @@ const corsOptions = {
     // Define allowed origins based on environment
     const allowedOrigins = {
       development: ['http://localhost:3000'],
-      staging: ['https://staging-dishlist-web.vercel.app'],
-      production: ['https://dishlist-web.vercel.app']
+      staging: ['https://staging-dishlist-web.vercel.app', 'https://dishlist-web-git-staging.vercel.app'],
+      production: ['https://dishlist-web.vercel.app', 'https://dishlist-frontend.vercel.app'] 
     };
     
-    // In development, be more permissive
-    if (environment === 'development') {
+    // In development or if running on Vercel preview, be more permissive
+    if (environment === 'development' || process.env.VERCEL_ENV === 'preview') {
       return callback(null, true);
     }
     
@@ -49,6 +49,7 @@ const corsOptions = {
     if(allowedOrigins[environment].indexOf(origin) !== -1) {
       callback(null, true);
     } else {
+      console.log(`CORS blocked for origin: ${origin}`);
       callback(new Error('CORS policy violation'));
     }
   },
@@ -59,6 +60,7 @@ app.use(cors(corsOptions));
 
 // Log current environment and configuration
 console.log(`Server starting in ${environment} mode`);
+console.log(`Running on Vercel: ${process.env.VERCEL ? 'Yes' : 'No'}`);
 
 // Add request logger for development
 if (environment === 'development') {
@@ -68,9 +70,31 @@ if (environment === 'development') {
   });
 }
 
-// Connect to MongoDB with configuration based on environment
+// Better health check endpoint - accessible before DB connection
+app.get("/health", (req, res) => {
+  res.status(200).json({ 
+    status: "ok", 
+    environment,
+    nodeEnv: process.env.NODE_ENV,
+    vercel: process.env.VERCEL ? true : false,
+    vercelEnv: process.env.VERCEL_ENV,
+    dbConnected: mongoose.connection ? mongoose.connection.readyState === 1 : false,
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
+// Mount API routes
+app.use("/api", aiRoutes);
+
+// Connect to MongoDB with improved error handling and options
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 60000,
+    socketTimeoutMS: 45000,
+    connectTimeoutMS: 60000,
+    family: 4
+  })
   .then(() => console.log(`Connected to MongoDB (${environment} environment)`))
   .catch((err) => {
     console.error("MongoDB connection error:", err);
@@ -78,27 +102,18 @@ mongoose
     if (environment === 'development') {
       console.error("Error details:", err);
     }
-    process.exit(1);
+    // Don't exit process in Vercel environment to allow server to still function
+    if (!process.env.VERCEL) {
+      process.exit(1);
+    }
   });
-
-// Mount API routes
-app.use("/api", aiRoutes);
-
-// Health check endpoint
-app.get("/health", (req, res) => {
-  res.status(200).json({ 
-    status: "ok", 
-    environment, 
-    timestamp: new Date().toISOString() 
-  });
-});
 
 // Development-only routes
 if (environment === 'development') {
   app.get("/dev/config", (req, res) => {
     res.json({
       environment,
-      mongoConnected: mongoose.connection.readyState === 1,
+      mongoConnected: mongoose.connection ? mongoose.connection.readyState === 1 : false,
       apiEndpoints: {
         graphql: '/graphql',
         aiRoutes: '/api'
@@ -124,25 +139,40 @@ async function startApolloServer() {
   
   server.applyMiddleware({ 
     app,
-    // Increase body parser limit for file uploads in development
-    bodyParserConfig: environment === 'development' 
-      ? { limit: '10mb' } 
-      : { limit: '1mb' }
-  });
-
-  const PORT = process.env.PORT || 5000;
-  
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT} in ${environment} mode`);
-    console.log(`GraphQL endpoint: http://localhost:${PORT}${server.graphqlPath}`);
-    console.log(`AI API endpoints available at http://localhost:${PORT}/api/*`);
-    
-    // Start cleanup jobs in production and staging, but not in development
-    if (environment === 'production' || environment === 'staging') {
-      startCleanupJobs();
-      console.log('Database cleanup jobs scheduled');
+    path: '/graphql',
+    bodyParserConfig: { 
+      limit: '10mb' 
     }
   });
+
+  // Check if running on Vercel
+  if (process.env.VERCEL) {
+    console.log('Running on Vercel - setup complete without starting server');
+    
+    if (environment === 'production' || environment === 'staging') {
+      console.log('Note: Database cleanup jobs would be scheduled, but are disabled in serverless environment');
+    }
+  } else {
+    // When running locally, start a traditional server
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT} in ${environment} mode`);
+      console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
+      console.log(`AI API endpoints available at http://localhost:${PORT}/api/*`);
+      
+      // Start cleanup jobs in production and staging (but not on Vercel)
+      if ((environment === 'production' || environment === 'staging') && !process.env.VERCEL) {
+        startCleanupJobs();
+        console.log('Database cleanup jobs scheduled');
+      }
+    });
+  }
 }
 
-startApolloServer();
+// Start Apollo server
+startApolloServer().catch(err => {
+  console.error('Failed to start Apollo Server:', err);
+});
+
+// Export the Express app for Vercel
+export default app;
