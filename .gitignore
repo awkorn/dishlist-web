@@ -12,6 +12,6 @@ backend/node_modules
 # production
 /build
 
-backend/.env
-frontend/.env
+backend/.env*
+frontend/.env*
 frontend/.env.local
