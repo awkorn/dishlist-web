@@ -6,6 +6,7 @@ import PageTitle from "../../../components/common/PageTitle/PageTitle";
 import DishListTile from "../components/DishListsTile/DishListTile";
 import DishListsMenu from "../components/DishListsMenu/DishListsMenu";
 import DishListFooter from "../components/DishListsFooter/DishListFooter";
+import LoadingState from "../../../components/common/LoadingState/LoadingState";
 import { FETCH_DISHLISTS, ADD_DEFAULT_DISHLIST } from "../../../graphql";
 import { useLocation } from "react-router-dom";
 import styles from "./DishListsPage.module.css";
@@ -24,6 +25,7 @@ const DishListsPage = () => {
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedDishList, setSelectedDishList] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const filterDishListsByMode = useCallback(
     (dishLists, mode) => {
@@ -127,8 +129,22 @@ const DishListsPage = () => {
           },
         });
       }
+      
+      // Set initial loading to false once we have data
+      setInitialLoading(false);
     }
   }, [data, currentUser, addDishList, viewMode, filterDishListsByMode]);
+
+  // Add a timeout effect for the initial loading state
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (initialLoading) {
+        setInitialLoading(false);
+      }
+    }, 3000); // Set a maximum loading time of 3 seconds
+    
+    return () => clearTimeout(timer);
+  }, [initialLoading]);
 
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
@@ -153,9 +169,26 @@ const DishListsPage = () => {
     }
   }, [location.state, currentUser, refetch]);
 
-  if (!currentUser) return <p>Please log in to view your DishLists.</p>;
-  if (loading) return <p>Loading DishLists...</p>;
-  if (error) return <p>Error loading DishLists!</p>;
+  // Show loading state while authentication is being verified or data is loading
+  if (!currentUser) {
+    return <LoadingState message="Authenticating..." />;
+  }
+  
+  if (loading || initialLoading) {
+    return <LoadingState message="Loading your DishLists..." />;
+  }
+  
+  if (error) {
+    return (
+      <div className={styles.errorContainer}>
+        <h2>Error loading DishLists!</h2>
+        <p>{error.message}</p>
+        <button className={styles.refreshButton} onClick={() => refetch()}>
+          Try Again
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.pageContainer}>

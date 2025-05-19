@@ -50,8 +50,7 @@ const SignInForm = () => {
       } else {
         toast.error("Error signing in: " + error.message);
       }
-    } finally {
-      setLoading(false);
+      setLoading(false); // Only set loading to false on error
     }
   };
 
@@ -65,6 +64,7 @@ const SignInForm = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
+        disabled={loading}
       />
 
       <div className={styles.passwordContainer}>
@@ -76,10 +76,11 @@ const SignInForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          disabled={loading}
         />
         <span
           className={styles.passwordIcon}
-          onClick={() => setShowPassword(!showPassword)}
+          onClick={() => !loading && setShowPassword(!showPassword)}
         >
           {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
         </span>
@@ -96,10 +97,10 @@ const SignInForm = () => {
       </div>
 
       <div className={styles.googleButtonContainer}>
-        <GoogleSignInButton />
+        <GoogleSignInButton disabled={loading} />
       </div>
 
-      <a href="/signup" className={styles.signupLink}>
+      <a href="/signup" className={styles.signupLink} tabIndex={loading ? -1 : 0}>
         New User? Sign up
       </a>
       <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
