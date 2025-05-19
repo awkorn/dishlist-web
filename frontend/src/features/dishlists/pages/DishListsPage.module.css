@@ -265,11 +265,8 @@
   .viewBtn {
     padding: 6px 12px;
     font-size: 12px;
+    color: black;
   }
-
-  .viewBtn:hover:not(.activeViewBtn) {
-  background-color: rgba(0, 0, 0, 0.05);
-}
 
   .pin {
     height: 15px;
