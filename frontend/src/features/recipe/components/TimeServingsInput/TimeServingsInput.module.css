@@ -127,14 +127,22 @@
 }
 
 @media (max-width: 480px) {
-  .timeServingsGrid {
-      grid-template-columns: 1fr;
-      gap: 12px;
+  .timeServingsSection {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
   }
   
-  .totalTime {
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 12px;
+  .timeServingsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .quantityInput {
+    width: 100%;
+  }
+  
+  .quantityInput input {
+    width: 60px;
   }
 }

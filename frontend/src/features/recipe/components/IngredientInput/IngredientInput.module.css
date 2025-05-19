@@ -124,16 +124,40 @@
   }
 }
 
-/* For even smaller screens */
 @media (max-width: 480px) {
-  .ingredientRow {
-    gap: 6px;
+  .ingredientsSection {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
   }
   
-  .amountInput,
-  .unitInput,
+  .ingredientRow {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  
+  .amountInput {
+    width: 65px;
+  }
+  
+  .unitInput {
+    width: 80px;
+  }
+  
   .ingredientInput {
-    padding: 8px 10px;
+    flex: 1 0 100%;
+    margin-top: 6px;
+  }
+  
+  .removeIngredientBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .addIngredientBtn {
     font-size: 14px;
+    padding: 8px 14px;
   }
 }

@@ -122,12 +122,10 @@
 
 @media (max-width: 480px) {
   .addRecipeForm {
-    padding: 16px;
+    padding: 18px;
     border-radius: 8px;
-  }
-  
-  .titleSection {
-    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .formGroup label {
@@ -137,5 +135,19 @@
   .formGroup input {
     padding: 10px 14px;
     font-size: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .formAction {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .cancelBtn,
+  .submitBtn {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
   }
 }

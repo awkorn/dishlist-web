@@ -146,17 +146,26 @@
     }
   }
   
-  @media (max-width: 480px) {
-    .parsedRecipeForm {
-      padding: 16px;
-    }
-    
-    .formGroup label {
-      font-size: 15px;
-    }
-    
-    .formGroup input {
-      padding: 10px 14px;
-      font-size: 15px;
-    }
+@media (max-width: 480px) {
+  .parsedRecipeForm {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
+  
+  .formGroup input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .cancelBtn, 
+  .saveBtn {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  
+  .formAction {
+    flex-direction: column;
+  }
+}

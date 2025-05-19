@@ -100,11 +100,27 @@
 }
 
 @media (max-width: 480px) {
+  .instructionsSection {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
   .instructionsSection h3 {
     font-size: 18px;
   }
   
   .instructionRow {
     gap: 6px;
+  }
+  
+  .instructionInput {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+  
+  .addInstructionBtn {
+    font-size: 14px;
+    padding: 8px 14px;
   }
 }

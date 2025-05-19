@@ -264,19 +264,31 @@
 }
 
 @media (max-width: 480px) {
+  .imageUploadSection {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
   .uploadArea {
     height: 9rem;
     padding: 0.75rem;
   }
-
-  .uploadIcon svg {
-    width: 1.75rem;
-    height: 1.75rem;
+  
+  .previewContainer {
+    width: 100%;
+    max-height: 16rem;
   }
-
+  
   .rotateButton {
     width: 1.75rem;
     height: 1.75rem;
     font-size: 0.875rem;
+  }
+  
+  .applyCropBtn,
+  .cancelCropBtn {
+    width: 100%;
+    margin-bottom: 8px;
   }
 }

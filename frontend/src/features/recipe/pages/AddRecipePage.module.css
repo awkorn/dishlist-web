@@ -52,6 +52,8 @@
 @media (max-width: 480px) {
   .addRecipeContainer {
     width: 100%;
-    padding: 10px 15px 30px;
+    padding: 0 15px 30px;
+    margin: 20px auto;
+    box-sizing: border-box;
   }
 }
