@@ -1,7 +1,7 @@
 /* ===== TOP NAVIGATION BAR ===== */
 .topNav {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between; /* Change to space-between to push items apart */
   align-items: center;
   flex-wrap: wrap;
   padding: 16px 24px;
@@ -26,6 +26,11 @@
 
 .navbarLogo:hover {
   transform: scale(1.05);
+}
+
+/* Spacer element that will push menu to the right when search is not present */
+.spacer {
+  flex-grow: 1;
 }
 
 .searchContainer {
@@ -228,6 +233,7 @@
   background: none;
   border: none;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .mobileMenu:hover {
@@ -309,18 +315,16 @@
 @media (max-width: 768px) {
   .topNav {
     padding: 12px 16px;
-    justify-content: flex-start;
+    justify-content: space-between; /* Maintain space-between for mobile */
     flex-wrap: nowrap;
   }
 
   .navbarLogo {
     height: 48px;
-    order: 1;
     margin-right: 10px;
   }
 
   .searchContainer {
-    order: 2;
     margin: 0 10px 0 0;
     max-width: none;
     width: auto;
@@ -332,8 +336,7 @@
 
   .mobileMenu {
     display: block;
-    order: 3;
-    margin-left: 10px;
+    margin-left: auto; /* Ensure it stays to the right */
   }
 
   .navContainer {
@@ -382,12 +385,10 @@
 
   .navbarLogo {
     height: 40px;
-    order: 1;
     margin-right: 8px;
   }
 
   .searchContainer {
-    order: 2;
     margin: 0 8px 0 0;
     flex-grow: 1;
     flex-shrink: 1;
@@ -406,9 +407,7 @@
   }
 
   .mobileMenu {
-    order: 3;
     padding: 6px;
-    margin-left: 8px;
   }
 
   .hamburgerIcon {
