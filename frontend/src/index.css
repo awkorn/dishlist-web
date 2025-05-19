@@ -57,3 +57,15 @@ body {
 .Toastify__close-button:hover {
   opacity: 1;
 }
+
+@media (max-width: 480px) {
+  .Toastify__toast {
+    font-size: 12px !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+  }
+
+  .Toastify__close-button {
+    font-size: 14px !important;
+  }
+}
