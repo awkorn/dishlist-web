@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./NutritionInfo.module.css";
+import { AI_ENDPOINTS } from "../../../../config/api";
 
 const NutritionInfo = ({ ingredients, servings }) => {
   const [nutritionData, setNutritionData] = useState(null);
@@ -61,7 +62,7 @@ const NutritionInfo = ({ ingredients, servings }) => {
         return `${ing.amount || ""} ${ing.unit || ""} ${ing.name}`.trim();
       });
 
-      const response = await axios.post("http://localhost:5000/api/nutrition", {
+      const response = await axios.post(AI_ENDPOINTS.NUTRITION, {
         ingredients: formattedIngredients,
         servingsCount: servings || 1,
       });

@@ -1,5 +1,4 @@
 import "./App.css";
-import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import { ToastContainer } from 'react-toastify';
@@ -9,7 +8,7 @@ function App() {
   return (
     <Router>
       <AppRoutes />
-      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
+      <ToastContainer position="bottom-right" autoClose={2000} hideProgressBar />
     </Router>
   );
 }

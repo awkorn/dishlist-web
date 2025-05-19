@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TopNav from "../../../components/layout/TopNav/TopNav";
 import styles from "./ImportRecipePage.module.css";
 import { Info, ArrowLeft } from "lucide-react";
+import { AI_ENDPOINTS } from "../../../config/api";
 
 const ImportRecipePage = () => {
   const { id: dishListId } = useParams();
@@ -22,23 +24,17 @@ const ImportRecipePage = () => {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/parse-recipe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ recipeText }),
+      const response = await axios.post(AI_ENDPOINTS.PARSE_RECIPE, {
+        recipeText,
       });
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error("Failed to analyze recipe");
       }
 
-      const parsedRecipe = await response.json();
-
       // Navigate to review page with the parsed recipe data
       navigate(`/review-recipe/${dishListId}`, {
-        state: { parsedRecipe: parsedRecipe.recipe },
+        state: { parsedRecipe: response.data.recipe },
       });
     } catch (err) {
       console.error("Error analyzing recipe:", err);

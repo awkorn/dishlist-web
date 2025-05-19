@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRecipeForm } from "../../../../contexts/RecipeFormContext";
 import axios from "axios";
 import styles from "./NutritionCalculator.module.css";
+import { AI_ENDPOINTS } from "../../../../config/api";
 
 const NutritionCalculator = () => {
   const { ingredients, servings } = useRecipeForm();
@@ -62,8 +63,8 @@ const NutritionCalculator = () => {
         return `${ing.amount || ""} ${ing.unit || ""} ${ing.name}`.trim();
       });
       
-      // Call your backend endpoint that uses OpenAI
-      const response = await axios.post('http://localhost:5000/api/nutrition', {
+      // Call backend API using environment-specific URL
+      const response = await axios.post(AI_ENDPOINTS.NUTRITION, {
         ingredients: formattedIngredients,
         servingsCount: servings || 1
       });
