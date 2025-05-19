@@ -267,6 +267,10 @@
     font-size: 12px;
   }
 
+  .viewBtn:hover:not(.activeViewBtn) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
   .pin {
     height: 15px;
     width: 15px;
