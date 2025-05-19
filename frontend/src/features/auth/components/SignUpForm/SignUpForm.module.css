@@ -1,14 +1,14 @@
-/* ===== SIGN-UP FORM COMPONENT ===== */
 .signUpForm {
   display: flex;
   flex-direction: column;
-  max-width: 500px;
+  width: 100%;
   margin: 0 auto;
   gap: 20px;
-  padding: 30px;
-  border-radius: 16px;
+  padding: 24px 16px;
+  border-radius: 0; 
   background-color: white;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .formHeader {
@@ -119,38 +119,6 @@
   color: #274b75;
 }
 
-.passwordStrength {
-  display: flex;
-  margin-top: 8px;
-  height: 4px;
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.passwordStrengthMeter {
-  height: 100%;
-  width: 0%;
-  border-radius: 2px;
-  transition: width 0.3s ease, background-color 0.3s ease;
-}
-
-.weak {
-  width: 33%;
-  background-color: #f44336;
-}
-
-.medium {
-  width: 66%;
-  background-color: #ff9800;
-}
-
-.strong {
-  width: 100%;
-  background-color: #4caf50;
-}
-
 .signUpButton {
   margin-top: 20px;
   width: 50%; 
@@ -247,27 +215,44 @@
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
   .signUpForm {
-    padding: 25px 20px;
-    gap: 20px;
-    max-width: 90%;
+    padding: 20px 15px;
+    gap: 16px;
   }
   
   .signUpButton {
     width: 70%;
+    font-size: 15px;
+    padding: 12px 18px;
   }
 }
 
 @media (max-width: 480px) {
   .signUpForm {
-    padding: 20px 15px;
-    gap: 16px;
+    padding: 16px 12px;
+    gap: 14px;
+  }
+  
+  .signUpInput {
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+  
+  .signUpButton {
+    width: 100%;
+    margin-top: 16px;
+    font-size: 14px;
+    padding: 12px 16px;
   }
   
   .formHeader h2 {
     font-size: 24px;
   }
   
-  .signUpButton {
-    width: 100%;
+  .passwordIcon {
+    right: 12px;
+  }
+  
+  .errorMessage {
+    font-size: 11px;
   }
 }
