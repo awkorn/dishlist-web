@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { ADD_RECIPE_TO_DISHLIST } from '../../../../graphql/mutations/recipe';
 import { GET_DISHLIST_RECIPES } from '../../../../graphql/queries/dishListDetail';
 import DishListSelector from '../DishListSelector/DishListSelector';
+import { Plus } from 'lucide-react';
 import styles from './AddToDishListButton.module.css';
 
 const AddToDishListButton = ({ recipeId, currentUserId }) => {
@@ -78,8 +79,12 @@ const AddToDishListButton = ({ recipeId, currentUserId }) => {
       <button 
         className={styles.addToDishlistBtn}
         onClick={() => setIsModalOpen(true)}
+        aria-label="Add to DishList"
       >
-        Add to DishList
+        <span className={styles.actionIcon}>
+          <Plus size={18} />
+        </span>
+        <span className={styles.buttonText}>Add to DishList</span>
       </button>
 
       {isModalOpen && (

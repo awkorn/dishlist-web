@@ -1,9 +1,10 @@
 .actionsContainer {
     display: flex;
     gap: 12px;
-  }
+    flex-wrap: nowrap;
+}
   
-  .actionButton {
+.actionButton {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -15,88 +16,89 @@
     transition: all 0.2s ease;
     border: 1px solid;
     font-family: 'Bricolage Grotesque', 'Poppins', sans-serif;
-  }
+    white-space: nowrap;
+}
   
-  .actionButton:hover {
+.actionButton:hover {
     transform: translateY(-2px);
-  }
+}
   
-  .saveButton {
+.saveButton {
     background-color: white;
     border-color: #274b75;
     color: #274b75;
-  }
+}
   
-  .saveButton:hover {
+.saveButton:hover {
     background-color: #f0f7ff;
-  }
+}
   
-  .savedButton {
+.savedButton {
     background-color: #274b75;
     border-color: #274b75;
     color: white;
-  }
+}
   
-  .savedButton:hover {
+.savedButton:hover {
     background-color: #1c3657;
-  }
+}
   
-  .printButton {
+.printButton {
     background-color: #f5f5f5;
     border-color: #ddd;
     color: #555;
-  }
+}
   
-  .printButton:hover {
+.printButton:hover {
     background-color: #ebebeb;
     border-color: #ccc;
-  }
+}
   
-  .editButton {
+.editButton {
     background-color: #4CAF50;
     border-color: #4CAF50;
     color: white;
-  }
+}
   
-  .editButton:hover {
+.editButton:hover {
     background-color: #388e3c;
-  }
+}
   
-  .actionIcon {
+.actionIcon {
     font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+}
   
-  /* Responsive styles */
-  @media (max-width: 768px) {
+/* Responsive styles */
+@media (max-width: 768px) {
     .actionsContainer {
-      flex-wrap: wrap;
-      justify-content: center;
+        gap: 10px;
     }
     
     .actionButton {
-      padding: 6px 14px;
-      font-size: 13px;
+        padding: 6px 14px;
+        font-size: 13px;
     }
-  }
+}
   
-  @media (max-width: 480px) {
+@media (max-width: 480px) {
     .actionsContainer {
-      width: 100%;
+        flex-shrink: 0;
     }
     
     .actionButton {
-      flex: 1;
-      justify-content: center;
+        padding: 6px 10px;
+        flex: 0 0 auto;
     }
     
     .actionText {
-      display: none;
+        display: none;
     }
     
     .actionIcon {
-      font-size: 18px;
+        font-size: 18px;
+        margin: 0 auto;
     }
-  }
+}

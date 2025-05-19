@@ -33,7 +33,7 @@ const RecipeActions = ({ isCreator, isSaved, onSaveToggle, onEdit, onPrint }) =>
         aria-label="Print recipe"
       >
         <span className={styles.actionIcon}>
-        <Printer size={18} />
+          <Printer size={18} />
         </span>
         <span className={styles.actionText}>
           Print
@@ -47,7 +47,7 @@ const RecipeActions = ({ isCreator, isSaved, onSaveToggle, onEdit, onPrint }) =>
           aria-label="Edit recipe"
         >
           <span className={styles.actionIcon}>
-          <Pencil size={18} />
+            <Pencil size={18} />
           </span>
           <span className={styles.actionText}>
             Edit
