@@ -10,12 +10,9 @@
 }
 
 .builderPanel {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 800px;
-  padding: 32px;
+  padding: 32px 0;
   margin-bottom: 40px;
   box-sizing: border-box; 
 }
@@ -52,8 +49,12 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    margin: 30px auto;
+  }
+
   .builderPanel {
-    padding: 24px;
+    padding: 24px 0;
   }
 
   .title {
@@ -74,7 +75,7 @@
   }
 
   .builderPanel {
-    padding: 16px; 
+    padding: 16px 0; 
     width: 100%;
   }
 

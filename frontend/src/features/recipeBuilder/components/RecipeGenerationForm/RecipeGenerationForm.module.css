@@ -6,6 +6,17 @@
   box-sizing: border-box;
 }
 
+/* New container style for each section */
+.sectionContainer {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
 .formSection {
   display: flex;
   flex-direction: column;
@@ -85,7 +96,7 @@
 }
 
 .addIngredientBtn {
-  background-color: #f4f2ee;
+  background-color: white;
   color: #274b75;
   border: 1.5px dashed #274b75;
   border-radius: 8px;
@@ -136,12 +147,12 @@
 .advancedToggle {
   display: flex;
   justify-content: center;
-  margin: 0;
+  margin: 8px 0 0 0;
   width: 100%;
 }
 
 .advancedToggleBtn {
-  background: none;
+  background-color: white;
   border: none;
   color: #274b75;
   font-size: 15px;
@@ -150,13 +161,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: 20px;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .advancedToggleBtn:hover {
-  background-color: rgba(39, 75, 117, 0.08);
+  background-color: #e6e4e0;
 }
 
 .toggleArrow {
@@ -292,6 +304,15 @@
   cursor: not-allowed;
 }
 
+/* Advanced options container */
+.advancedOptionsContainer {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
 /* Error message */
 .errorMessage {
   color: #f44336;
@@ -307,6 +328,11 @@
     gap: 24px;
   }
   
+  .sectionContainer {
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  
   .dietaryOptions {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
@@ -318,7 +344,12 @@
 
 @media (max-width: 480px) {
   .form {
-    gap: 20px;
+    gap: 16px;
+  }
+  
+  .sectionContainer {
+    padding: 16px;
+    margin-bottom: 12px;
   }
   
   .dietaryOptions {

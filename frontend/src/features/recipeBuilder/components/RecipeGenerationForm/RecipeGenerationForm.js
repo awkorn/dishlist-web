@@ -115,63 +115,67 @@ const RecipeGenerationForm = ({ onSubmit, isGenerating }) => {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       {/* Ingredients Section */}
-      <div className={styles.formSection}>
-        <h2 className={styles.sectionTitle}>Ingredients</h2>
-        <p className={styles.sectionDescription}>
-          Enter ingredients you'd like to use in your recipe
-        </p>
+      <div className={styles.sectionContainer}>
+        <div className={styles.formSection}>
+          <h2 className={styles.sectionTitle}>Ingredients</h2>
+          <p className={styles.sectionDescription}>
+            Enter ingredients you'd like to use in your recipe
+          </p>
 
-        <div className={styles.ingredientsList}>
-          {ingredients.map((ingredient, index) => (
-            <div key={index} className={styles.ingredientRow}>
-              <input
-                type="text"
-                className={styles.ingredientInput}
-                placeholder={`Ingredient ${index + 1}`}
-                value={ingredient}
-                onChange={(e) => handleIngredientChange(index, e.target.value)}
-              />
-              {ingredients.length > 1 && (
-                <button
-                  type="button"
-                  className={styles.removeIngredientBtn}
-                  onClick={() => removeIngredientField(index)}
-                  aria-label="Remove ingredient"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-          ))}
+          <div className={styles.ingredientsList}>
+            {ingredients.map((ingredient, index) => (
+              <div key={index} className={styles.ingredientRow}>
+                <input
+                  type="text"
+                  className={styles.ingredientInput}
+                  placeholder={`Ingredient ${index + 1}`}
+                  value={ingredient}
+                  onChange={(e) => handleIngredientChange(index, e.target.value)}
+                />
+                {ingredients.length > 1 && (
+                  <button
+                    type="button"
+                    className={styles.removeIngredientBtn}
+                    onClick={() => removeIngredientField(index)}
+                    aria-label="Remove ingredient"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className={styles.addIngredientBtn}
+            onClick={addIngredientField}
+          >
+            + Add Another Ingredient
+          </button>
+
+          {errors.ingredients && (
+            <div className={styles.errorMessage}>{errors.ingredients}</div>
+          )}
         </div>
-
-        <button
-          type="button"
-          className={styles.addIngredientBtn}
-          onClick={addIngredientField}
-        >
-          + Add Another Ingredient
-        </button>
-
-        {errors.ingredients && (
-          <div className={styles.errorMessage}>{errors.ingredients}</div>
-        )}
       </div>
 
       {/* Special Instructions Section */}
-      <div className={styles.formSection}>
-        <h2 className={styles.sectionTitle}>Special Instructions</h2>
-        <p className={styles.sectionDescription}>
-          Add any specific preferences, cooking methods, or requirements for your recipe
-        </p>
-        
-        <textarea
-          className={styles.specialInstructionsInput}
-          placeholder="Examples: 'Make it a slow cooker recipe', 'Suitable for picnic', 'Quick weeknight dinner', 'Spicy Thai-inspired dish'"
-          value={specialInstructions}
-          onChange={handleSpecialInstructionsChange}
-          rows={3}
-        />
+      <div className={styles.sectionContainer}>
+        <div className={styles.formSection}>
+          <h2 className={styles.sectionTitle}>Special Instructions</h2>
+          <p className={styles.sectionDescription}>
+            Add any specific preferences, cooking methods, or requirements for your recipe
+          </p>
+          
+          <textarea
+            className={styles.specialInstructionsInput}
+            placeholder="Examples: 'Make it a slow cooker recipe', 'Suitable for picnic', 'Quick weeknight dinner', 'Spicy Thai-inspired dish'"
+            value={specialInstructions}
+            onChange={handleSpecialInstructionsChange}
+            rows={3}
+          />
+        </div>
       </div>
 
       {/* Advanced Options Toggle */}
@@ -190,92 +194,96 @@ const RecipeGenerationForm = ({ onSubmit, isGenerating }) => {
 
       {/* Advanced Options (conditional) */}
       {showAdvancedOptions && (
-        <>
+        <div className={styles.advancedOptionsContainer}>
           {/* Dietary Restrictions Section */}
-          <div className={styles.formSection}>
-            <h2 className={styles.sectionTitle}>Dietary Preferences</h2>
-            <p className={styles.sectionDescription}>
-              Select any dietary restrictions or preferences
-            </p>
+          <div className={styles.sectionContainer}>
+            <div className={styles.formSection}>
+              <h2 className={styles.sectionTitle}>Dietary Preferences</h2>
+              <p className={styles.sectionDescription}>
+                Select any dietary restrictions or preferences
+              </p>
 
-            <div className={styles.dietaryOptions}>
-              {Object.keys(dietaryRestrictions).map((restriction) => (
-                <div key={restriction} className={styles.dietaryOption}>
-                  <input
-                    type="checkbox"
-                    id={restriction}
-                    checked={dietaryRestrictions[restriction]}
-                    onChange={() => toggleDietaryRestriction(restriction)}
-                    className={styles.dietaryCheckbox}
-                  />
-                  <label htmlFor={restriction} className={styles.dietaryLabel}>
-                    {restriction === 'glutenFree' 
-                      ? 'Gluten-Free' 
-                      : restriction === 'dairyFree' 
-                      ? 'Dairy-Free'
-                      : restriction === 'nutFree'
-                      ? 'Nut-Free'
-                      : restriction.charAt(0).toUpperCase() + restriction.slice(1)}
-                  </label>
-                </div>
-              ))}
+              <div className={styles.dietaryOptions}>
+                {Object.keys(dietaryRestrictions).map((restriction) => (
+                  <div key={restriction} className={styles.dietaryOption}>
+                    <input
+                      type="checkbox"
+                      id={restriction}
+                      checked={dietaryRestrictions[restriction]}
+                      onChange={() => toggleDietaryRestriction(restriction)}
+                      className={styles.dietaryCheckbox}
+                    />
+                    <label htmlFor={restriction} className={styles.dietaryLabel}>
+                      {restriction === 'glutenFree' 
+                        ? 'Gluten-Free' 
+                        : restriction === 'dairyFree' 
+                        ? 'Dairy-Free'
+                        : restriction === 'nutFree'
+                        ? 'Nut-Free'
+                        : restriction.charAt(0).toUpperCase() + restriction.slice(1)}
+                    </label>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Macros Section */}
-          <div className={styles.formSection}>
-            <h2 className={styles.sectionTitle}>Target Macros (per serving)</h2>
-            <p className={styles.sectionDescription}>
-              Optionally specify target macro values for your recipe
-            </p>
+          <div className={styles.sectionContainer}>
+            <div className={styles.formSection}>
+              <h2 className={styles.sectionTitle}>Target Macros (per serving)</h2>
+              <p className={styles.sectionDescription}>
+                Optionally specify target macro values for your recipe
+              </p>
 
-            <div className={styles.macrosGrid}>
-              <div className={styles.macroInput}>
-                <label htmlFor="calories">Calories</label>
-                <input
-                  type="text"
-                  id="calories"
-                  placeholder="e.g., 500"
-                  value={macros.calories}
-                  onChange={(e) => handleMacroChange('calories', e.target.value)}
-                />
-              </div>
+              <div className={styles.macrosGrid}>
+                <div className={styles.macroInput}>
+                  <label htmlFor="calories">Calories</label>
+                  <input
+                    type="text"
+                    id="calories"
+                    placeholder="e.g., 500"
+                    value={macros.calories}
+                    onChange={(e) => handleMacroChange('calories', e.target.value)}
+                  />
+                </div>
 
-              <div className={styles.macroInput}>
-                <label htmlFor="protein">Protein (g)</label>
-                <input
-                  type="text"
-                  id="protein"
-                  placeholder="e.g., 30"
-                  value={macros.protein}
-                  onChange={(e) => handleMacroChange('protein', e.target.value)}
-                />
-              </div>
+                <div className={styles.macroInput}>
+                  <label htmlFor="protein">Protein (g)</label>
+                  <input
+                    type="text"
+                    id="protein"
+                    placeholder="e.g., 30"
+                    value={macros.protein}
+                    onChange={(e) => handleMacroChange('protein', e.target.value)}
+                  />
+                </div>
 
-              <div className={styles.macroInput}>
-                <label htmlFor="carbs">Carbs (g)</label>
-                <input
-                  type="text"
-                  id="carbs"
-                  placeholder="e.g., 50"
-                  value={macros.carbs}
-                  onChange={(e) => handleMacroChange('carbs', e.target.value)}
-                />
-              </div>
+                <div className={styles.macroInput}>
+                  <label htmlFor="carbs">Carbs (g)</label>
+                  <input
+                    type="text"
+                    id="carbs"
+                    placeholder="e.g., 50"
+                    value={macros.carbs}
+                    onChange={(e) => handleMacroChange('carbs', e.target.value)}
+                  />
+                </div>
 
-              <div className={styles.macroInput}>
-                <label htmlFor="fat">Fat (g)</label>
-                <input
-                  type="text"
-                  id="fat"
-                  placeholder="e.g., 20"
-                  value={macros.fat}
-                  onChange={(e) => handleMacroChange('fat', e.target.value)}
-                />
+                <div className={styles.macroInput}>
+                  <label htmlFor="fat">Fat (g)</label>
+                  <input
+                    type="text"
+                    id="fat"
+                    placeholder="e.g., 20"
+                    value={macros.fat}
+                    onChange={(e) => handleMacroChange('fat', e.target.value)}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
 
       {/* Submit Button */}
