@@ -80,11 +80,12 @@ const DishListTile = ({
           dishlist.followRequests?.includes(currentUserId);
         const isSelected = selectedDishList === dishlist.id;
         const canSelect = selectionMode && userIsOwner;
-
+        
         const tileClasses = [
           styles.dishTile,
           isSelected ? styles.selectedTile : "",
           canSelect ? styles.selectableTile : "",
+          canSelect ? "dish-list-selectable" : "", 
         ]
           .filter(Boolean)
           .join(" ");

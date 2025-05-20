@@ -37,24 +37,38 @@ const DishListsMenu = ({
     setLocalSelectedDishList(selectedDishList);
   }, [selectedDishList]);
 
+  // We'll use a special class to mark elements that shouldn't close selection mode
+  const SELECTION_CLASS = "dish-list-selectable";
+
   useEffect(() => {
     function handleClickOutside(event) {
+      // Don't close the menu or exit selection mode if clicking on a selectable tile
+      const clickedSelectableTile = event.target.closest(`.${SELECTION_CLASS}`);
+      if (clickedSelectableTile) {
+        return;
+      }
+
+      // Only close menu if clicking outside of menu
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
-        if (selectionMode) {
+        
+        // Only exit selection mode if:
+        // - We're in selection mode AND
+        // - We didn't click on a selectable item AND 
+        // - We haven't already selected an item
+        if (selectionMode && !localSelectedDishList) {
           toggleSelectionMode(false);
         }
       }
     }
 
-    if (menuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
+    // Add the event listener for the entire document
+    document.addEventListener("mousedown", handleClickOutside);
+    
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuOpen, selectionMode]);
+  }, [menuOpen, selectionMode, localSelectedDishList]);
 
   // GraphQL Mutations
   const [deleteDishList] = useMutation(DELETE_DISHLIST, {
@@ -172,10 +186,17 @@ const DishListsMenu = ({
 
   const toggleSelectionMode = (value) => {
     setSelectionMode(value);
+    
+    // Clear selected dishlist when exiting selection mode
+    if (!value) {
+      setLocalSelectedDishList(null);
+    }
+    
     // Notify the parent component about selection mode change
     if (onSelectionModeChange) {
       onSelectionModeChange(value);
     }
+    
     // Keep menu open when entering selection mode
     if (value) {
       setMenuOpen(true);
@@ -204,8 +225,8 @@ const DishListsMenu = ({
         onClick={() => setMenuOpen(!menuOpen)}
       />
 
-      {/* Dropdown Menu */}
-      {menuOpen && (
+      {/* Dropdown Menu - Always show when in selection mode */}
+      {(menuOpen || (selectionMode && localSelectedDishList)) && (
         <div className={styles.menuOptions}>
           <button onClick={() => navigate("/create-dishlist")}>
             <CirclePlus size={18} className={styles.buttonIcon} /> Add DishList
