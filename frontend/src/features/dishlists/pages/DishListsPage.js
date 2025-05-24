@@ -247,7 +247,7 @@ const DishListsPage = () => {
 
         {selectionMode && (
           <div className={styles.selectionModeIndicator}>
-            <p>Select a DishList to edit, delete, or pin</p>
+            <p>Select a DishList</p>
           </div>
         )}
       </div>
