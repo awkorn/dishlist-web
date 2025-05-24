@@ -112,13 +112,39 @@
   font-weight: 600;
 }
 
+/* Enhanced disabled option styles */
 .disabledOption {
-  color: #ccc;
-  cursor: not-allowed;
+  color: #bbb !important; /* Much lighter text color */
+  background-color: #f8f8f8 !important; /* Light grey background */
+  cursor: not-allowed !important;
+  opacity: 0.6; /* Make the entire button semi-transparent */
+  border: 1px solid #e8e8e8; /* Subtle border to make it look more "sunken" */
 }
 
 .disabledOption:hover {
-  background-color: transparent;
+  background-color: #f8f8f8 !important; /* Keep same background on hover */
+  color: #bbb !important; /* Keep same text color on hover */
+  transform: none !important; /* No hover effects */
+  box-shadow: none !important; /* No shadow effects */
+}
+
+/* Disabled button icons should also be greyed out */
+.disabledOption .buttonIcon {
+  color: #bbb !important;
+  opacity: 0.5;
+}
+
+/* Remove any active/focus states for disabled buttons */
+.disabledOption:active,
+.disabledOption:focus {
+  background-color: #f8f8f8 !important;
+  color: #bbb !important;
+  outline: none;
+}
+
+/* Remove the ripple effect for disabled buttons */
+.disabledOption::after {
+  display: none !important;
 }
 
 .menuOptions select {
@@ -146,6 +172,7 @@
   margin-right: 8px;
   vertical-align: middle;
   display: inline-block;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 /* Selected dish info styles */

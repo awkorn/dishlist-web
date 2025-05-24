@@ -197,15 +197,21 @@ const dishListResolvers = {
     },
 
     pinDishList: async (_, { id, userId }) => {
-      // Check if user has permission (should be owner)
+      // Check if dishlist exists
       const dishList = await DishList.findById(id);
 
       if (!dishList) {
         throw new Error("DishList not found");
       }
 
-      if (dishList.userId !== userId) {
-        throw new Error("Only the owner can pin this dishlist");
+      // Check if user has permission (owner, collaborator, or follower)
+      const canPin =
+        dishList.userId === userId || // Owner
+        dishList.collaborators.includes(userId) || // Collaborator
+        dishList.followers.includes(userId); // Follower
+
+      if (!canPin) {
+        throw new Error("You don't have permission to pin this dishlist");
       }
 
       return await DishList.findByIdAndUpdate(
@@ -216,19 +222,26 @@ const dishListResolvers = {
     },
 
     unpinDishList: async (_, { id, userId }) => {
-      // Check if user has permission (should be owner)
+      // Check if dishlist exists
       const dishList = await DishList.findById(id);
 
       if (!dishList) {
         throw new Error("DishList not found");
       }
 
+      // Protect "My Recipes" from being unpinned
       if (dishList.title === "My Recipes") {
         throw new Error("This dishlist cannot be unpinned");
       }
 
-      if (dishList.userId !== userId) {
-        throw new Error("Only the owner can unpin this dishlist");
+      // Check if user has permission (owner, collaborator, or follower)
+      const canUnpin =
+        dishList.userId === userId || // Owner
+        dishList.collaborators.includes(userId) || // Collaborator
+        dishList.followers.includes(userId); // Follower
+
+      if (!canUnpin) {
+        throw new Error("You don't have permission to unpin this dishlist");
       }
 
       return await DishList.findByIdAndUpdate(

@@ -157,13 +157,6 @@ const DishListsPage = () => {
     if (!isActive) {
       setSelectedDishList(null);
     }
-    
-    // If entering selection mode, automatically switch to "owned" view
-    // since only owned dishlists can be selected
-    if (isActive && viewMode !== "owned") {
-      setViewMode("owned");
-      filterDishListsByMode(allDishLists, "owned");
-    }
   };
 
   const handleSelectDishList = (dishListId) => {
@@ -213,7 +206,6 @@ const DishListsPage = () => {
               viewMode === "all" ? styles.activeViewBtn : ""
             }`}
             onClick={() => handleViewModeChange("all")}
-            disabled={selectionMode} // Disable switching views in selection mode
           >
             All
           </button>
@@ -230,7 +222,6 @@ const DishListsPage = () => {
               viewMode === "collaborated" ? styles.activeViewBtn : ""
             }`}
             onClick={() => handleViewModeChange("collaborated")}
-            disabled={selectionMode} // Disable switching views in selection mode
           >
             Collaborations
           </button>
@@ -239,7 +230,6 @@ const DishListsPage = () => {
               viewMode === "followed" ? styles.activeViewBtn : ""
             }`}
             onClick={() => handleViewModeChange("followed")}
-            disabled={selectionMode} // Disable switching views in selection mode
           >
             Following
           </button>
@@ -248,6 +238,8 @@ const DishListsPage = () => {
           dishLists={filteredDishLists}
           currentUserId={currentUser?.uid}
           isOwner={isOwner}
+          isCollaborator={isCollaborator}
+          isFollowing={isFollowing}
           refetch={refetch}
           onSelectionModeChange={handleSelectionModeChange}
           selectedDishList={selectedDishList}
@@ -255,7 +247,7 @@ const DishListsPage = () => {
 
         {selectionMode && (
           <div className={styles.selectionModeIndicator}>
-            <p>Select a DishList you own to edit, delete, or pin</p>
+            <p>Select a DishList to edit, delete, or pin</p>
           </div>
         )}
       </div>

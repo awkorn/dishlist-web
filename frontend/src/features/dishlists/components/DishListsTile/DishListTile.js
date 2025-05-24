@@ -12,6 +12,8 @@ const DishListTile = ({
   selectedDishList,
   onSelectDishList,
   isOwner,
+  isCollaborator,
+  isFollowing,
 }) => {
   const [recipeCounts, setRecipeCounts] = useState({});
 
@@ -42,8 +44,13 @@ const DishListTile = ({
 
   const handleDishListSelection = (dishListId) => {
     if (selectionMode && onSelectDishList) {
-      // Modified condition to ensure ownership check works
-      if (isOwner(dishListId)) {
+      // Allow selection for any dishlist the user has access to
+      const userIsOwner = isOwner(dishListId);
+      const userIsCollaborator = isCollaborator(dishListId);
+      const userIsFollower = isFollowing(dishListId);
+      
+      // User can select if they have any relationship to the dishlist
+      if (userIsOwner || userIsCollaborator || userIsFollower) {
         onSelectDishList(dishListId === selectedDishList ? null : dishListId);
       }
     }
@@ -72,14 +79,15 @@ const DishListTile = ({
   return (
     <div className={styles.dishTiles}>
       {dishLists.map((dishlist) => {
-        const userIsOwner = dishlist.userId === currentUserId;
-        const userIsCollaborator =
-          dishlist.collaborators.includes(currentUserId);
-        const userIsFollower = dishlist.followers.includes(currentUserId);
+        const userIsOwner = isOwner(dishlist.id);
+        const userIsCollaborator = isCollaborator(dishlist.id);
+        const userIsFollower = isFollowing(dishlist.id);
         const userHasPendingRequest =
           dishlist.followRequests?.includes(currentUserId);
         const isSelected = selectedDishList === dishlist.id;
-        const canSelect = selectionMode && userIsOwner;
+        
+        // User can select if they have any relationship to the dishlist
+        const canSelect = selectionMode && (userIsOwner || userIsCollaborator || userIsFollower);
         
         const tileClasses = [
           styles.dishTile,

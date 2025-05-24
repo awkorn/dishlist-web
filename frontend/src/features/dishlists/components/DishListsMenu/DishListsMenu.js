@@ -21,6 +21,8 @@ import {
 const DishListsMenu = ({
   dishLists,
   isOwner,
+  isCollaborator,
+  isFollowing,
   refetch,
   onSelectionModeChange,
   selectedDishList,
@@ -90,11 +92,8 @@ const DishListsMenu = ({
       return;
     }
 
-    // Check if user has permission
-    const dishList = dishLists.find(
-      (dish) => dish.id === localSelectedDishList
-    );
-    if (!dishList || !isOwner(localSelectedDishList)) {
+    // Check if user has permission - only owners can edit
+    if (!isOwner(localSelectedDishList)) {
       alert("You can only edit dishlists you own");
       return;
     }
@@ -114,7 +113,7 @@ const DishListsMenu = ({
       return;
     }
 
-    // Check if user has permission
+    // Check if user has permission - only owners can delete
     if (!isOwner(localSelectedDishList)) {
       alert("You can only delete dishlists you own");
       return;
@@ -149,18 +148,14 @@ const DishListsMenu = ({
       return;
     }
 
-    // Check if user has permission
-    if (!isOwner(localSelectedDishList)) {
-      alert("You can only pin/unpin dishlists you own");
-      return;
-    }
-
+    // All users (owners, collaborators, followers) can pin/unpin
     const dishList = dishLists.find(
       (dish) => dish.id === localSelectedDishList
     );
 
-    if (dishList && dishList.title === "My Recipes") {
-      alert("The 'My Recipes' dishlist cannot be deleted");
+    // Check if it's the "My Recipes" dishlist and user is trying to unpin it
+    if (dishList && dishList.title === "My Recipes" && dishList.isPinned) {
+      alert("The 'My Recipes' dishlist cannot be unpinned");
       return;
     }
 
@@ -203,13 +198,24 @@ const DishListsMenu = ({
     }
   };
 
-  // Check if selected dishlist is owned by current user
-  const selectedDishListOwned =
-    localSelectedDishList &&
-    dishLists.some(
-      (dish) =>
-        dish.id === localSelectedDishList && dish.userId === currentUser?.uid
-    );
+  // Get permissions for the selected dishlist
+  const getSelectedDishListPermissions = () => {
+    if (!localSelectedDishList) {
+      return { canEdit: false, canDelete: false, canPin: false };
+    }
+
+    const userIsOwner = isOwner(localSelectedDishList);
+    const userIsCollaborator = isCollaborator(localSelectedDishList);
+    const userIsFollower = isFollowing(localSelectedDishList);
+
+    return {
+      canEdit: userIsOwner,
+      canDelete: userIsOwner,
+      canPin: userIsOwner || userIsCollaborator || userIsFollower,
+    };
+  };
+
+  const permissions = getSelectedDishListPermissions();
 
   // Find the selected dishlist
   const selectedDishListData = dishLists.find(
@@ -253,8 +259,8 @@ const DishListsMenu = ({
             <div>
               <button
                 onClick={handleEditDishList}
-                disabled={!selectedDishListOwned}
-                className={!selectedDishListOwned ? styles.disabledOption : ""}
+                disabled={!permissions.canEdit}
+                className={!permissions.canEdit ? styles.disabledOption : ""}
               >
                 <FilePenLine size={18} className={styles.buttonIcon} /> Edit
                 DishList
@@ -262,8 +268,8 @@ const DishListsMenu = ({
 
               <button
                 onClick={handleDeleteDishList}
-                disabled={!selectedDishListOwned}
-                className={!selectedDishListOwned ? styles.disabledOption : ""}
+                disabled={!permissions.canDelete}
+                className={!permissions.canDelete ? styles.disabledOption : ""}
               >
                 <BookX size={18} className={styles.buttonIcon} /> Delete
                 DishList
@@ -271,8 +277,8 @@ const DishListsMenu = ({
 
               <button
                 onClick={handleTogglePinDishList}
-                disabled={!selectedDishListOwned}
-                className={!selectedDishListOwned ? styles.disabledOption : ""}
+                disabled={!permissions.canPin}
+                className={!permissions.canPin ? styles.disabledOption : ""}
               >
                 <Pin size={18} className={styles.buttonIcon} />{" "}
                 {selectedDishListData?.isPinned ? "Unpin" : "Pin"} DishList
