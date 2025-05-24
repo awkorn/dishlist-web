@@ -16,7 +16,7 @@ const SignInForm = () => {
   const navigate = useNavigate();
   const { currentUser, dbUser } = useAuth();
 
-  // Redirect to dishlists page when both Firebase auth and MongoDB user are ready
+  // Redirect when user is already authenticated and has data
   useEffect(() => {
     if (currentUser && dbUser) {
       navigate("/dishlists");
@@ -26,6 +26,7 @@ const SignInForm = () => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
     try {
       const userCredentials = await signInWithEmailAndPassword(
         auth,
@@ -40,6 +41,8 @@ const SignInForm = () => {
 
       // Toast success message
       toast.success("Successfully signed in!");
+      navigate("/dishlists");
+      
     } catch (error) {
       if (error.code === "auth/user-not-found") {
         toast.error("No account found with this email.");

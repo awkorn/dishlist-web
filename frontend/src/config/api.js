@@ -27,6 +27,7 @@ export const AI_ENDPOINTS = {
   PARSE_RECIPE: `${AI_API_URL}/parse-recipe`,
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   API_BASE_URL,
   GRAPHQL_URL,
